@@ -1,0 +1,93 @@
+page-multi-login {
+    .content{
+        background-color: $primary !important;
+    }
+
+    .brand {
+        margin-top: 15%;
+        margin-bottom: 6%;
+        text-align: center;
+        .logo {
+            width: 80px;
+        }
+    }
+        
+    .segment-md-dark .segment-button {
+        color: $secondary;
+    }
+ 
+    p.info {
+        text-align: center;
+        font-size: 14px;
+        padding: 10px 0;
+        i {
+            color: $primary;
+        }
+    }
+    ion-card {
+        background-color: $secondary !important;
+        min-height: 240px;
+        .button {
+            margin-top: 10%;
+        }
+        .otp-message {
+            font-size: 12px;
+            color: $primary;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+      
+    }
+    .country-code .text-input{
+        font-size: 26px;
+        padding: 4px 0 0 4px  !important;
+        margin: 0 !important;
+    }
+    .item-inner {
+        border-bottom: none !important;
+    }
+
+    ion-item {
+        border: 1px solid $secondary !important;
+        margin: 10px 0 !important;
+    }
+
+    .controls {
+        text-align: center;
+        color: $white;
+        font-weight: lighter;
+
+        .col {
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+ 
+    .label {
+        color: $primary !important;
+    }
+
+    .footer {
+        .button {
+            color: white;
+        }
+    }
+
+    .button.eye {
+        color: $primary;
+        font-size: 1em;
+    }
+
+    #recaptcha-container {
+        visibility: hidden;
+    }
+    
+    .validation p {
+        margin-bottom: 0 !important;
+    }
+    .terms {
+        text-align: center;
+    }
+}

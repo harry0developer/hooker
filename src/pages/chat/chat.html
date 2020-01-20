@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>Chat</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item text-wrap no-lines *ngIf="user1">
+      <!-- <ion-avatar item-end>
+        <img id="profile-image" src="assets/imgs/users/user{{user1.id}}.jpg">
+      </ion-avatar> -->
+      <div class="bubble bubble-primary">
+        Quidem fugit esse nisi laborum nostrum iste obcaecati nemo eos recusandae.
+      </div>
+      <span class="primary bubble-time">a minute ago</span>
+    </ion-item>
+
+    <ion-item *ngIf="user2">
+      <ion-avatar item-start>
+        <img id="profile-image" src="assets/imgs/users/user{{user2.id}}.jpg">
+      </ion-avatar>
+      <div class="bubble bubble-secondary">
+        I'm speech bubble
+      </div>
+      <span class="secondary bubble-time">3 minutes ago</span>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-item no-lines> 
+    <ion-input type="text" placeholder="Type message"></ion-input>
+    <button ion-button clear item-right (click)="sendMessage()">Send</button>
+  </ion-item> 
+</ion-footer>

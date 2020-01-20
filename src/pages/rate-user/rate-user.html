@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Rate User</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="dismiss()">
+        Cancel
+      </button>
+    </ion-buttons>
+  </ion-navbar> 
+</ion-header>
+
+<ion-content>
+  <div class="brand">
+    <i class="fa fa-star"></i>
+    <h2>Rate {{user?.nickname}}</h2>
+  </div>
+
+  <p>Click on the stars to rate the user</p>
+
+  <span class="rating-value">{{rating || 0}}</span>
+  
+  <rating [float]="true" [(ngModel)]="rating" [readonly]="false"></rating>
+
+  <div padding>
+    <button ion-button block [disabled]="!rating" (click)="rateCompany()">Rate</button>
+    <button ion-button block outline clear (click)="dismiss()">Cancel</button>
+  </div>
+</ion-content>

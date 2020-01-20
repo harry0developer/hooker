@@ -1,0 +1,84 @@
+page-sellers {
+    .content {
+        background-color: $light;
+    }
+    .user {
+        ion-item {
+            height: 100px;
+        }
+        ion-avatar img{
+            width: 60px !important;
+            height: 60px !important;
+        }
+        i {
+            color: $primary;
+            padding-right: 4px;
+        }
+        .name {
+            text-align: left;
+            font-size: 1em;
+        }
+
+        .online {
+            color: green;
+        }
+        .offline {
+            color: $primary; 
+        }
+
+        .online, .offline {
+            font-size: .6em;
+            padding-bottom: 4px;
+            padding-left: 10px;
+            float: right;
+        }
+
+        .distance {
+            padding-top: 10px;
+            span {
+                font-weight: bold;
+                color: $primary;
+            }
+        }
+    }
+    // .user {
+    //     min-height: 260px;
+    //     max-height: 260px;
+    //     h2 {
+    //         font-size: 1em;
+    //         font-weight: bold;
+    //         padding-bottom: 5px;
+    //     }
+    //     p {
+    //         font-size: 0.9em;
+    //         text-overflow: ellipsis;
+    //         white-space: nowrap;
+    //         overflow: hidden;
+    //     }
+    //     img {
+    //         max-height: 160px;
+    //         min-height: 160px;
+    //     }
+    //     i {
+    //         color: $primary;
+    //         padding-right: 6px;
+    //     } 
+    //     .age {
+    //         float: right;
+    //     } 
+    //     .name {
+    //         text-align: left;
+    //     }
+    //     .row {
+    //         height: 40px;
+    //     }
+
+    // }
+
+    // .grid {
+    //     padding: 0;
+    //     .col {
+    //         padding: 0;
+    //     }
+    // }
+}

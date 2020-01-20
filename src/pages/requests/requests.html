@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Requests</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="users">
+    <div *ngFor="let user of users">
+      <ion-item (tap)="viewUserDetails(user)">
+        <ion-avatar item-start>
+          <img src="assets/imgs/users/user1.jpg">
+        </ion-avatar>
+        <h2>
+          {{user.nickname}} 
+          <span>
+            <i class="fa fa-map-marker"></i> {{getDistance(user.location.geo)}} km away 
+          </span>
+        </h2>
+        <p><i class="fa fa-calendar"></i>1 week ago</p>
+        <i class="fa fa-chevron-right" item-end></i>
+      </ion-item>
+    </div>
+  </ion-list>
+</ion-content>

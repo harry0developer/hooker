@@ -1,16 +1,62 @@
-// http://ionicframework.com/docs/theming/
+@import '../theme/main.scss';
+
+.user-profile {
+  background-color: $primary !important;
+	color: $white !important;
+	border-top: 0 !important;
+	border-bottom: 0 !important;
+
+	.button-inner i {
+		margin: 10px;
+	}
 
 
-// App Global Sass
-// --------------------------------------------------
-// Put style rules here that you want to apply globally. These
-// styles are for the entire app and not just one component.
-// Additionally, this file can be also used as an entry point
-// to import other Sass files to be included in the output CSS.
-//
-// Shared Sass variables, which can be used to adjust Ionic's
-// default Sass variables, belong in "theme/variables.scss".
-//
-// To declare rules for a specific mode, create a child rule
-// for the .md, .ios, or .wp mode classes. The mode class is
-// automatically applied to the <body> element in the app.
+	ion-item {
+		border-top: 0 !important;
+		border-bottom: 0 !important;
+		margin: 0 !important;
+	}
+    ion-icon.light {
+		color: $white !important;
+	}
+  .profile{
+		margin: 16% 0;
+		text-align: center;
+		
+		.profile-picture {
+			border: 2px solid $white;
+			padding: 2px;
+			border-radius: 100%;
+			width: 100px;
+			height: 100px;
+		}
+		h2{
+			font-size: 1.4em;
+			color: $white;
+			margin-bottom: 0;
+		}
+		p{
+			color: $white;
+			margin: 5px 0;
+		}
+	}
+
+  .menu {
+		ion-item {
+			background-color: $primary !important;
+			color: $white !important;
+		}
+
+		.item-inner{
+			border-bottom: none !important;
+		}
+	}
+
+}
+
+
+ion-footer {
+	.button-clear-ios {
+		color: white !important;
+	}
+}

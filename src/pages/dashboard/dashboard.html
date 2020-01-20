@@ -1,0 +1,144 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Dashboard</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="top" *ngIf="profile">
+    <div class="profile">
+      <img src="{{profilePicture()}}" alt="profile" [src]="profilePicture()" class="animated zoomIn" (error)="img.src = defaultImg"
+        #img>
+    </div>
+    <div class="animated slideInRight">
+      <rating [float]="true" [(ngModel)]="myRating" [readonly]="true" ></rating>
+    </div>
+    <h2 class="animated slideInLeft">{{profile.nickname}}</h2>
+    <button ion-button small class="primary animated zoomIn" (click)="viewProfile()" color="primary">View Profile</button>
+  </div>
+
+  <ion-grid  *ngIf="profile">
+    <ion-row>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewChats()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-users"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{chats?.length || 0}}</h2>
+              <p>Chats</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewMessages()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-comment"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{messages.length || 0}}</h2>
+              <p>Messages</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewMessages()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-star"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{rated.length || 0}}</h2>
+              <p>Rated</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewMessages()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-eye"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{viewed.length || 0}}</h2>
+              <p>Viewed</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <button ion-button (click)="addRequests()">Add Request</button> -->
+  <!-- <button ion-button (click)="addViewed()">Add Viewed</button> -->
+  <!-- <button ion-button (click)="addShared()">Add Shared</button> -->
+
+  <!-- <ion-grid  *ngIf="profile">
+    <ion-row>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewMyServices(myServices)">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{myServices?.length || 0}}</h2>
+              <p>My Services</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewRequestedServices()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-clipboard-list"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{requestedServices.length }}</h2>
+              <p>Services Requested</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="ViewViewedServices()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-eye"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{viewedServices?.length || 0}}</h2>
+              <p>Services Viewed</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewSharedServices()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-share"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{sharedServices.length }}</h2>
+              <p>Services Shared</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row> 
+  </ion-grid> -->
+</ion-content>

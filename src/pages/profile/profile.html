@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <!-- <div id="profile-bg" [ngStyle]="{'background-image': 'url(' + img +')'}"></div>
+  <div id="content" *ngIf="user">
+    <div id="profile-info">
+      <img id="profile-image" src="assets/imgs/users/user{{user.id}}.jpg">
+      <h2 class="nickname">{{user.nickname}} 
+          <ion-badge class="age" item-end>{{getAge(user.dob)}}</ion-badge>
+        </h2>
+        <rating [float]="true" [(ngModel)]="user.rating" [readonly]="true"></rating>
+        <div class="tags">
+          <ion-badge primary>{{user.gender}}</ion-badge>
+          <ion-badge primary>{{user.race}}</ion-badge>
+          <ion-badge primary>{{user.bodyType}}</ion-badge>
+        </div>
+    </div>   
+  </div> -->
+
+  <div class="profile">
+    <img class="profile-image" src="{{img}}">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6>
+          <p class="nickname">{{user?.nickname}}</p>
+          <p class="userType">{{user?.userType}}</p>
+        </ion-col>
+        <ion-col col-6 class="ratings animated slideInLeft">
+          <p><ion-badge primary>{{userRating || 0}}</ion-badge> 
+          <rating [float]="true" [(ngModel)]="userRating" [readonly]="true" ></rating></p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-list *ngIf="user">
+    <ion-card>
+    <ion-list-header>
+      Personal Info
+    </ion-list-header>
+
+      <ion-item>
+        <i class="fa fa-transgender" item-start></i>
+        <p> Gender:</p> <span item-end>{{user.gender}}</span>
+      </ion-item>
+      <ion-item>
+        <i class="fa fa-flag" item-start></i>
+        <p> Race:</p> <span item-end>{{user.race}}</span>
+      </ion-item>
+      <ion-item>
+        <i class="fa fa-calendar" item-start></i>
+        <p> Date of birth:</p> <span item-end>{{user.dob}}</span>
+      </ion-item>
+      <ion-item>
+        <i class="fa fa-map-marker" item-start></i>
+        <p> Address:</p> <span item-end>{{user.location.address}}</span>
+      </ion-item>
+    </ion-card>
+  </ion-list>
+    
+</ion-content>
+  
