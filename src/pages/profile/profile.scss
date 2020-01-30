@@ -1,4 +1,53 @@
 page-profile {
+
+  .toolbar-background {
+    background: inherit !important;
+  } 
+
+  ion-navbar {
+    button {
+      color: $primary !important;
+    } .toolbar-title {
+      color: $primary !important;
+    }
+  }
+  
+  .header::after {
+      display: none !important; 
+  }
+
+  .header-ios .toolbar-ios:last-child .toolbar-background-ios {
+      border-width: 0 !important;
+  }
+
+  .content {
+    background-color: $light-grey;
+  }
+
+  .pins {
+    column-count: 3;
+    .pin {
+      display: inline-block;
+      margin-bottom: 8px;
+      img {
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .stats {
+    margin: 0 auto;
+    .badge {
+      padding: 4px;
+      margin: 0px 4px;
+      width: 70px;
+    }
+  }
+
+  .name {
+    padding-left: 20px;
+  }
+
   .profile {
     .profile-image {
       border-radius: 100px;
@@ -18,24 +67,17 @@ page-profile {
       margin-top: 0;
       font-size: 1em;
     }
-  }
-
-  .address {
-    margin: 2px;
-  }
-
-  i {
-    padding-right: 4px;
-    color: $primary;
-  }
+  } 
+ 
 
   .star-icon {
-    font-size: 1em !important;
+    font-size: $small !important;
+    color: $primary;
   }
 
   .star-icon::before {
     color: $primary !important;
-    font-size: 1em !important;
+    font-size: $small !important;
   } 
 
   .tags {

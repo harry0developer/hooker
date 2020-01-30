@@ -1,3 +1,13 @@
 page-chats {
-
+    .no-chats {
+        text-align: center;
+        i {
+            font-size: $large;
+            margin-top: 50%;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: $small;
+        }
+    }
 }

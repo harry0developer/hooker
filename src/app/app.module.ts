@@ -13,6 +13,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { firebaseConfig } from '../config';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { BrMaskerModule } from 'brmasker-ionic-3';
 import { HttpClientModule } from '@angular/common/http';
@@ -48,6 +49,7 @@ import { LocationProvider } from '../providers/location/location';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { MediaProvider } from '../providers/media/media'; 
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [
@@ -76,12 +78,14 @@ import { MediaProvider } from '../providers/media/media';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireStorageModule,
     RatingModule,
     BrMaskerModule,
-    HttpClientModule
+    HttpClientModule,
+    ComponentsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

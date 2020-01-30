@@ -25,7 +25,7 @@
     </h2>
     <p class="distance"> 
       <i class="fa fa-map-marker"></i>
-      <span>{{getDistance(user?.location.geo)}} </span>km away
+      <span>{{getDistance()}} </span>km away
     </p>
     <p>{{profile?.description}}</p> 
 
@@ -37,30 +37,4 @@
     </button>
   </ion-fab>
 </ion-content>
-
-<ion-footer>
-  <!-- <ion-buttons class="btn-group">
-    <button ion-button icon-only>
-      <div class="fa fa-comment"></div>
-    </button>
-  </ion-buttons> -->
-  <!-- <div class="popup-menu" *ngIf="user">
-    <div class="popup-menu-overlay" [ngClass]="{'in': openMenu}" (click)="togglePopupMenu()"></div>
-    <div class="popup-menu-toggle" (click)="togglePopupMenu()" [ngClass]="{'out': openMenu}"></div>
-    <div class="popup-menu-panel" [ngClass]="{'in': openMenu}">
-      <div class="popup-menu-item" (click)="followUser(user)">
  
-        <i class="fa fa-user-plus"></i>
-        <span>Follow</span>
-      </div>
-      <div class="popup-menu-item" (click)="likeUser(user)">
-        <i class="fa fa-thumbs-up"></i>
-        <span>Like</span>
-      </div>
-      <div class="popup-menu-item" (click)="chatWithUser(user)">
-        <i class="fa fa-comment"></i>
-        <span>Chat</span>
-      </div> 
-    </div>
-  </div> -->
-</ion-footer>

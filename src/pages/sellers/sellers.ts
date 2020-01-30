@@ -9,19 +9,23 @@ import { MediaProvider } from '../../providers/media/media';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { Photo } from '../../models/photo';
 import firebase from 'firebase';
+import { bounceIn } from '../../utils/animations';
 
 @IonicPage()
 @Component({
   selector: 'page-sellers',
   templateUrl: 'sellers.html',
+  animations: [bounceIn]
+
 })
 export class SellersPage {
-  sellers: any 
+  sellers: any [] = [];
   profile: User;
   images = [];
   oldImages = [];
   imgs = [];
   onlineUsers = [];
+  isLoading: boolean = true;
   constructor(
     public navCtrl: NavController,
     public dataProvider: DataProvider,
@@ -47,6 +51,7 @@ export class SellersPage {
 
     this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(users => {
       this.sellers = users.filter(u => u.userType === USER_TYPE.seller);
+      this.isLoading = false;
     }); 
 
     this.dataProvider.getAllFromCollection(COLLECTION.images).subscribe(r => {

@@ -25,45 +25,35 @@
   </div> -->
 
   <div class="profile">
-    <img class="profile-image" src="{{img}}">
+    <img class="profile-image animated slideInDown" src="{{img}}">
     <ion-grid>
       <ion-row>
-        <ion-col col-6>
-          <p class="nickname">{{user?.nickname}}</p>
+        <ion-col col-7 class="name animated slideInLeft">
+          <p class="nickname">{{user?.nickname}}
+            <ion-badge primary>26</ion-badge> 
+          </p>
           <p class="userType">{{user?.userType}}</p>
         </ion-col>
-        <ion-col col-6 class="ratings animated slideInLeft">
+        <ion-col col-5 class="ratings animated slideInRight">
           <p><ion-badge primary>{{userRating || 0}}</ion-badge> 
           <rating [float]="true" [(ngModel)]="userRating" [readonly]="true" ></rating></p>
         </ion-col>
       </ion-row>
+      <hr>
+      <ion-row class="stats animated bounceIn">
+        <ion-badge primary >Female</ion-badge> 
+        <ion-badge primary>Black</ion-badge> 
+        <ion-badge primary>Slim</ion-badge> 
+      </ion-row>
     </ion-grid>
   </div>
 
-  <ion-list *ngIf="user">
-    <ion-card>
-    <ion-list-header>
-      Personal Info
-    </ion-list-header>
-
-      <ion-item>
-        <i class="fa fa-transgender" item-start></i>
-        <p> Gender:</p> <span item-end>{{user.gender}}</span>
-      </ion-item>
-      <ion-item>
-        <i class="fa fa-flag" item-start></i>
-        <p> Race:</p> <span item-end>{{user.race}}</span>
-      </ion-item>
-      <ion-item>
-        <i class="fa fa-calendar" item-start></i>
-        <p> Date of birth:</p> <span item-end>{{user.dob}}</span>
-      </ion-item>
-      <ion-item>
-        <i class="fa fa-map-marker" item-start></i>
-        <p> Address:</p> <span item-end>{{user.location.address}}</span>
-      </ion-item>
-    </ion-card>
-  </ion-list>
-    
+ 
+  <div class="pins" padding [@listAnimation]="images.length">
+    <div class="pin" *ngFor="let image of images">
+      <img [src]="image" alt="">
+    </div>
+  </div>
+   
 </ion-content>
   

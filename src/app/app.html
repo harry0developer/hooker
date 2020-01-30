@@ -5,34 +5,31 @@
       <h2>{{profile.nickname}}</h2> 
     </div>
     <ion-list class="menu">
-      <ion-item menuClose ion-item icon-left *ngIf="isSeller()" (click)="nav.setRoot(pages.dashboardPage)">
+      <ion-item menuClose ion-item icon-left (click)="nav.setRoot(pages.dashboardPage)">
         <i class="fa fa-th-large" item-start></i>
-          Dashboard
+        Dashboard
       </ion-item>
-      <ion-item menuClose ion-item icon-left *ngIf="isSeller()" (click)="nav.setRoot(pages.chatsPage)">
+      <ion-item menuClose ion-item icon-left (click)="nav.setRoot(pages.chatsPage)">
         <i class="fa fa-comment" item-start></i>
-          Chats
+        Chats
       </ion-item> 
-      <ion-item menuClose ion-item icon-left *ngIf="isSeller()" (click)="nav.setRoot(pages.ratedPage)">
-        <i class="fa fa-star" item-start></i>
-          Rated
-      </ion-item> 
-      <ion-item menuClose ion-item icon-left *ngIf="isSeller()" (click)="nav.setRoot(pages.viewedPage)">
-        <i class="fa fa-eye" item-start></i>
-          Viewed
-      </ion-item> 
- 
       <ion-item menuClose ion-item icon-left (click)="nav.setRoot(pages.profilePage)">
-        <!-- <ion-icon class="light" name="person" item-start></ion-icon> -->
         <i class="fa fa-user" item-start></i>
         Profile
       </ion-item>
+        <!-- <ion-item menuClose ion-item icon-left (click)="nav.setRoot(pages.ratedPage)">
+          <i class="fa fa-star" item-start></i>
+          Rated
+        </ion-item> 
+        <ion-item menuClose ion-item icon-left (click)="nav.setRoot(pages.viewedPage)">
+          <i class="fa fa-eye" item-start></i>
+          Viewed
+        </ion-item>  -->
     </ion-list>
   </ion-content>
   
   <ion-footer>
     <button ion-button block clear menuClose color="light" (click)="logout()" icon-start>
-      <!-- <ion-icon class="dark" name="log-out"></ion-icon> -->
       <i class="fa fa-power-off logout" item-start></i>
       &nbsp; Logout
     </button>

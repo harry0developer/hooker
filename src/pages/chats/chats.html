@@ -10,5 +10,8 @@
 
 
 <ion-content padding>
-
+  <div class="no-chats" *ngIf="!chats || chats.length < 1">
+    <i class="fa fa-comment"></i>
+    <p>You do not have any chats yet.</p>
+  </div>
 </ion-content>

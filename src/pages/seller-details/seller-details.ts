@@ -53,14 +53,15 @@ export class SellerDetailsPage {
     return this.dataProvider.getAgeFromDate(date);
   }
 
-  getDistance(loc: UserLocation) {
-    console.log(loc);
-    if(loc && loc.geo.lat && loc.geo.lng) {
-      return this.dataProvider.getLocationFromGeo(loc);
-    } else {
-      return 'Unknown';
-    }
+  getDistance(user) {
+    console.log(user);
+    // if(loc && loc.geo.lat && loc.geo.lng) {
+    //   return this.dataProvider.getLocationFromGeo(loc);
+    // } else {
+    //   return 'Unknown';
+    // }
   }
+  
 
   requestUser(user) {
     console.log(user);
