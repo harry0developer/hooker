@@ -21,7 +21,7 @@ page-profile {
   }
 
   .content {
-    background-color: $light-grey;
+    // background-color: $light-grey;
   }
 
   .pins {
@@ -72,7 +72,7 @@ page-profile {
 
   .star-icon {
     font-size: $small !important;
-    color: $primary;
+    color: $primary !important;
   }
 
   .star-icon::before {

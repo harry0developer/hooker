@@ -3,7 +3,7 @@ import { trigger, style, transition, animate, keyframes, query, stagger } from '
 export const bounceIn = trigger('listAnimation', [
     transition('* => *', [
         query(':enter', style({ opacity: 0 }), { optional: true }),
-        query(':enter', stagger('200ms', [
+        query(':enter', stagger('100ms', [
             animate('.5s ease-in', keyframes([
                 style({ opacity: 0, transform: 'translateY(100%)', offset: 0 }),
                 style({ opacity: .5, transform: 'translateY(10px)', offset: 0.5 }),

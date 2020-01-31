@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar >
-    <ion-title>Profile</ion-title>
+    <ion-title>{{user?.nickname}}</ion-title>
   </ion-navbar>
 </ion-header>
   
@@ -19,19 +19,19 @@
     </ion-slide>
   </ion-slides> 
 
-  <div class="profile" *ngIf="profile">
-    <h2>{{profile.nickname}} 
-      <ion-badge class="age">{{profile?.age}}</ion-badge>
+  <div class="profile" *ngIf="user">
+    <h2>{{user.nickname}} 
+      <ion-badge class="age">{{user?.age}}</ion-badge>
     </h2>
     <p class="distance"> 
       <i class="fa fa-map-marker"></i>
       <span>{{getDistance()}} </span>km away
     </p>
-    <p>{{profile?.description}}</p> 
+    <p>{{user?.description}}</p> 
 
   </div>
 
-  <ion-fab bottom right>
+  <ion-fab right bottom (click)="openChats()">  
     <button ion-fab>
       <i class="fa fa-comment"></i>
     </button>

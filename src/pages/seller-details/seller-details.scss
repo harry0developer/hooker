@@ -20,6 +20,10 @@ page-seller-details {
   .swiper-pagination-bullet-active {
       background: white;
   }
+
+  .swiper-slide img {
+    width: 100%;;
+  }
   
   .star-icon {
       font-size: 1.2em !important;
@@ -52,7 +56,7 @@ page-seller-details {
   }
 
   ion-slides {
-    height: 70%;
+    height: 78%;
   }
 
   .swiper-container-horizontal > .swiper-pagination-bullets {
@@ -92,5 +96,9 @@ page-seller-details {
         font-weight: bold;
         color: $primary;
     }
-}
+  }
+
+  ion-fab[bottom] {
+    bottom: 110px;
+  }
 }

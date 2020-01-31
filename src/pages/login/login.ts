@@ -11,6 +11,7 @@ import { STORAGE_KEY, USER_NOT_FOUND, MESSAGES, INVALID_PASSWORD, USER_TYPE, EVE
 import { DashboardPage } from '../dashboard/dashboard';
 import { SellersPage } from '../sellers/sellers';
 import { LocationProvider } from '../../providers/location/location';
+import { TabsPage } from '../tabs/tabs';
  
 
 @IonicPage()
@@ -91,18 +92,15 @@ export class LoginPage {
       const loc = {
         lat: res.coords.latitude,
         lng: res.coords.longitude
-      }
-      console.log('New Location: ', res);
-      console.log('User: ', user);
-
+      } 
       user.location.geo = loc; 
       this.updateUserLocation(user);
       this.ionEvents.publish(EVENTS.loggedIn, user);
       this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, user);
-      user.userType === USER_TYPE.seller ? this.navCtrl.setRoot(DashboardPage) : this.navCtrl.setRoot(SellersPage);
+      this.navCtrl.setRoot(TabsPage);
     }).catch(err => {
       this.feedbackProvider.dismissLoading();
-      user.userType === USER_TYPE.seller ? this.navCtrl.setRoot(DashboardPage) : this.navCtrl.setRoot(SellersPage);
+      this.feedbackProvider.presentAlert('Oopise', 'Somwthing went wrong please try again');
     });
   }
 

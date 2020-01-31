@@ -37,7 +37,7 @@ export class SellersPage {
 
   ionViewDidLoad() {
     this.profile = this.authProvider.getStoredUser();
-
+    
     this.ionEvents.subscribe(EVENTS.imageUploadSuccess, (res) => {
       console.log('Image uploaded successfully', res);
       this.feedbackProvider.presentToast('Image upload success');

@@ -5,11 +5,12 @@ import { LoginPage } from '../login/login';
 import { SignupPage } from '../signup/signup';
 import { TermsPage } from '../terms/terms';
 import { DataProvider } from '../../providers/data/data';
-import { STORAGE_KEY, COLLECTION, USER_TYPE } from '../../utils/consts';
+import { COLLECTION, USER_TYPE } from '../../utils/consts';
 import { User } from '../../models/user';
 import { AuthProvider } from '../../providers/auth/auth';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SellersPage } from '../sellers/sellers';
+import { TabsPage } from '../tabs/tabs';
 
 @IonicPage()
 @Component({
@@ -25,7 +26,7 @@ export class HomePage {
     public dataProvider: DataProvider,
     public authProvider: AuthProvider) {
   }
-  
+   
   ionViewDidLoad() {
     const storedUser = this.authProvider.getStoredUser();
     if (storedUser && storedUser.uid) {
@@ -64,26 +65,18 @@ export class HomePage {
       });
     }).catch(err => {
       console.log('Signup err', err);
-      
-    })
+    });
   }
 
   navigate(user: User) {
-    if(user.userType === USER_TYPE.seller) {
-      this.navCtrl.setRoot(DashboardPage)
-    } else {
-      this.navCtrl.setRoot(SellersPage);
-    }
+    this.navCtrl.setRoot(TabsPage, {userType: user.userType})
   }
 
   loginWithEmailAddress() {
-    console.log('Email');
     this.navCtrl.push(LoginPage, {loginType: 'emailAddress'});
   }
 
   loginWithPhoneNumber() {
-    console.log('Phone');
-    
     this.navCtrl.push(LoginPage, {loginType: 'phoneNumber'});
   }
 

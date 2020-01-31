@@ -50,10 +50,14 @@ import { LocationProvider } from '../providers/location/location';
 import { Geolocation } from '@ionic-native/geolocation';
 import { MediaProvider } from '../providers/media/media'; 
 import { ComponentsModule } from '../components/components.module';
+import { TabsPage } from '../pages/tabs/tabs';
+import { SettingsPage } from '../pages/settings/settings';
 
 @NgModule({
   declarations: [
     MyApp,
+    TabsPage,
+    SettingsPage,
     SignupPage,
     ForgotPasswordPage,
     RequestsPage,
@@ -77,7 +81,9 @@ import { ComponentsModule } from '../components/components.module';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      backButtonText: '',
+    }),
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
@@ -90,6 +96,8 @@ import { ComponentsModule } from '../components/components.module';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    TabsPage,
+    SettingsPage,
     SignupPage,
     ForgotPasswordPage,
     RequestsPage,

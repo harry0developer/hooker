@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { User } from '../../models/user';
 import { UserLocation } from '../../models/location';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage()
 @Component({
@@ -17,6 +18,7 @@ import { UserLocation } from '../../models/location';
 })
 export class SellerDetailsPage {
   profile: User;
+  user: User;
   img: string = "";
   category: string = 'info';
   openMenu: boolean = false;
@@ -30,13 +32,14 @@ export class SellerDetailsPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     public feedbackProvider: FeedbackProvider,
-    public dataProvider: DataProvider) {
+    public dataProvider: DataProvider,
+    public authProvider: AuthProvider) {
   }
 
   ionViewDidLoad() {
-    this.profile = this.navParams.get('user');
+    this.profile = this.authProvider.getStoredUser();
+    this.user = this.navParams.get('user');
     this.img = `assets/imgs/users/user3.jpg`;
-    console.log(this.profile);
     
     // this.dataProvider.getDocumentFromCollectionById(COLLECTION.ratings, this.profile.id).subscribe(ratingsFromCollection => {
     //   const ratingsArray = this.dataProvider.getArrayFromObjectList(ratingsFromCollection);
@@ -53,15 +56,17 @@ export class SellerDetailsPage {
     return this.dataProvider.getAgeFromDate(date);
   }
 
-  getDistance(user) {
-    console.log(user);
-    // if(loc && loc.geo.lat && loc.geo.lng) {
-    //   return this.dataProvider.getLocationFromGeo(loc);
-    // } else {
-    //   return 'Unknown';
-    // }
+  getDistance(loc) {
+    if(loc && loc.geo.lat && loc.geo.lng) {
+      return this.dataProvider.getLocationFromGeo(loc);
+    } else {
+      return 'Unknown';
+    }
   }
-  
+
+  openChats() {
+    this.navCtrl.push(ChatPage);
+  }
 
   requestUser(user) {
     console.log(user);

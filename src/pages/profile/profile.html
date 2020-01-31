@@ -1,29 +1,10 @@
 <ion-header>
-  <ion-navbar color="dark">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-navbar color="dark"> 
     <ion-title>Profile</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <!-- <div id="profile-bg" [ngStyle]="{'background-image': 'url(' + img +')'}"></div>
-  <div id="content" *ngIf="user">
-    <div id="profile-info">
-      <img id="profile-image" src="assets/imgs/users/user{{user.id}}.jpg">
-      <h2 class="nickname">{{user.nickname}} 
-          <ion-badge class="age" item-end>{{getAge(user.dob)}}</ion-badge>
-        </h2>
-        <rating [float]="true" [(ngModel)]="user.rating" [readonly]="true"></rating>
-        <div class="tags">
-          <ion-badge primary>{{user.gender}}</ion-badge>
-          <ion-badge primary>{{user.race}}</ion-badge>
-          <ion-badge primary>{{user.bodyType}}</ion-badge>
-        </div>
-    </div>   
-  </div> -->
-
+<ion-content> 
   <div class="profile">
     <img class="profile-image animated slideInDown" src="{{img}}">
     <ion-grid>

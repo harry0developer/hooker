@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { COLLECTION, STORAGE_KEY } from '../../utils/consts';
 import { User } from '../../models/user';
+import { HomePage } from '../home/home';
  
 @IonicPage()
 @Component({
@@ -15,8 +16,10 @@ export class ChatsPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
-    public dataProvider: DataProvider) {
-  }
+    public dataProvider: DataProvider,
+    public authProvider: DataProvider) {
+     
+  } 
 
   ionViewDidLoad() {
     this.profile = this.dataProvider.getItemFromLocalStorage(STORAGE_KEY.user);
