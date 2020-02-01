@@ -139,11 +139,7 @@ export class SellersPage {
   viewUserProfile(user) {
     this.navCtrl.push(SellerDetailsPage, { user });
   }
-
-  getAge(date: string): string {
-    return this.dataProvider.getAgeFromDate(date);
-  }
-
+ 
   getDistance(geo) {
     return this.dataProvider.getLocationFromGeo(geo);
   }

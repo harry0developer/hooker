@@ -1,5 +1,5 @@
  <ion-header>
-  <ion-navbar hideBackButton>
+  <ion-navbar>
     <ion-title>About yourself</ion-title>
   </ion-navbar>
 </ion-header>
@@ -16,7 +16,7 @@
 
       <div padding class="controls">
         <button ion-button block small round icon-end (click)="nextSlide()">
-          Next
+          Lets go
           <ion-icon name="arrow-forward"></ion-icon>
         </button>
       </div>
@@ -34,13 +34,13 @@
             <ion-label>
               Buyer
             </ion-label>
-            <ion-radio value="buyer"></ion-radio>
+            <ion-radio mode="md" value="buyer"></ion-radio>
           </ion-item>
           <ion-item no-lines>
             <ion-label>
               Seller
             </ion-label>
-            <ion-radio value="Seller"></ion-radio>
+            <ion-radio mode="md" value="Seller"></ion-radio>
           </ion-item>
         </ion-list>
         <div class="slides-counter">{{getSlideNumber()}}</div>
@@ -67,21 +67,21 @@
             <ion-label>
               Male
             </ion-label>
-            <ion-radio value="male"></ion-radio>
+            <ion-radio mode="md" value="male"></ion-radio>
           </ion-item>
           
           <ion-item>
             <ion-label>
               Female
             </ion-label>
-            <ion-radio value="female"></ion-radio>
+            <ion-radio mode="md" value="female"></ion-radio>
           </ion-item>  
 
           <ion-item>
             <ion-label>
               Other
             </ion-label>
-            <ion-radio value="other"></ion-radio>
+            <ion-radio mode="md" value="other"></ion-radio>
           </ion-item>
           <div class="slides-counter">{{getSlideNumber()}}</div>
         </ion-card>
@@ -129,19 +129,19 @@
 
           <ion-item>
             <ion-label>Black/African</ion-label>
-            <ion-radio value="black"></ion-radio>
+            <ion-radio mode="md" value="black"></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>Coloured</ion-label>
-            <ion-radio value="coloured"></ion-radio>
+            <ion-radio mode="md" value="coloured"></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>Indian</ion-label>
-            <ion-radio value="indian"></ion-radio>
+            <ion-radio mode="md" value="indian"></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>White</ion-label>
-            <ion-radio value="white"></ion-radio>
+            <ion-radio mode="md" value="white"></ion-radio>
           </ion-item>
           <div class="slides-counter">{{getSlideNumber()}}</div>
         </ion-card>
@@ -166,19 +166,19 @@
           </ion-label> 
           <ion-item>
             <ion-label>Skinny</ion-label>
-            <ion-radio value="skinny"></ion-radio>
+            <ion-radio mode="md" value="skinny"></ion-radio>
           </ion-item> 
           <ion-item *ngIf="data.gender === 'female'">
             <ion-label>Thick</ion-label>
-            <ion-radio value="thick"></ion-radio>
+            <ion-radio mode="md" value="thick"></ion-radio>
           </ion-item> 
-          <ion-item >
+          <ion-item *ngIf="data.gender === 'male'">
             <ion-label>Muscular</ion-label>
-            <ion-radio value="muscular"></ion-radio>
+            <ion-radio mode="md" value="muscular"></ion-radio>
           </ion-item> 
           <ion-item>
             <ion-label>Fat</ion-label>
-            <ion-radio value="fat"></ion-radio>
+            <ion-radio mode="md" value="fat"></ion-radio>
           </ion-item> 
           <div class="slides-counter">{{getSlideNumber()}}</div>
         </ion-card>

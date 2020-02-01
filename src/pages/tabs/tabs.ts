@@ -7,13 +7,14 @@ import { NavParams } from 'ionic-angular';
 import { USER_TYPE } from '../../utils/consts';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SellersPage } from '../sellers/sellers';
+import { User } from '../../models/user';
 
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
 
-  userType: string;
+  user: User;
   tab1Root = null;
   tab2Root = ChatsPage;
   tab3Root = ProfilePage;
@@ -21,13 +22,13 @@ export class TabsPage {
   icon: string;
 
   constructor(public navParams: NavParams) { 
-    this.userType = this.navParams.get('userType');
+    this.user = this.navParams.get('user');
   }
 
   ionViewWillLoad() {
     if(this.isSeller()) {
       this.tab1Root = DashboardPage;
-      this.icon = "app";
+      this.icon = "apps";
     } else {
       this.tab1Root = SellersPage;
       this.icon = "locate";
@@ -35,8 +36,6 @@ export class TabsPage {
   }
 
   isSeller(): boolean{ 
-    console.log(this.userType);
-    
-    return this.userType === USER_TYPE.seller;
+    return this.user && this.user.userType.toLocaleLowerCase() === USER_TYPE.seller.toLocaleLowerCase();
   }
 }

@@ -5,16 +5,21 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { AuthProvider } from '../../providers/auth/auth';
 import { DataProvider } from '../../providers/data/data';
 import { COLLECTION } from '../../utils/consts';
+import { ChatPage } from '../chat/chat';
+import { bounceIn } from '../../utils/animations';
 
  
 @IonicPage()
 @Component({
   selector: 'page-dashboard',
   templateUrl: 'dashboard.html',
+  animations: [bounceIn]
+
 })
 export class DashboardPage {
   profile: User = null;
 
+  isLoading: boolean = true;
 
   myRating: string;
   allRatings: any[] = [];
@@ -41,6 +46,8 @@ export class DashboardPage {
   rated: any[] = [];
   viewed: any[] = [];
   
+  onlineUsers: User[] = [];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -52,7 +59,13 @@ export class DashboardPage {
 
   ionViewDidLoad() {
     this.profile = this.authProvider.getStoredUser();
-
+    this.isLoading = false;
+    this.chats = [
+      {nickname: 'Chris', pic: 'assets/imgs/users/user8.jpg', uid: 'Xas234DFGH3fytrtfgDwqe'},
+      {nickname: 'Marton', pic: 'assets/imgs/users/user3.jpg', uid: 'f6576GDFGH3fytrtfgDwqe'},
+      {nickname: 'Moth99', pic: 'assets/imgs/users/user2.jpg', uid: '99867FGH3fytrtfgDwqe'},
+      // {nickname: 'Pepe', pic: 'assets/imgs/users/user4.jpg', uid: 'i9009DFGH3fytrtfgDwqe'}
+    ]
     // this.dataProvider.getCollectionByKeyValuePair(COLLECTION.services, 'uid', this.profile.uid).subscribe(services => {
     //   this.myServices = services;
     // });
@@ -72,6 +85,14 @@ export class DashboardPage {
     //   this.requestedServices = this.getMyServices(requestedServices);
     // });
 
+  }
+
+  viewUserProfile(user) {
+    this.navCtrl.push(ChatPage, { user });
+  }
+
+  isUserOnline(user) {
+    return this.onlineUsers.filter(u => u.uid === user.uid);
   }
 
   viewChats() {

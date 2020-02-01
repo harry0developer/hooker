@@ -5,7 +5,7 @@ import { User } from '../../models/user';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { UserData } from '../../models/userData';
 import { AuthProvider } from '../auth/auth';
-import { COLLECTION, EVENTS } from '../../utils/consts';
+import { COLLECTION, EVENTS, STORAGE_KEY } from '../../utils/consts';
 import * as moment from 'moment'
 import { HttpClient } from '@angular/common/http';
 import { Ratings } from '../../models/ratings';
@@ -43,6 +43,14 @@ export class DataProvider {
     }
   }
 
+  getStoredUser(): User {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY.user));
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getStoredUser();
+  }
+  
   updateUserData(userData: UserData) {
     this.userData = new UserData(userData);
     this.userDataSubject.next(userData);

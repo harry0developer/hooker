@@ -5,12 +5,9 @@ import { LoginPage } from '../login/login';
 import { SignupPage } from '../signup/signup';
 import { TermsPage } from '../terms/terms';
 import { DataProvider } from '../../providers/data/data';
-import { COLLECTION, USER_TYPE } from '../../utils/consts';
 import { User } from '../../models/user';
-import { AuthProvider } from '../../providers/auth/auth';
-import { DashboardPage } from '../dashboard/dashboard';
-import { SellersPage } from '../sellers/sellers';
 import { TabsPage } from '../tabs/tabs';
+import { FirebaseAuthProvider } from '../../providers/firebase-auth/firebase-auth';
 
 @IonicPage()
 @Component({
@@ -19,18 +16,20 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class HomePage {
   readTCsAndCs: boolean = true;
+  profile: User;
+
   constructor(
     public navCtrl: NavController,
     public actionSheetCtrl: ActionSheetController,
     public navParams: NavParams,
     public dataProvider: DataProvider,
-    public authProvider: AuthProvider) {
+    public firebaseAuthProvider: FirebaseAuthProvider) {
   }
    
   ionViewDidLoad() {
-    const storedUser = this.authProvider.getStoredUser();
-    if (storedUser && storedUser.uid) {
-      this.navigate(storedUser);
+    this.profile = this.dataProvider.getStoredUser();
+    if(this.profile && this.profile.uid) {
+      this.navCtrl.setRoot(TabsPage, {user: this.profile});
     }
   } 
 
@@ -38,14 +37,14 @@ export class HomePage {
     const data: User = { 
       nickname: 'Big Cox',
       gender: 'male',
-      age: '22',
+      age: 22,
       race: 'white', 
       bodyType: 'fat',
-      height: '165',
-      email: 'cox@test.com',
+      height: 165,
+      email: 'fat@test.com',
       phone: '+27820000000',
       password: '123456',
-      uid: '',
+      uid: 'qwertyuiop[]asdfghjkl',
       dateCreated: this.dataProvider.getDateTime(),
       userType: 'buyer',
       location: {
@@ -56,20 +55,17 @@ export class HomePage {
         }
       }
     }
-    this.authProvider.signUpWithEmailAndPassword(data.email, data.password).then(u => {
-      data.uid = u.user.uid;
-      this.dataProvider.addNewItemWithId(COLLECTION.users, data, data.uid).then(() => {
-        console.log('User added succesfully');
-      }).catch(err => {
-        console.log('ERROR occured', err);
-      });
+
+    this.firebaseAuthProvider.updateUser(data.uid, data).then(res => {
+      console.log(res);
     }).catch(err => {
-      console.log('Signup err', err);
-    });
+      console.log(err);
+    })
+    
   }
 
   navigate(user: User) {
-    this.navCtrl.setRoot(TabsPage, {userType: user.userType})
+    this.navCtrl.setRoot(TabsPage, {user: user})
   }
 
   loginWithEmailAddress() {

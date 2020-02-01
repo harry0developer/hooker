@@ -17,6 +17,50 @@
     <button ion-button small class="primary animated zoomIn" (click)="viewProfile()" color="primary">View Profile</button>
   </div>
 
+  
+  <ion-list  *ngIf="isLoading">
+    <ion-card *ngFor="let i of [1,2,3]">
+      <ion-item>
+        <ion-avatar item-start>
+          <skeleton-item class="avatar" height="50px" margin-right="20px" margin-top="16px"  width="50px"></skeleton-item>
+        </ion-avatar>
+        <h2 class="name">
+          <skeleton-item height="8px" width="60%" ></skeleton-item> 
+        </h2>
+        <p class="description">
+          <skeleton-item height="8px" width="90%" ></skeleton-item>
+        </p>
+        <p class="distance"> 
+          <span>
+            <skeleton-item height="8px" margin-top="10px" width="50%"></skeleton-item>
+          </span>
+        </p>
+        <p item-end>
+          <i class="fa fa-chevron-right"></i>
+        </p>
+      </ion-item>
+    </ion-card>
+  </ion-list> 
+
+  <ion-list *ngIf="!isLoading" class="user" [@listAnimation]="chats.length">
+    <ion-item-divider color="light">Recent chats</ion-item-divider>
+    <ion-card  *ngFor="let user of chats">
+      <ion-item (tap)="viewUserProfile(user)">
+        <ion-avatar item-start>
+          <img [src]="user.pic">
+        </ion-avatar>
+        <h2 class="name">
+          {{user?.nickname}}
+          <i *ngIf="isUserOnline()" class="fa fa-circle online"></i>
+          <i *ngIf="!isUserOnline()" class="fa fa-circle-o offline"></i>
+        </h2> 
+        <p item-end>
+          <i class="fa fa-chevron-right"></i>
+        </p>
+      </ion-item>
+    </ion-card>
+  </ion-list> 
+<!-- 
   <ion-grid  *ngIf="profile">
     <ion-row>
       <ion-col col-6 class="animated zoomIn">
@@ -74,68 +118,5 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!-- <button ion-button (click)="addRequests()">Add Request</button> -->
-  <!-- <button ion-button (click)="addViewed()">Add Viewed</button> -->
-  <!-- <button ion-button (click)="addShared()">Add Shared</button> -->
-
-  <!-- <ion-grid  *ngIf="profile">
-    <ion-row>
-      <ion-col col-6 class="animated zoomIn">
-        <ion-card class="summary" (tap)="viewMyServices(myServices)">
-          <ion-item>
-            <div class="card-icon">
-              <i class="fa fa-folder"></i>
-            </div>
-            <div class="card-details" text-wrap>
-              <h2>{{myServices?.length || 0}}</h2>
-              <p>My Services</p>
-            </div>
-          </ion-item>
-        </ion-card>
-      </ion-col>
-      <ion-col col-6 class="animated zoomIn">
-        <ion-card class="summary" (tap)="viewRequestedServices()">
-          <ion-item>
-            <div class="card-icon">
-              <i class="fa fa-clipboard-list"></i>
-            </div>
-            <div class="card-details" text-wrap>
-              <h2>{{requestedServices.length }}</h2>
-              <p>Services Requested</p>
-            </div>
-          </ion-item>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col col-6 class="animated zoomIn">
-        <ion-card class="summary" (tap)="ViewViewedServices()">
-          <ion-item>
-            <div class="card-icon">
-              <i class="fa fa-eye"></i>
-            </div>
-            <div class="card-details" text-wrap>
-              <h2>{{viewedServices?.length || 0}}</h2>
-              <p>Services Viewed</p>
-            </div>
-          </ion-item>
-        </ion-card>
-      </ion-col>
-
-      <ion-col col-6 class="animated zoomIn">
-        <ion-card class="summary" (tap)="viewSharedServices()">
-          <ion-item>
-            <div class="card-icon">
-              <i class="fa fa-share"></i>
-            </div>
-            <div class="card-details" text-wrap>
-              <h2>{{sharedServices.length }}</h2>
-              <p>Services Shared</p>
-            </div>
-          </ion-item>
-        </ion-card>
-      </ion-col>
-    </ion-row> 
-  </ion-grid> -->
+    -->
 </ion-content>

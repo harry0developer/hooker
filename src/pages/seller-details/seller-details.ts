@@ -57,6 +57,8 @@ export class SellerDetailsPage {
   }
 
   getDistance(loc) {
+    console.log(loc);
+    
     if(loc && loc.geo.lat && loc.geo.lng) {
       return this.dataProvider.getLocationFromGeo(loc);
     } else {

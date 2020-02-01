@@ -97,7 +97,7 @@ export class LoginPage {
       this.updateUserLocation(user);
       this.ionEvents.publish(EVENTS.loggedIn, user);
       this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, user);
-      this.navCtrl.setRoot(TabsPage);
+      this.navCtrl.setRoot(TabsPage, {user});
     }).catch(err => {
       this.feedbackProvider.dismissLoading();
       this.feedbackProvider.presentAlert('Oopise', 'Somwthing went wrong please try again');

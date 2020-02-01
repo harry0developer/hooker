@@ -1,10 +1,11 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyCU7wPXPZ_qLwOWUXIj9KnGuzLns3_4A7s",
-    authDomain: "nutt-b9d1a.firebaseapp.com",
-    databaseURL: "https://nutt-b9d1a.firebaseio.com",
-    projectId: "nutt-b9d1a",
-    storageBucket: "nutt-b9d1a.appspot.com",
-    messagingSenderId: "780702072390",
-    appId: "1:780702072390:web:eb0a2a6c366c2cf9"
+    apiKey: "AIzaSyAFhsGd2uhWbFDLldYV25LzwrB1tawyutg",
+    authDomain: "hooker-6ca60.firebaseapp.com",
+    databaseURL: "https://hooker-6ca60.firebaseio.com",
+    projectId: "hooker-6ca60",
+    storageBucket: "hooker-6ca60.appspot.com",
+    messagingSenderId: "983429614019",
+    appId: "1:983429614019:web:1cba8116cfddeb8fd99576",
+    measurementId: "G-PBYBFQ95SZ"
 }
 

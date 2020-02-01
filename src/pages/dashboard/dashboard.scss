@@ -19,7 +19,7 @@ page-dashboard {
 		color: $dark;
 		padding: 10px 0;
 		border-bottom: 1px solid $light-grey;
-		padding: 10%;
+		padding-bottom: 10%;
 		p{
 				margin: 5px 0 !important;
 				font-size: .8em;
@@ -105,6 +105,67 @@ page-dashboard {
         padding: 0;
     }
 
+
+	.user {
+		ion-item-divider {
+			font-weight: bold;
+		}
+        ion-item {
+            height: 65px;
+        }
+        ion-avatar img{
+            width: 50px !important;
+			height: 50px !important;
+			border: 1px solid $primary;
+		}
+		
+        i {
+            color: $black;
+            padding-right: 4px;
+		}
+		
+        .name {
+            text-align: left;
+            font-size: 1em;
+        }
+
+        .online {
+            color: green;
+        }
+        .offline {
+            color: $primary; 
+        }
+
+        .online, .offline {
+            font-size: .6em;
+            padding-bottom: 4px;
+            padding-left: 10px;
+            float: right;
+        }
+
+        .distance {
+            padding-top: 10px;
+            span {
+                font-weight: bold;
+                color: $primary;
+            }
+        }
+    }
+
+
+	skeleton-item.sk-item-end {
+		div:first-child {
+			float: right;
+		}
+    }
+    
+    skeleton-item.avatar {
+        div {
+
+            border-radius: 100%;
+        }
+    }
+     
 
     
 }

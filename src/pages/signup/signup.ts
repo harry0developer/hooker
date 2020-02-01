@@ -7,7 +7,8 @@ import { SetupPage } from '../setup/setup';
 import { DataProvider } from '../../providers/data/data';
 import { AuthProvider } from '../../providers/auth/auth';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
-import { EMAIL_EXISTS, MESSAGES } from '../../utils/consts';
+import { EMAIL_EXISTS, MESSAGES, COLLECTION } from '../../utils/consts';
+import { FirebaseAuthProvider } from '../../providers/firebase-auth/firebase-auth';
  
 
 @IonicPage()
@@ -51,13 +52,19 @@ export class SignupPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     private dataProvider: DataProvider,
-    private authProvider: AuthProvider,
+    private firebaseAuthProvider: FirebaseAuthProvider,
     public feedbackProvider: FeedbackProvider) {
   }
 
   ionViewDidLoad() {
     this.signupType =  this.navParams.get('signupType'); // 'emailAddress'//
     console.log(this.signupType);
+
+    this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(users => {
+      this.users = users;
+    }, err => {
+      console.log('Could not load users', err);
+    });
   }
 
   signupWithPhoneNumber() {
@@ -65,18 +72,14 @@ export class SignupPage {
   }
 
   signupWithEmailAndPassword() {
-    this.feedbackProvider.presentLoading();
-    this.authProvider.signUpWithEmailAndPassword(this.emailSignup.email, this.emailSignup.password).then((u) => {
-      this.emailSignup.uid = u.user.uid
+    const registeredUsers = this.users.filter(user => user.email.toLocaleLowerCase() === this.emailSignup.email.toLocaleLowerCase());
+    console.log(registeredUsers);
+    if(registeredUsers && registeredUsers.length > 0) {
+      this.feedbackProvider.presentAlert('Signup failed', 'Email address is already registered');
+    } else {
       this.navCtrl.push(SetupPage, {data: this.emailSignup});
-      this.feedbackProvider.dismissLoading();
-    }).catch(err => {
-      this.feedbackProvider.dismissLoading();
-      if(err.code === EMAIL_EXISTS) {
-        this.feedbackProvider.presentAlert(MESSAGES.signupFailed, MESSAGES.emailAlreadyRegistered);
-      } 
-    });
-  }
+    }
+  } 
 
   cancelSignup() {
     this.navCtrl.pop();

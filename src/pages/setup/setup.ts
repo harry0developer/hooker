@@ -2,12 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { PlacesPage } from '../places/places';
 import { DataProvider } from '../../providers/data/data';
-import { COLLECTION, USER_TYPE, STORAGE_KEY } from '../../utils/consts';
+import { COLLECTION, USER_TYPE, STORAGE_KEY, EMAIL_EXISTS, MESSAGES } from '../../utils/consts';
 import { User } from '../../models/user';
 import { Slides } from 'ionic-angular';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SellersPage } from '../sellers/sellers';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
+import { FirebaseAuthProvider } from '../../providers/firebase-auth/firebase-auth';
+import { TabsPage } from '../tabs/tabs';
 
 @IonicPage()
 @Component({
@@ -22,10 +24,10 @@ export class SetupPage {
   data: User = { 
     nickname: '',
     gender: '',
-    age: '',
+    age: 0,
     race: '', 
     bodyType: '',
-    height: '',
+    height: 0,
     email: '',
     phone: '',
     password: '',
@@ -45,12 +47,13 @@ export class SetupPage {
     public modalCtrl: ModalController, 
     public navParams: NavParams,
     public dataProvider: DataProvider, 
-    public feedbackProvider: FeedbackProvider) {
+    public feedbackProvider: FeedbackProvider,
+    public firebaseAuthProvider: FirebaseAuthProvider) {
   }
 
   ionViewDidLoad() {
     this.slides.lockSwipes(true);
-    const data = this.navParams.get('data');
+    const data: User = this.navParams.get('data');
     if(data) {
       if(data.nickname && data.email ) { //email signup
         this.data.nickname = data.nickname;
@@ -66,17 +69,27 @@ export class SetupPage {
       console.log('Cannot be here');
     }
   }
-
+ 
   completeSignup() {
     this.feedbackProvider.presentLoading();
-    this.data.dateCreated = this.dataProvider.getDateTime();
-    this.dataProvider.addNewItem(COLLECTION.users, this.data).then(res => {
-      this.feedbackProvider.presentLoading();
-      this.navigate();
+    this.firebaseAuthProvider.signupWithEmailAndPassword(this.data.email, this.data.password).then((u) => {
+      this.data.uid = u.user.uid
+      this.data.dateCreated = this.dataProvider.getDateTime();
+      this.firebaseAuthProvider.setUserDoc(this.data.uid, this.data).then(() => {
+        this.feedbackProvider.dismissLoading();
+        this.navCtrl.setRoot(TabsPage, {user: this.data});
+      }).catch(err => {
+        this.feedbackProvider.dismissLoading();
+        this.feedbackProvider.presentAlert(MESSAGES.signupFailed, 'Oops something went wrong, please try again');
+      })
     }).catch(err => {
-      this.feedbackProvider.presentLoading();
+      this.feedbackProvider.dismissLoading();
+      if(err.code === EMAIL_EXISTS) {
+        this.feedbackProvider.presentAlert(MESSAGES.signupFailed, MESSAGES.emailAlreadyRegistered);
+      } 
     });
   }
+
 
   navigate() {
     this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, this.data);

@@ -52,6 +52,7 @@ import { MediaProvider } from '../providers/media/media';
 import { ComponentsModule } from '../components/components.module';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
+import { FirebaseAuthProvider } from '../providers/firebase-auth/firebase-auth';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { SettingsPage } from '../pages/settings/settings';
     WindowProvider,
     LocationProvider,
     Geolocation,
-    MediaProvider
+    MediaProvider,
+    FirebaseAuthProvider
   ]
 })
 export class AppModule { }
