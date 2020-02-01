@@ -19,6 +19,11 @@
   </div>
 
   
+  <h1>
+    {{ presence?.status}}
+  </h1>
+
+
   <ion-list  *ngIf="isLoading">
     <ion-card *ngFor="let i of [1,2,3]">
       <ion-item>

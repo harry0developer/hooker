@@ -53,6 +53,7 @@ import { ComponentsModule } from '../components/components.module';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
 import { FirebaseAuthProvider } from '../providers/firebase-auth/firebase-auth';
+import { PresenceService } from '../providers/presence/presence';
 
 @NgModule({
   declarations: [
@@ -134,7 +135,8 @@ import { FirebaseAuthProvider } from '../providers/firebase-auth/firebase-auth';
     LocationProvider,
     Geolocation,
     MediaProvider,
-    FirebaseAuthProvider
+    FirebaseAuthProvider,
+    PresenceService
   ]
 })
 export class AppModule { }

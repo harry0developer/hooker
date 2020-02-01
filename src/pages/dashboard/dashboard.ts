@@ -7,6 +7,7 @@ import { DataProvider } from '../../providers/data/data';
 import { COLLECTION } from '../../utils/consts';
 import { ChatPage } from '../chat/chat';
 import { bounceIn } from '../../utils/animations';
+import { PresenceService } from '../../providers/presence/presence';
 
  
 @IonicPage()
@@ -48,18 +49,30 @@ export class DashboardPage {
   
   onlineUsers: User[] = [];
 
+  presence: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private feedbackProvider: FeedbackProvider,
     private modalCtrl: ModalController,
     public authProvider: AuthProvider,
-    public dataProvider: DataProvider
+    public dataProvider: DataProvider,
+    public presenceProvider: PresenceService
   ) { }
 
   ionViewDidLoad() {
     this.profile = this.authProvider.getStoredUser();
     this.isLoading = false;
+
+
+   this.presenceProvider.getPresence(this.profile.uid).subscribe(r => {
+     this.presence = r;
+      
+    })
+    
+
+
     this.chats = [
       {nickname: 'Chris', pic: 'assets/imgs/users/user8.jpg', uid: 'Xas234DFGH3fytrtfgDwqe'},
       {nickname: 'Marton', pic: 'assets/imgs/users/user3.jpg', uid: 'f6576GDFGH3fytrtfgDwqe'},

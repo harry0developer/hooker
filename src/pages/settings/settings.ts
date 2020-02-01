@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../home/home';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
+import { PresenceService } from '../../providers/presence/presence';
 
 
 
@@ -18,14 +19,16 @@ export class SettingsPage {
     public navParams: NavParams,
     public authProvider: AuthProvider,
     public feedbackProvider: FeedbackProvider,
-    public app: App) {
+    public app: App,
+    public presenceProvider: PresenceService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
   }
 
-  logout() {
+  async logout(){
+    await this.presenceProvider.setPresence('offline');
     this.authProvider.logout().then(() => {
       this.app.getRootNav().setRoot(HomePage);
     }).catch(err => {
