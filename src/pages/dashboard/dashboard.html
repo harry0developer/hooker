@@ -12,8 +12,9 @@
     </div>
     <div class="animated slideInRight">
       <rating [float]="true" [(ngModel)]="myRating" [readonly]="true" ></rating>
+      <ion-badge color="primary">{{profile?.age}}</ion-badge>
     </div>
-    <h2 class="animated slideInLeft">{{profile.nickname}}</h2>
+    <h2 class="animated slideInLeft">{{profile?.nickname}}</h2>
     <button ion-button small class="primary animated zoomIn" (click)="viewProfile()" color="primary">View Profile</button>
   </div>
 

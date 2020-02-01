@@ -19,11 +19,7 @@ page-profile {
   .header-ios .toolbar-ios:last-child .toolbar-background-ios {
       border-width: 0 !important;
   }
-
-  .content {
-    // background-color: $light-grey;
-  }
-
+ 
   .pins {
     column-count: 3;
     .pin {
@@ -84,36 +80,17 @@ page-profile {
     display: block;
     margin: 10px 0
   }
-  .info {
-      border-top: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
-      h2, p {
-          margin: 0;
-          padding: 0
-      }
-      h2 {
-          font-size: 1em;
-          font-weight: bold;
-      }
-      p {
-          font-size: 0.9em;
-      }
-    }  
 
-    .list-item-content {
-      padding: 5px;
+  ion-item-divider {
+    margin-top: 20px;
+    ion-label {
+      font-weight: bold;
     }
-
-    .list-item {
-      color: #666666;
-    }
-
-    .post-profile-image {
-      display: inline-block;
-      vertical-align: top;
-      width: 48px;
-      height: 48px;
-      margin-right: 10px;
-    }
+  }
+  .no-images {
+    text-align: center;;
+    padding: 20px;
+    font-size: $medium;
+  }
   
 }
