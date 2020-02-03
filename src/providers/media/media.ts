@@ -89,8 +89,8 @@ export class MediaProvider {
   } 
 
   getImage(url): Promise<any> {
-    const ref = firebase.storage().ref(this.profile.uid + '/').child(url);
-    return  ref ? ref.getDownloadURL() : new Promise<any>(null);
+    const ref = firebase.storage().ref(`images/${this.profile.uid}/`).child(url);
+    return   ref.getDownloadURL();
   }
 
   getImagecx(): any {
@@ -104,4 +104,19 @@ export class MediaProvider {
     
     // return imageRef.getDownloadURL();
   }
+
+  downloadImages(images: any[]): any[] {
+    let imgs = [];
+    images.forEach(img => {
+      this.getImage(img.url).then(resImg => {
+        imgs.push(resImg);
+      }).catch(err => {
+        console.log(err);
+      });
+      console.log(imgs);
+
+    });
+    return imgs;
+  }
+
 }

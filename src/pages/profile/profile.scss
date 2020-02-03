@@ -47,10 +47,11 @@ page-profile {
   .profile {
     .profile-image {
       border-radius: 100px;
-      border: 1px solid #fff;
+      border: 2px solid $primary;
       width: 60px;
       height: 60px;
       margin: 20px 20px 0 20px;
+
 
     } 
     .nickname {

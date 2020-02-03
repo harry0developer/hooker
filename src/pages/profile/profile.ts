@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { STORAGE_KEY, COLLECTION } from '../../utils/consts';
 import { User } from '../../models/user';
@@ -9,6 +9,20 @@ import { Photo } from '../../models/photo';
 import { MediaProvider } from '../../providers/media/media';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import firebase from 'firebase';
+import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
+import { AngularFireDatabase } from '@angular/fire/database';
+
+export const snapshotToArray = snapshot => {
+  let returnArr = [];
+
+  snapshot.forEach(childSnapshot => {
+      let item = childSnapshot.val();
+      item.key = childSnapshot.key;
+      returnArr.push(item);
+  });
+
+  return returnArr;
+};
 
 @IonicPage()
 @Component({
@@ -18,45 +32,107 @@ import firebase from 'firebase';
 })
 export class ProfilePage {
   profile : User;
-  img: string;
   userRating = 0;
   allRatings: any = [];
 
-  images = [];
+  images: string[] = [];
+  imageObjects = [];
+  imagesRef: string;
+
+
   constructor(
     public navCtrl: NavController, 
     public dataProvider: DataProvider,
     public mediaProvider: MediaProvider,
-    public feedbackProvider: FeedbackProvider) {
+    public feedbackProvider: FeedbackProvider,
+    public firebaseApiProvider: FirebaseApiProvider,
+    public afDB: AngularFireDatabase,
+    public ionEvents: Events) {
+      this.profile = this.dataProvider.getStoredUser(); 
+      this.imagesRef = `${COLLECTION.images}/${this.profile.uid}/`;
+      this.getAllImages();
   }
 
-  ionViewDidLoad() {
+  ionViewDidLoad() {  } 
 
-    this.images = [
-      'assets/imgs/users/user1.jpg',
-      'assets/imgs/users/user2.jpg',
-      'assets/imgs/users/user3.jpg',
-      'assets/imgs/users/user4.jpg',
-      'assets/imgs/users/user5.jpg',
-      'assets/imgs/users/user6.jpg',
-      'assets/imgs/users/user7.jpg',
-      'assets/imgs/users/user8.jpg',
-      'assets/imgs/users/user9.jpg',
-      'assets/imgs/users/user10.jpg',
-    ]
-    this.profile = this.dataProvider.getItemFromLocalStorage(STORAGE_KEY.user);
-    console.log(this.profile);
-    
-    this.img = `assets/imgs/users/user1.jpg`;
-    this.dataProvider.getAllFromCollection(COLLECTION.ratings).subscribe(ratingsFromCollection => {
-      const r = this.dataProvider.getArrayFromObjectList(ratingsFromCollection);
-      this.allRatings = this.dataProvider.getArrayFromObjectList(r);
-      console.log(this.userRating);
+  
+  getAllImages() {
+    this.feedbackProvider.presentLoading('Please wait, fetching photos...');
+    const firebaseDBRef = firebase.database().ref(`${this.imagesRef}`);
+    firebaseDBRef.on('value', tasksnap => {
+      let tmp = [];
+      tasksnap.forEach(taskData => {
+        tmp.push({ key: taskData.key, ...taskData.val() })
+      });
+      this.imageObjects = tmp;
+      this.downloadImages(tmp); 
+      this.feedbackProvider.dismissLoading();
+    }, () => {
+      this.feedbackProvider.dismissLoading();
     }); 
-  } 
-  getAge(date: string): string {
-    return this.dataProvider.getAgeFromDate(date);
   }
+
+  removeItem() { 
+    this.firebaseApiProvider.removeItem(this.imagesRef, this.imageObjects[0].key).then(() => {
+      console.log('image remove success');
+    }).catch(err => {
+      console.log('Error removing image', err);
+    });
+  }
+ 
+  getProfilePicture(): string {
+    return 'assets/imgs/users/user6.jpg';
+  }
+
+  downloadImages(images: any[]){
+    this.images = [];
+    images.forEach(img => {
+      this.mediaProvider.getImage(img.url).then(resImg => {
+        this.images.push(resImg);
+      }).catch(err => {
+        console.log(err);
+      });
+    });
+  }
+  
+  selectPhoto() {
+    this.feedbackProvider.presentLoading('Please wait, selecting photo...');
+    this.mediaProvider.selectPhoto().then(imageData => {
+      this.feedbackProvider.dismissLoading();
+      const selectedPhoto = 'data:image/jpeg;base64,' + imageData;
+      this.uploadPhotoAndUpdateUserDatabase(selectedPhoto);
+    }, error => {
+      this.feedbackProvider.dismissLoading();
+      this.feedbackProvider.presentToast('An error occured uploading the photo');
+    });
+  }
+
+  private uploadPhotoAndUpdateUserDatabase(image): any {
+    this.feedbackProvider.presentLoading('Please wait, Uploading...');
+    let storageRef = firebase.storage().ref('images');
+    const filename = Math.floor(Date.now() / 1000);
+    const imageRef = storageRef.child(`${this.profile.uid}/${filename}.jpg`);
+
+    imageRef.putString(image, firebase.storage.StringFormat.DATA_URL).then(()=> {
+      this.feedbackProvider.dismissLoading();
+      const newImageObject: Photo = {
+        url: filename+'.jpg',
+        dateCreated: this.dataProvider.getDateTime()
+      };
+      this.feedbackProvider.presentLoading('Please wait, updating profile...');
+      this.firebaseApiProvider.addItem(this.imagesRef, newImageObject).then(() => {
+        this.feedbackProvider.dismissLoading();
+      }).catch(err => {
+        this.feedbackProvider.dismissLoading();
+        this.feedbackProvider.presentToast('An error occured uploading the photo');
+      });
+    }).catch(err => {
+      this.feedbackProvider.dismissLoading();
+      this.feedbackProvider.presentToast('An error occured uploading the photo');
+    });
+
+  }
+
 
   getDistance(geo) {
     return this.dataProvider.getLocationFromGeo(geo);
@@ -64,19 +140,7 @@ export class ProfilePage {
 
   hasImages(): boolean {
     return this.images && this.images.length > 0;
-  }
-
-  // downloadImages() {
-  //   this.oldImages.forEach(img => {
-  //     this.mediaProvider.getImage(img.url).then(resImg => {
-  //       this.images.push(resImg);
-  //       console.log(resImg);
-        
-  //     }).catch(err => {
-  //       console.log(err);
-  //     });
-  //   });
-  // }
+  } 
 
   addPhoto() {
     const newImage: Photo = {dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg'};
@@ -97,27 +161,5 @@ export class ProfilePage {
       console.log("ERROR -> " + JSON.stringify(error));
     });
   }
-
-
-  uploadPhotoAndUpdateUserDatabase(oldImages, newImage): any {
-    this.feedbackProvider.presentLoading('Please wait, Uploading...');
-    let storageRef = firebase.storage().ref();
-    const filename = Math.floor(Date.now() / 1000);
-    const imageRef = storageRef.child(`${this.profile.uid}/${filename}.jpg`);
-
-    imageRef.putString(newImage, firebase.storage.StringFormat.DATA_URL).then(()=> {
-      this.feedbackProvider.dismissLoading();
-      const newImageObject: Photo = {
-        url: filename+'.jpg',
-        dateCreated: this.dataProvider.getDateTime()
-      }
-      this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImageObject);
-    }).catch(err => {
-      this.feedbackProvider.dismissLoading();
-      this.feedbackProvider.presentToast('Image upload failed');
-    });
-
-  }
-
 
 }
