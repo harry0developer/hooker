@@ -27,10 +27,10 @@ export class HomePage {
   }
    
   ionViewDidLoad() {
-    this.profile = this.dataProvider.getStoredUser();
-    if(this.profile && this.profile.uid) {
-      this.navCtrl.setRoot(TabsPage, {user: this.profile});
-    }
+    // this.profile = this.dataProvider.getStoredUser();
+    // if(this.profile && this.profile.uid) {
+    //   this.navCtrl.setRoot(TabsPage, {user: this.profile});
+    // }
   } 
 
   addUser() {

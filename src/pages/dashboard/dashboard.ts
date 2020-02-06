@@ -40,13 +40,13 @@ export class DashboardPage {
   ) {  } 
 
   ionViewDidLoad() {
-    this.profile = this.authProvider.getStoredUser();
-    this.chats = [
-      {nickname: 'Charle', pic: 'assets/imgs/users/user1.jpg'},
-      {nickname: 'Mark', pic: 'assets/imgs/users/user2.jpg'},
-      {nickname: 'Thabo', pic: 'assets/imgs/users/user3.jpg'}
-    ];
-    this.isLoading = false;
+    // this.profile = this.authProvider.getStoredUser();
+    // this.chats = [
+    //   {nickname: 'Charle', pic: 'assets/imgs/users/user1.jpg'},
+    //   {nickname: 'Mark', pic: 'assets/imgs/users/user2.jpg'},
+    //   {nickname: 'Thabo', pic: 'assets/imgs/users/user3.jpg'}
+    // ];
+    // this.isLoading = false;
   }
 
   viewUserProfile(user) {

@@ -54,6 +54,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
 import { FirebaseAuthProvider } from '../providers/firebase-auth/firebase-auth';
 import { FirebaseApiProvider } from '../providers/firebase-api/firebase-api';
+import { VisitorPage } from '../pages/visitor/visitor';
+import { FilterPage } from '../pages/filter/filter';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,8 @@ import { FirebaseApiProvider } from '../providers/firebase-api/firebase-api';
     TermsPage,
     PlacesPage,
     SetupPage,
+    VisitorPage,
+    FilterPage,
     LoginPage
   ],
   imports: [
@@ -119,6 +123,8 @@ import { FirebaseApiProvider } from '../providers/firebase-api/firebase-api';
     TermsPage,
     PlacesPage,
     SetupPage,
+    VisitorPage,
+    FilterPage,
     LoginPage
   ],
   providers: [

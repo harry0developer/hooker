@@ -20,6 +20,7 @@ import { EVENTS, STORAGE_KEY } from '../utils/consts';
 import { IntroPage } from '../pages/intro/intro';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import { VisitorPage } from '../pages/visitor/visitor';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,7 +28,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = VisitorPage;
 
   pages: any;
   profile: User;

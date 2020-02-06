@@ -308,6 +308,10 @@ export class DataProvider {
     return moment(dateTime).fromNow();
   }
 
+  capitalizeFirstLetter(str: string): string {
+    return str ? str.charAt(0).toUpperCase() + str.substring(1) : str;
+  }
+
   getDistanceBetweenPoints(start, end, units) {
     let earthRadius = {
       miles: 3958.8,

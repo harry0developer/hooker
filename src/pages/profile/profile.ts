@@ -48,9 +48,9 @@ export class ProfilePage {
     public firebaseApiProvider: FirebaseApiProvider,
     public afDB: AngularFireDatabase,
     public ionEvents: Events) {
-      this.profile = this.dataProvider.getStoredUser(); 
-      this.imagesRef = `${COLLECTION.images}/${this.profile.uid}/`;
-      this.getAllImages();
+      // this.profile = this.dataProvider.getStoredUser(); 
+      // this.imagesRef = `${COLLECTION.images}/${this.profile.uid}/`;
+      // this.getAllImages();
   }
 
   ionViewDidLoad() {  } 
