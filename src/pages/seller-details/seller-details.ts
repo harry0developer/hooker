@@ -40,16 +40,6 @@ export class SellerDetailsPage {
     this.profile = this.authProvider.getStoredUser();
     this.user = this.navParams.get('user');
     this.img = `assets/imgs/users/user3.jpg`;
-
-    // this.dataProvider.getDocumentFromCollectionById(COLLECTION.ratings, this.profile.id).subscribe(ratingsFromCollection => {
-    //   const ratingsArray = this.dataProvider.getArrayFromObjectList(ratingsFromCollection);
-    //   this.allRatings = ratingsArray;
-    //   this.userRating = parseFloat(this.dataProvider.calculateRating(ratingsArray).toFixed(1));
-    //   this.isLoading = false;
-    // }, err => {
-    //   this.isLoading = false;
-    //   this.feedbackProvider.presentToast(MESSAGES.oops);
-    // });
   }
 
   capitalizeFirstLetter(str: string): string {
@@ -61,8 +51,6 @@ export class SellerDetailsPage {
   }
 
   getDistance(loc) {
-    console.log(loc);
-
     if (loc && loc.geo.lat && loc.geo.lng) {
       return this.dataProvider.getLocationFromGeo(loc);
     } else {

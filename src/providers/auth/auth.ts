@@ -25,7 +25,7 @@ export class AuthProvider {
 
   forgotPassword(passwordResetEmail) {
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
-  } 
+  }
 
   googleAuth() {
     return this.authLogin(new auth.GoogleAuthProvider());
@@ -47,7 +47,7 @@ export class AuthProvider {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
-  signUpWithEmailAndPassword(email: string, password: string){
+  signUpWithEmailAndPassword(email: string, password: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password);
   }
 

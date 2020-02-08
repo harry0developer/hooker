@@ -48,7 +48,7 @@
       </div> 
 
       <div class="buttons-group">
-        <button ion-button small round [disabled]="!country.dialCode || !phonenumber.valid || !nickname.valid" (click)="signupWithPhoneNumber()">Signup</button>
+        <button ion-button small round [disabled]="!flag.valid || !phonenumber.valid || !nickname.valid" (click)="signupWithPhoneNumber()">Signup</button>
         <button ion-button small round clear icon-start (click)="cancelSignup()">
           <ion-icon name="arrow-back"></ion-icon>
           Cancel

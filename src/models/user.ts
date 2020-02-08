@@ -13,5 +13,6 @@ export interface User {
     uid: string;
     dateCreated: string;
     userType: string;
+    verified: boolean;
     location: UserLocation
 };

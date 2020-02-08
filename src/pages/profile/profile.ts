@@ -12,17 +12,6 @@ import firebase from 'firebase';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { AngularFireDatabase } from '@angular/fire/database';
 
-export const snapshotToArray = snapshot => {
-  let returnArr = [];
-
-  snapshot.forEach(childSnapshot => {
-      let item = childSnapshot.val();
-      item.key = childSnapshot.key;
-      returnArr.push(item);
-  });
-
-  return returnArr;
-};
 
 @IonicPage()
 @Component({
@@ -31,7 +20,7 @@ export const snapshotToArray = snapshot => {
   animations: [bounceIn]
 })
 export class ProfilePage {
-  profile : User;
+  profile: User;
   userRating = 0;
   allRatings: any = [];
 
@@ -41,21 +30,23 @@ export class ProfilePage {
 
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public dataProvider: DataProvider,
     public mediaProvider: MediaProvider,
     public feedbackProvider: FeedbackProvider,
     public firebaseApiProvider: FirebaseApiProvider,
     public afDB: AngularFireDatabase,
     public ionEvents: Events) {
-      // this.profile = this.dataProvider.getStoredUser(); 
-      // this.imagesRef = `${COLLECTION.images}/${this.profile.uid}/`;
-      // this.getAllImages();
+    // this.profile = this.dataProvider.getStoredUser(); 
+    // this.imagesRef = `${COLLECTION.images}/${this.profile.uid}/`;
+    // this.getAllImages();
   }
 
-  ionViewDidLoad() {  } 
+  ionViewDidLoad() {
+    this.profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
+  }
 
-  
+
   getAllImages() {
     this.feedbackProvider.presentLoading('Please wait, fetching photos...');
     const firebaseDBRef = firebase.database().ref(`${this.imagesRef}`);
@@ -65,26 +56,30 @@ export class ProfilePage {
         tmp.push({ key: taskData.key, ...taskData.val() })
       });
       this.imageObjects = tmp;
-      this.downloadImages(tmp); 
+      this.downloadImages(tmp);
       this.feedbackProvider.dismissLoading();
     }, () => {
       this.feedbackProvider.dismissLoading();
-    }); 
+    });
   }
 
-  removeItem() { 
+  removeItem() {
     this.firebaseApiProvider.removeItem(this.imagesRef, this.imageObjects[0].key).then(() => {
       console.log('image remove success');
     }).catch(err => {
       console.log('Error removing image', err);
     });
   }
- 
+
   getProfilePicture(): string {
-    return 'assets/imgs/users/user6.jpg';
+    return `assets/imgs/users/${this.profile.gender}.svg`;
   }
 
-  downloadImages(images: any[]){
+  capitalizeFirstLetter(str) {
+    return this.firebaseApiProvider.capitalizeFirstLetter(str)
+  }
+
+  downloadImages(images: any[]) {
     this.images = [];
     images.forEach(img => {
       this.mediaProvider.getImage(img.url).then(resImg => {
@@ -94,7 +89,7 @@ export class ProfilePage {
       });
     });
   }
-  
+
   selectPhoto() {
     this.feedbackProvider.presentLoading('Please wait, selecting photo...');
     this.mediaProvider.selectPhoto().then(imageData => {
@@ -113,10 +108,10 @@ export class ProfilePage {
     const filename = Math.floor(Date.now() / 1000);
     const imageRef = storageRef.child(`${this.profile.uid}/${filename}.jpg`);
 
-    imageRef.putString(image, firebase.storage.StringFormat.DATA_URL).then(()=> {
+    imageRef.putString(image, firebase.storage.StringFormat.DATA_URL).then(() => {
       this.feedbackProvider.dismissLoading();
       const newImageObject: Photo = {
-        url: filename+'.jpg',
+        url: filename + '.jpg',
         dateCreated: this.dataProvider.getDateTime()
       };
       this.feedbackProvider.presentLoading('Please wait, updating profile...');
@@ -140,10 +135,10 @@ export class ProfilePage {
 
   hasImages(): boolean {
     return this.images && this.images.length > 0;
-  } 
+  }
 
   addPhoto() {
-    const newImage: Photo = {dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg'};
+    const newImage: Photo = { dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg' };
     this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImage);
   }
 
@@ -152,7 +147,7 @@ export class ProfilePage {
       console.log(imgs);
     })
   }
- 
+
   selectPhotoAndUpload() {
     this.mediaProvider.selectPhoto().then(imageData => {
       const captureDataUrl = 'data:image/jpeg;base64,' + imageData;

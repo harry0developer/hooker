@@ -8,8 +8,8 @@ import { Slides } from 'ionic-angular';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SellersPage } from '../sellers/sellers';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
-import { FirebaseAuthProvider } from '../../providers/firebase-auth/firebase-auth';
 import { TabsPage } from '../tabs/tabs';
+import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 
 @IonicPage()
 @Component({
@@ -21,11 +21,11 @@ export class SetupPage {
   @ViewChild(Slides) slides: Slides;
 
   loc: string;
-  data: User = { 
+  data: User = {
     nickname: '',
     gender: '',
     age: 0,
-    race: '', 
+    race: '',
     bodyType: '',
     height: 0,
     email: '',
@@ -34,6 +34,7 @@ export class SetupPage {
     uid: '',
     dateCreated: '',
     userType: '',
+    verified: false,
     location: {
       address: '',
       geo: {
@@ -44,22 +45,22 @@ export class SetupPage {
   }
 
   constructor(public navCtrl: NavController,
-    public modalCtrl: ModalController, 
+    public modalCtrl: ModalController,
     public navParams: NavParams,
-    public dataProvider: DataProvider, 
+    public dataProvider: DataProvider,
     public feedbackProvider: FeedbackProvider,
-    public firebaseAuthProvider: FirebaseAuthProvider) {
+    public firebaseApiProvider: FirebaseApiProvider) {
   }
 
   ionViewDidLoad() {
     this.slides.lockSwipes(true);
     const data: User = this.navParams.get('data');
-    if(data) {
-      if(data.nickname && data.email ) { //email signup
+    if (data) {
+      if (data.nickname && data.email) { //email signup
         this.data.nickname = data.nickname;
         this.data.email = data.email;
         this.data.password = data.password,
-        this.data.uid = data.uid;
+          this.data.uid = data.uid;
       } else { //phone signup
         this.data.nickname = data.nickname;
         this.data.phone = data.phone;
@@ -69,31 +70,31 @@ export class SetupPage {
       console.log('Cannot be here');
     }
   }
- 
+
   completeSignup() {
     this.feedbackProvider.presentLoading();
-    this.firebaseAuthProvider.signupWithEmailAndPassword(this.data.email, this.data.password).then((u) => {
+    this.firebaseApiProvider.signupWithEmailAndPassword(this.data.email, this.data.password).then((u) => {
       this.data.uid = u.user.uid
       this.data.dateCreated = this.dataProvider.getDateTime();
-      this.firebaseAuthProvider.setUserDoc(this.data.uid, this.data).then(() => {
+      this.firebaseApiProvider.addItem(COLLECTION.users, this.data).then(() => {
         this.feedbackProvider.dismissLoading();
-        this.navCtrl.setRoot(TabsPage, {user: this.data});
+        this.navCtrl.setRoot(TabsPage, { user: this.data });
       }).catch(err => {
         this.feedbackProvider.dismissLoading();
         this.feedbackProvider.presentAlert(MESSAGES.signupFailed, 'Oops something went wrong, please try again');
       })
     }).catch(err => {
       this.feedbackProvider.dismissLoading();
-      if(err.code === EMAIL_EXISTS) {
+      if (err.code === EMAIL_EXISTS) {
         this.feedbackProvider.presentAlert(MESSAGES.signupFailed, MESSAGES.emailAlreadyRegistered);
-      } 
+      }
     });
   }
 
 
   navigate() {
     this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, this.data);
-    if(this.data.userType === USER_TYPE.seller) {
+    if (this.data.userType === USER_TYPE.seller) {
       this.navCtrl.setRoot(DashboardPage);
     } else {
       this.navCtrl.setRoot(SellersPage);
@@ -123,7 +124,7 @@ export class SetupPage {
   getSlideNumber(): string {
     return `${this.slides.getActiveIndex()} of 6`;
   }
- 
+
   showAddressModal() {
     let modal = this.modalCtrl.create(PlacesPage);
     modal.onDidDismiss(data => {

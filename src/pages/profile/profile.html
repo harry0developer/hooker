@@ -5,15 +5,15 @@
 </ion-header>
 
 <ion-content> 
-  <div class="profile">
+  <div class="profile" *ngIf="profile">
     <img class="profile-image animated slideInDown" [src]="getProfilePicture()">
     <ion-grid>
       <ion-row>
         <ion-col col-7 class="name animated slideInLeft">
-          <p class="nickname">{{profile?.nickname}}
+          <p class="nickname">{{capitalizeFirstLetter(profile?.nickname)}}
             <ion-badge primary>26</ion-badge> 
           </p>
-          <p class="userType">{{profile?.userType}}</p>
+          <p class="userType">{{capitalizeFirstLetter(profile?.userType)}}</p>
         </ion-col>
         <ion-col col-5 class="ratings animated slideInRight">
           <p><ion-badge primary>{{userRating || 0}}</ion-badge> 

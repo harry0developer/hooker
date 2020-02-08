@@ -81,7 +81,8 @@ export class VisitorPage {
       uid: 'Jondfcgda24gfd24ad',
       dateCreated: this.dataProvider.getDateTime(),
       userType: 'seller',
-      location: null
+      location: null,
+      verified: false
     }
     this.firebaseApiProvder.addItem(COLLECTION.users, user).then(r => {
       console.log('User added ', r);
@@ -102,7 +103,6 @@ export class VisitorPage {
   }
 
   filterUsers() {
-
     let modal = this.modalCtrl.create(FilterPage, { filter: this.filter });
     modal.onDidDismiss(data => {
       if (data) {

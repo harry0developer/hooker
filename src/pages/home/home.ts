@@ -8,6 +8,8 @@ import { DataProvider } from '../../providers/data/data';
 import { User } from '../../models/user';
 import { TabsPage } from '../tabs/tabs';
 import { FirebaseAuthProvider } from '../../providers/firebase-auth/firebase-auth';
+import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
+import { COLLECTION, STORAGE_KEY } from '../../utils/consts';
 
 @IonicPage()
 @Component({
@@ -23,65 +25,35 @@ export class HomePage {
     public actionSheetCtrl: ActionSheetController,
     public navParams: NavParams,
     public dataProvider: DataProvider,
-    public firebaseAuthProvider: FirebaseAuthProvider) {
+    public firebaseApiProvider: FirebaseApiProvider) {
+
   }
-   
+
   ionViewDidLoad() {
-    // this.profile = this.dataProvider.getStoredUser();
-    // if(this.profile && this.profile.uid) {
-    //   this.navCtrl.setRoot(TabsPage, {user: this.profile});
-    // }
-  } 
-
-  addUser() {
-    const data: User = { 
-      nickname: 'Big Cox',
-      gender: 'male',
-      age: 22,
-      race: 'white', 
-      bodyType: 'fat',
-      height: 165,
-      email: 'fat@test.com',
-      phone: '+27820000000',
-      password: '123456',
-      uid: 'qwertyuiop[]asdfghjkl',
-      dateCreated: this.dataProvider.getDateTime(),
-      userType: 'buyer',
-      location: {
-        address: '',
-        geo: {
-          lat: 0,
-          lng: 0
-        }
-      }
+    const profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
+    if (profile && profile.uid) {
+      this.navigate(profile);
     }
-
-    this.firebaseAuthProvider.updateUser(data.uid, data).then(res => {
-      console.log(res);
-    }).catch(err => {
-      console.log(err);
-    })
-    
   }
 
   navigate(user: User) {
-    this.navCtrl.setRoot(TabsPage, {user: user})
+    this.navCtrl.setRoot(TabsPage, { user })
   }
 
   loginWithEmailAddress() {
-    this.navCtrl.push(LoginPage, {loginType: 'emailAddress'});
+    this.navCtrl.push(LoginPage, { loginType: 'emailAddress' });
   }
 
   loginWithPhoneNumber() {
-    this.navCtrl.push(LoginPage, {loginType: 'phoneNumber'});
+    this.navCtrl.push(LoginPage, { loginType: 'phoneNumber' });
   }
 
   signupWithEmailAddress() {
-    this.navCtrl.push(SignupPage, {signupType: 'emailAddress'});
+    this.navCtrl.push(SignupPage, { signupType: 'emailAddress' });
   }
 
   signupWithPhoneNumber() {
-    this.navCtrl.push(SignupPage, {signupType: 'phoneNumber'});
+    this.navCtrl.push(SignupPage, { signupType: 'phoneNumber' });
   }
 
   presentLoginActionSheet() {
@@ -111,7 +83,7 @@ export class HomePage {
         }
       ]
     });
- 
+
     actionSheet.present();
   }
 
@@ -142,7 +114,7 @@ export class HomePage {
         }
       ]
     });
- 
+
     actionSheet.present();
   }
 

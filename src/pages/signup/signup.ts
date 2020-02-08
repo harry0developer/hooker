@@ -9,7 +9,8 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { EMAIL_EXISTS, MESSAGES, COLLECTION } from '../../utils/consts';
 import { FirebaseAuthProvider } from '../../providers/firebase-auth/firebase-auth';
- 
+import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
+
 
 @IonicPage()
 @Component({
@@ -26,10 +27,22 @@ export class SignupPage {
     uid: ''
   }
 
+  data = {
+    email: '',
+    password: '',
+    otpCode: '',
+    phonenumber: '',
+    phone: {
+      flag: "🇿🇦",
+      code: "+27",
+      number: ''
+    },
+    location: { address: '' }
+  }
+
   phoneSignup = {
     nickname: '',
     otpCode: '',
-    phonenumber: '',
     phone: {
       flag: "🇿🇦",
       code: "+27",
@@ -48,22 +61,23 @@ export class SignupPage {
   countries: any = [];
   users: User[] = [];
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
     private dataProvider: DataProvider,
-    private firebaseAuthProvider: FirebaseAuthProvider,
+    private firebaseApiProvider: FirebaseApiProvider,
     public feedbackProvider: FeedbackProvider) {
   }
 
   ionViewDidLoad() {
-    this.signupType =  this.navParams.get('signupType'); // 'emailAddress'//
+    this.signupType = this.navParams.get('signupType'); // 'emailAddress'//
     console.log(this.signupType);
-
-    this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(users => {
-      this.users = users;
-    }, err => {
-      console.log('Could not load users', err);
+    this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`).once('value', function (snapshot) {
+      snapshot.forEach(function (childSnapshot) {
+        var childKey = childSnapshot.key;
+        var childData = childSnapshot.val();
+        console.log(childData);
+      });
     });
   }
 
@@ -74,12 +88,12 @@ export class SignupPage {
   signupWithEmailAndPassword() {
     const registeredUsers = this.users.filter(user => user.email.toLocaleLowerCase() === this.emailSignup.email.toLocaleLowerCase());
     console.log(registeredUsers);
-    if(registeredUsers && registeredUsers.length > 0) {
+    if (registeredUsers && registeredUsers.length > 0) {
       this.feedbackProvider.presentAlert('Signup failed', 'Email address is already registered');
     } else {
-      this.navCtrl.push(SetupPage, {data: this.emailSignup});
+      this.navCtrl.push(SetupPage, { data: this.emailSignup });
     }
-  } 
+  }
 
   cancelSignup() {
     this.navCtrl.pop();

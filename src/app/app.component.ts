@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
- 
+
 import { UsersPage } from '../pages/users/users';
 import { RequestsPage } from '../pages/requests/requests';
 import { ProfilePage } from '../pages/profile/profile';
@@ -28,21 +28,21 @@ import { VisitorPage } from '../pages/visitor/visitor';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = VisitorPage;
+  rootPage: any = HomePage;
 
   pages: any;
   profile: User;
 
   constructor(
-    public platform: Platform, 
-    public statusBar: StatusBar, 
+    public platform: Platform,
+    public statusBar: StatusBar,
     public authProvider: AuthProvider,
     public dataProvider: DataProvider,
     public feebackProvider: FeedbackProvider,
     public ionEvents: Events,
     public modalCtrl: ModalController,
     public splashScreen: SplashScreen) {
-      this.initializeApp();
+    this.initializeApp();
   }
 
   initializeApp() {
@@ -61,5 +61,5 @@ export class MyApp {
     modal.onDidDismiss(() => {
     });
     modal.present();
-  }  
+  }
 }
