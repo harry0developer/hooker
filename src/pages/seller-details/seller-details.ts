@@ -40,7 +40,7 @@ export class SellerDetailsPage {
     this.profile = this.authProvider.getStoredUser();
     this.user = this.navParams.get('user');
     this.img = `assets/imgs/users/user3.jpg`;
-    
+
     // this.dataProvider.getDocumentFromCollectionById(COLLECTION.ratings, this.profile.id).subscribe(ratingsFromCollection => {
     //   const ratingsArray = this.dataProvider.getArrayFromObjectList(ratingsFromCollection);
     //   this.allRatings = ratingsArray;
@@ -52,14 +52,18 @@ export class SellerDetailsPage {
     // });
   }
 
+  capitalizeFirstLetter(str: string): string {
+    return this.dataProvider.capitalizeFirstLetter(str);
+  }
+
   getAge(date: string): string {
     return this.dataProvider.getAgeFromDate(date);
   }
 
   getDistance(loc) {
     console.log(loc);
-    
-    if(loc && loc.geo.lat && loc.geo.lng) {
+
+    if (loc && loc.geo.lat && loc.geo.lng) {
       return this.dataProvider.getLocationFromGeo(loc);
     } else {
       return 'Unknown';

@@ -12,6 +12,7 @@ import { Filter } from '../../models/filter';
 import { bounceIn } from '../../utils/animations';
 import { FilterPage } from '../filter/filter';
 import firebase from 'firebase';
+import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 
 @IonicPage()
 @Component({
@@ -20,7 +21,7 @@ import firebase from 'firebase';
   animations: [bounceIn]
 })
 export class VisitorPage {
-  sellers: any [] = [];
+  sellers: any[] = [];
   profile: User;
   images = [];
   oldImages = [];
@@ -37,8 +38,9 @@ export class VisitorPage {
     public authProvider: AuthProvider,
     public feedbackProvider: FeedbackProvider,
     public mediaProvider: MediaProvider,
-    public modalCtrl: ModalController
-    ) {
+    public modalCtrl: ModalController,
+    public firebaseApiProvder: FirebaseApiProvider
+  ) {
   }
 
   ionViewDidLoad() {
@@ -46,33 +48,65 @@ export class VisitorPage {
     this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(users => {
       this.sellers = users;
       this.isLoading = false;
-    }); 
+    });
 
     this.dataProvider.getAllFromCollection(COLLECTION.images).subscribe(r => {
-      const myOldImages = r.filter(a => a.id === this.profile.uid);
-      if(myOldImages.length > 0 && myOldImages[0]) {
-        delete myOldImages[0].id;
-        this.oldImages = this.dataProvider.getArrayFromObjectList(myOldImages[0]);
-        console.log(this.oldImages);
-        this.downloadImages();
-      } else {
-        this.oldImages = this.dataProvider.getArrayFromObjectList(myOldImages[0]);
-        console.log(this.oldImages);
-        this.downloadImages();
-      }
+      console.log(r);
+
+      // const myOldImages = r.filter(a => a.id === this.profile.uid);
+      // if(myOldImages.length > 0 && myOldImages[0]) {
+      //   delete myOldImages[0].id;
+      //   this.oldImages = this.dataProvider.getArrayFromObjectList(myOldImages[0]);
+      //   console.log(this.oldImages);
+      //   this.downloadImages();
+      // } else {
+      //   this.oldImages = this.dataProvider.getArrayFromObjectList(myOldImages[0]);
+      //   console.log(this.oldImages);
+      //   this.downloadImages();
+      // }
     });
-  } 
+  }
+
+  addUsers() {
+    const user: User = {
+      nickname: 'Jon',
+      gender: 'male',
+      age: 34,
+      race: 'black',
+      bodyType: 'fat',
+      height: 160,
+      email: 'jon@test.com',
+      phone: '078000778888',
+      password: '123456',
+      uid: 'Jondfcgda24gfd24ad',
+      dateCreated: this.dataProvider.getDateTime(),
+      userType: 'seller',
+      location: null
+    }
+    this.firebaseApiProvder.addItem(COLLECTION.users, user).then(r => {
+      console.log('User added ', r);
+
+    })
+  }
+
+  updateUser() {
+    const key = "Jondfcgda24gfd24ad";
+    this.firebaseApiProvder.updateItem(COLLECTION.users, key, { height: 182 }).then(r => {
+      console.log('User updated ', r);
+
+    })
+  }
 
   capitalizeFirstLetter(str: string): string {
     return this.dataProvider.capitalizeFirstLetter(str);
-  } 
+  }
 
   filterUsers() {
 
-    let modal = this.modalCtrl.create(FilterPage,  {filter: this.filter});
+    let modal = this.modalCtrl.create(FilterPage, { filter: this.filter });
     modal.onDidDismiss(data => {
       if (data) {
-        this.filter = {...data};
+        this.filter = { ...data };
         console.log(this.filter);
       }
     });
@@ -84,16 +118,16 @@ export class VisitorPage {
       this.mediaProvider.getImage(img.url).then(resImg => {
         this.images.push(resImg);
         console.log(resImg);
-        
+
       }).catch(err => {
         console.log(err);
       });
     });
   }
-  
+
 
   addImage() {
-    const newImage: Photo = {dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg'};
+    const newImage: Photo = { dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg' };
     this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImage);
   }
 
@@ -102,7 +136,7 @@ export class VisitorPage {
       console.log(imgs);
     })
   }
- 
+
   selectPhotoAndUpload() {
     this.mediaProvider.selectPhoto().then(imageData => {
       const captureDataUrl = 'data:image/jpeg;base64,' + imageData;
@@ -119,8 +153,8 @@ export class VisitorPage {
     }, error => {
       console.log("ERROR -> " + JSON.stringify(error));
     });
-  } 
-  
+  }
+
 
   uploadPhotoAndUpdateUserDatabase(oldImages, newImage): any {
     this.feedbackProvider.presentLoading('Please wait, Uploading...');
@@ -128,10 +162,10 @@ export class VisitorPage {
     const filename = Math.floor(Date.now() / 1000);
     const imageRef = storageRef.child(`${this.profile.uid}/${filename}.jpg`);
 
-    imageRef.putString(newImage, firebase.storage.StringFormat.DATA_URL).then(()=> {
+    imageRef.putString(newImage, firebase.storage.StringFormat.DATA_URL).then(() => {
       this.feedbackProvider.dismissLoading();
       const newImageObject: Photo = {
-        url: filename+'.jpg',
+        url: filename + '.jpg',
         dateCreated: this.dataProvider.getDateTime()
       }
       this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImageObject);
@@ -145,7 +179,7 @@ export class VisitorPage {
   viewUserProfile(user) {
     this.navCtrl.push(SellerDetailsPage, { user });
   }
- 
+
   getDistance(geo) {
     return this.dataProvider.getLocationFromGeo(geo);
   }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar >
-    <ion-title>{{user?.nickname}}</ion-title>
+    <ion-title>{{ capitalizeFirstLetter(user?.nickname) }}</ion-title>
   </ion-navbar>
 </ion-header>
   
@@ -20,7 +20,7 @@
   </ion-slides> 
 
   <div class="profile" *ngIf="user">
-    <h2>{{user.nickname}} 
+    <h2>{{capitalizeFirstLetter(user?.nickname)}} 
       <ion-badge class="age">{{user?.age}}</ion-badge>
     </h2>
     <p class="distance"> 

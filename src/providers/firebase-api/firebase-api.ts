@@ -5,10 +5,10 @@ import * as firebase from 'firebase';
 export class FirebaseApiProvider {
   constructor() {
   }
- 
+
   addItem(ref: string, item: any): Promise<any> {
-    const firebaseDBRef = firebase.database().ref(`/${ref}`);
-    return firebaseDBRef.push(item);
+    const firebaseDBRef = firebase.database().ref(`/${ref}/${item.uid}`);
+    return firebaseDBRef.set(item);
   }
 
   updateItem(ref: string, key: string, itemKeyValue): Promise<any> {
