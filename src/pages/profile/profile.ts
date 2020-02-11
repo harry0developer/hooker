@@ -43,7 +43,7 @@ export class ProfilePage {
 
   ionViewDidLoad() {
     this.profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
-    this.imagesRef = `${COLLECTION.images}/${this.profile.uid}/`;
+    this.imagesRef = `${COLLECTION.images}/${this.profile.uid}`;
     this.getAllImages();
     // this.mediaProvider.getFiles(COLLECTION.images, this.profile.uid).subscribe(imgs => {
     //   console.log(imgs);
@@ -60,40 +60,30 @@ export class ProfilePage {
         tmp.push({ key: taskData.key, ...taskData.val() })
       });
       this.imageObjects = tmp;
-      console.log(tmp);
       this.downloadImages(tmp);
     }, () => {
-      this.isLoading = false;
     });
   }
 
 
   downloadImages(images: any[]) {
     this.images = [];
-    if (images && images.length > 0) {
-      images.forEach(img => {
-        this.mediaProvider.getImageByFilename(img.url).then(resImg => {
-          this.images.push(resImg);
-          this.isLoading = false;
-          console.log(resImg);
-        }).catch(err => {
-          this.isLoading = false;
-          console.log(err);
-        });
+    this.isLoading = false;
+    images.forEach(img => {
+      this.mediaProvider.getImageByFilename(img.url).then(resImg => {
+        this.images.push(resImg);
+        console.log(resImg);
+      }).catch(err => {
+        console.log(err);
       });
-    } else {
-      this.isLoading = false;
-    }
+    });
   }
 
   selectPhoto() {
-    this.feedbackProvider.presentLoading('Accessing media...');
     this.mediaProvider.selectPhoto().then(imageData => {
-      this.feedbackProvider.dismissLoading();
       const selectedPhoto = 'data:image/jpeg;base64,' + imageData;
       this.uploadPhotoAndUpdateUserDatabase(selectedPhoto);
     }, error => {
-      this.feedbackProvider.dismissLoading();
       this.feedbackProvider.presentToast('An error occured uploading the photo');
     });
   }
@@ -105,19 +95,20 @@ export class ProfilePage {
     const imageRef = storageRef.child(`${this.profile.uid}/${filename}.jpg`);
 
     imageRef.putString(image, firebase.storage.StringFormat.DATA_URL).then(() => {
-      this.feedbackProvider.dismissLoading();
       const newImage: Photo = {
         url: filename + '.jpg',
         dateCreated: this.dataProvider.getDateTime()
       };
-      this.firebaseApiProvider.addImageToRealtimeDB(this.imagesRef, newImage).then(() => {
+      this.firebaseApiProvider.addImageToRealtimeDB(this.imagesRef, newImage, filename.toString()).then(() => {
         this.feedbackProvider.dismissLoading();
         this.feedbackProvider.presentToast('Photo uploaded successfully');
       }).catch(err => {
         this.feedbackProvider.dismissLoading();
+        console.log(err);
         this.feedbackProvider.presentToast('An error occured uploading the photo');
       });
     }).catch(err => {
+      console.log(err);
       this.feedbackProvider.dismissLoading();
       this.feedbackProvider.presentToast('An error occured uploading the photo');
     });

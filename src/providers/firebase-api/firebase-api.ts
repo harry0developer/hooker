@@ -16,8 +16,8 @@ export class FirebaseApiProvider {
   }
 
 
-  addImageToRealtimeDB(ref: string, img): Promise<any> {
-    const dataRef = this.firebaseRef.ref(`/${ref}/${img.url}`);
+  addImageToRealtimeDB(ref: string, img, imgRef: string): Promise<any> {
+    const dataRef = this.firebaseRef.ref(`/${ref}/${imgRef}`);
     return dataRef.set(img);
   }
 
