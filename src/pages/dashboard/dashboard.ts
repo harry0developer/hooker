@@ -13,7 +13,7 @@ import { MediaProvider } from '../../providers/media/media';
 import firebase from 'firebase';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
- 
+
 @IonicPage()
 @Component({
   selector: 'page-dashboard',
@@ -27,7 +27,7 @@ export class DashboardPage {
 
   messages: any[] = [];
   chats: any[] = [];
- 
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -37,24 +37,24 @@ export class DashboardPage {
     public dataProvider: DataProvider,
     public firebaseApiProvider: FirebaseApiProvider,
     public mediaProvider: MediaProvider
-  ) {  } 
+  ) { }
 
   ionViewDidLoad() {
-    // this.profile = this.authProvider.getStoredUser();
-    // this.chats = [
-    //   {nickname: 'Charle', pic: 'assets/imgs/users/user1.jpg'},
-    //   {nickname: 'Mark', pic: 'assets/imgs/users/user2.jpg'},
-    //   {nickname: 'Thabo', pic: 'assets/imgs/users/user3.jpg'}
-    // ];
-    // this.isLoading = false;
+    this.profile = this.authProvider.getStoredUser();
+    this.chats = [
+      { nickname: 'Charle', pic: 'assets/imgs/users/user1.jpg' },
+      { nickname: 'Mark', pic: 'assets/imgs/users/user2.jpg' },
+      { nickname: 'Thabo', pic: 'assets/imgs/users/user3.jpg' }
+    ];
+    this.isLoading = false;
   }
 
   viewUserProfile(user) {
     this.navCtrl.push(ChatPage, { user });
   }
 
-  profilePicture(): string {
-    return 'assets/imgs/users/user6.jpg'
+  getProfilePicture(): string {
+    return `assets/imgs/users/${this.profile.gender}.svg`;
   }
- 
+
 }

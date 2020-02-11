@@ -5,9 +5,9 @@
 </ion-header>
 
 <ion-content>
-  <div class="top" *ngIf="profile">
+  <div class="top" *ngIf="profile && !isLoading">
     <div class="profile">
-      <img alt="profile" [src]="profilePicture()" class="animated zoomIn" (error)="img.src = defaultImg"
+      <img alt="profile" [src]="getProfilePicture()" class="animated zoomIn" (error)="img.src = defaultImg"
         #img>
     </div>
     <div class="animated slideInRight">
@@ -18,8 +18,19 @@
     <button ion-button small class="primary animated zoomIn" (click)="viewProfile()" color="primary">View Profile</button>
   </div>
 
-  
-  <ion-list  *ngIf="isLoading">
+  <div *ngIf="isLoading" class="skeleton-top">
+    <div class="profile" align="center">
+      <ion-avatar item-start>
+        <skeleton-item class="avatar" height="60px" width="60px"></skeleton-item>
+      </ion-avatar>
+    </div>
+    <div align="center">
+      <skeleton-item height="10px" width="40%" margin-top="10px" ></skeleton-item>
+      <skeleton-item height="20px" width="40%"></skeleton-item>
+    </div> 
+  </div>
+
+  <ion-list *ngIf="isLoading">
     <ion-card *ngFor="let i of [1,2,3]">
       <ion-item>
         <ion-avatar item-start>

@@ -54,4 +54,14 @@
       </ion-item>
     </ion-card>
   </ion-list> 
+
+  <ion-list *ngIf="!isLoading && sellers.length < 1" class="user">
+    <ion-card>
+      <ion-item> 
+        <h2 >
+          No service providers found matching the filter
+        </h2>
+      </ion-item>
+    </ion-card>
+  </ion-list> 
 </ion-content>

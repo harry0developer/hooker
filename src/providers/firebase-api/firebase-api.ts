@@ -15,6 +15,12 @@ export class FirebaseApiProvider {
     return dataRef.set(item);
   }
 
+
+  addImageToRealtimeDB(ref: string, img): Promise<any> {
+    const dataRef = this.firebaseRef.ref(`/${ref}/${img.url}`);
+    return dataRef.set(img);
+  }
+
   getItem(ref: string, key: string): Promise<any> {
     return this.firebaseRef.ref(`/${ref}/${key}`).once('value', function (snapshot) { });
   }

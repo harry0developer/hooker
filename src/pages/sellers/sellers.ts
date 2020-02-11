@@ -77,21 +77,17 @@ export class SellersPage {
     return returnArr;
   }
 
-  isUserOnline(user) {
-    return this.onlineUsers.filter(u => u.uid === user.uid);
-  }
+  // downloadImages() {
+  //   this.oldImages.forEach(img => {
+  //     this.mediaProvider.getImage(img.url).then(resImg => {
+  //       this.images.push(resImg);
+  //       console.log(resImg);
 
-  downloadImages() {
-    this.oldImages.forEach(img => {
-      this.mediaProvider.getImage(img.url).then(resImg => {
-        this.images.push(resImg);
-        console.log(resImg);
-
-      }).catch(err => {
-        console.log(err);
-      });
-    });
-  }
+  //     }).catch(err => {
+  //       console.log(err);
+  //     });
+  //   });
+  // }
 
   addImage() {
     const newImage: Photo = { dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg' };

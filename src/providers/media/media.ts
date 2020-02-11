@@ -28,8 +28,8 @@ export class MediaProvider {
     private camera: Camera,
     private authProvider: AuthProvider,
     public ionEvents: Events,
-    private db: AngularFireDatabase) { 
-      this.profile = this.authProvider.getStoredUser();
+    private db: AngularFireDatabase) {
+    this.profile = this.authProvider.getStoredUser();
   }
 
   takePhoto(): Promise<any> {
@@ -42,7 +42,7 @@ export class MediaProvider {
     };
     return this.camera.getPicture(camOptions);
   }
- 
+
   selectPhoto(): Promise<any> {
     const camOptions = {
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
@@ -52,10 +52,10 @@ export class MediaProvider {
     };
     return this.camera.getPicture(camOptions);
   }
- 
- 
-  getFiles(userId, filename) {
-    const ref = this.db.list(userId+'/'); 
+
+
+  getFiles(userId) {
+    const ref = this.db.list(userId + '/');
     // this.getImage(filename);
 
     return ref.snapshotChanges().pipe(
@@ -67,18 +67,18 @@ export class MediaProvider {
         });
       })
     );
-  } 
+  }
 
 
   getImageX() {
-    
-    const ref = this.db.list(this.profile.uid+'/'); 
+
+    const ref = this.db.list(this.profile.uid + '/');
     console.log(ref);
-    
+
     return ref.snapshotChanges().pipe(
       map(actions => {
         console.log(actions);
-        
+
         return actions.map(a => {
           const data: Object = a.payload.val();
           const key = a.payload.key;
@@ -86,29 +86,29 @@ export class MediaProvider {
         });
       })
     );
-  } 
+  }
 
-  getImage(url): Promise<any> {
+  getImageByFilename(url): Promise<any> {
     const ref = firebase.storage().ref(`images/${this.profile.uid}/`).child(url);
-    return   ref.getDownloadURL();
+    return ref.getDownloadURL();
   }
 
   getImagecx(): any {
-    let storageRef = this.db.list(this.profile.uid+'/'); 
-    
+    let storageRef = this.db.list(this.profile.uid + '/');
+
     console.log(storageRef);
-    
+
     // const imageRef = storageRef.child(`${this.profile.uid}/${filename}`);
     // console.log(imageRef);
-    
-    
+
+
     // return imageRef.getDownloadURL();
   }
 
   downloadImages(images: any[]): any[] {
     let imgs = [];
     images.forEach(img => {
-      this.getImage(img.url).then(resImg => {
+      this.getImageByFilename(img.url).then(resImg => {
         imgs.push(resImg);
       }).catch(err => {
         console.log(err);

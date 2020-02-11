@@ -32,9 +32,9 @@
   <ion-item-divider color="light">My photos</ion-item-divider>
 
 
-  <button ion-button (click)="removeItem()">Remove</button>
+  <!-- <button ion-button (click)="removeItem()">Remove</button> -->
 
-  <div *ngIf="images">
+  <div *ngIf="!!images && !isLoading">
     <div class="pins" padding [@listAnimation]="images.length">
       <div class="pin" *ngFor="let image of images">
         <img [src]="image" alt="">
@@ -42,11 +42,19 @@
     </div>
   </div>
 
-  <div class="no-images" *ngIf="!hasImages()">
+  <div *ngIf="isLoading">
+    <div class="pins" padding>
+      <div class="pin" *ngFor="let image of [1,2,3,4,5]">
+        <skeleton-item  height="160px" width="100px"></skeleton-item>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-images" *ngIf="(!images || images.length < 1) && !isLoading">
     <p>You have not uploaded photos</p>
   </div>
   
-  <ion-fab bottom right (click)="addPhoto()">  
+  <ion-fab bottom right (click)="selectPhoto()">  
     <button ion-fab>
       <i class="fa fa-plus"></i>
     </button>

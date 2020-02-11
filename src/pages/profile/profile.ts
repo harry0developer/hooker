@@ -27,6 +27,7 @@ export class ProfilePage {
   images: string[] = [];
   imageObjects = [];
   imagesRef: string;
+  isLoading: boolean;
 
 
   constructor(
@@ -37,18 +38,21 @@ export class ProfilePage {
     public firebaseApiProvider: FirebaseApiProvider,
     public afDB: AngularFireDatabase,
     public ionEvents: Events) {
-    // this.profile = this.dataProvider.getStoredUser(); 
-    // this.imagesRef = `${COLLECTION.images}/${this.profile.uid}/`;
-    // this.getAllImages();
+
   }
 
   ionViewDidLoad() {
     this.profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
+    this.imagesRef = `${COLLECTION.images}/${this.profile.uid}/`;
+    this.getAllImages();
+    // this.mediaProvider.getFiles(COLLECTION.images, this.profile.uid).subscribe(imgs => {
+    //   console.log(imgs);
+    // })
   }
 
 
   getAllImages() {
-    this.feedbackProvider.presentLoading('Please wait, fetching photos...');
+    this.isLoading = true;
     const firebaseDBRef = firebase.database().ref(`${this.imagesRef}`);
     firebaseDBRef.on('value', tasksnap => {
       let tmp = [];
@@ -56,42 +60,34 @@ export class ProfilePage {
         tmp.push({ key: taskData.key, ...taskData.val() })
       });
       this.imageObjects = tmp;
+      console.log(tmp);
       this.downloadImages(tmp);
-      this.feedbackProvider.dismissLoading();
     }, () => {
-      this.feedbackProvider.dismissLoading();
+      this.isLoading = false;
     });
   }
 
-  removeItem() {
-    this.firebaseApiProvider.removeItem(this.imagesRef, this.imageObjects[0].key).then(() => {
-      console.log('image remove success');
-    }).catch(err => {
-      console.log('Error removing image', err);
-    });
-  }
-
-  getProfilePicture(): string {
-    return `assets/imgs/users/${this.profile.gender}.svg`;
-  }
-
-  capitalizeFirstLetter(str) {
-    return this.firebaseApiProvider.capitalizeFirstLetter(str)
-  }
 
   downloadImages(images: any[]) {
     this.images = [];
-    images.forEach(img => {
-      this.mediaProvider.getImage(img.url).then(resImg => {
-        this.images.push(resImg);
-      }).catch(err => {
-        console.log(err);
+    if (images && images.length > 0) {
+      images.forEach(img => {
+        this.mediaProvider.getImageByFilename(img.url).then(resImg => {
+          this.images.push(resImg);
+          this.isLoading = false;
+          console.log(resImg);
+        }).catch(err => {
+          this.isLoading = false;
+          console.log(err);
+        });
       });
-    });
+    } else {
+      this.isLoading = false;
+    }
   }
 
   selectPhoto() {
-    this.feedbackProvider.presentLoading('Please wait, selecting photo...');
+    this.feedbackProvider.presentLoading('Accessing media...');
     this.mediaProvider.selectPhoto().then(imageData => {
       this.feedbackProvider.dismissLoading();
       const selectedPhoto = 'data:image/jpeg;base64,' + imageData;
@@ -103,20 +99,20 @@ export class ProfilePage {
   }
 
   private uploadPhotoAndUpdateUserDatabase(image): any {
-    this.feedbackProvider.presentLoading('Please wait, Uploading...');
-    let storageRef = firebase.storage().ref('images');
+    this.feedbackProvider.presentLoading('Updating photo...');
+    let storageRef = firebase.storage().ref(COLLECTION.images);
     const filename = Math.floor(Date.now() / 1000);
     const imageRef = storageRef.child(`${this.profile.uid}/${filename}.jpg`);
 
     imageRef.putString(image, firebase.storage.StringFormat.DATA_URL).then(() => {
       this.feedbackProvider.dismissLoading();
-      const newImageObject: Photo = {
+      const newImage: Photo = {
         url: filename + '.jpg',
         dateCreated: this.dataProvider.getDateTime()
       };
-      this.feedbackProvider.presentLoading('Please wait, updating profile...');
-      this.firebaseApiProvider.addItem(this.imagesRef, newImageObject).then(() => {
+      this.firebaseApiProvider.addImageToRealtimeDB(this.imagesRef, newImage).then(() => {
         this.feedbackProvider.dismissLoading();
+        this.feedbackProvider.presentToast('Photo uploaded successfully');
       }).catch(err => {
         this.feedbackProvider.dismissLoading();
         this.feedbackProvider.presentToast('An error occured uploading the photo');
@@ -128,33 +124,16 @@ export class ProfilePage {
 
   }
 
-
   getDistance(geo) {
     return this.dataProvider.getLocationFromGeo(geo);
   }
 
-  hasImages(): boolean {
-    return this.images && this.images.length > 0;
+  getProfilePicture(): string {
+    return `assets/imgs/users/${this.profile.gender}.svg`;
   }
 
-  addPhoto() {
-    const newImage: Photo = { dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg' };
-    this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImage);
-  }
-
-  getImages() {
-    this.dataProvider.getAllFromCollection(COLLECTION.images).subscribe(imgs => {
-      console.log(imgs);
-    })
-  }
-
-  selectPhotoAndUpload() {
-    this.mediaProvider.selectPhoto().then(imageData => {
-      const captureDataUrl = 'data:image/jpeg;base64,' + imageData;
-      // this.uploadPhotoAndUpdateUserDatabase(this.oldImages, captureDataUrl);
-    }, error => {
-      console.log("ERROR -> " + JSON.stringify(error));
-    });
+  capitalizeFirstLetter(str) {
+    return this.firebaseApiProvider.capitalizeFirstLetter(str)
   }
 
 }

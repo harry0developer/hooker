@@ -115,7 +115,7 @@ export class VisitorPage {
 
   downloadImages() {
     this.oldImages.forEach(img => {
-      this.mediaProvider.getImage(img.url).then(resImg => {
+      this.mediaProvider.getImageByFilename(img.url).then(resImg => {
         this.images.push(resImg);
         console.log(resImg);
 

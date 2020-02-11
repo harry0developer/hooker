@@ -1,17 +1,4 @@
 page-dashboard {
-    .toolbar-background {
-		border-style: none !important;
-		background-color: $white !important;
-		color: $primary !important;
-	}
-
-	.bar-button-default-ios, .bar-button-default-md, .toolbar-title {
-		color: $primary !important;
-	}
-
-	ion-header.header::after {
-		background-image: none;
-    }
     
 	.top{
 		text-align: center;
@@ -164,7 +151,12 @@ page-dashboard {
 
             border-radius: 100%;
         }
-    }
+	}
+	
+	.skeleton-top {
+		margin-top: 10%;
+		margin-bottom: 20%;
+	}
      
 
     
