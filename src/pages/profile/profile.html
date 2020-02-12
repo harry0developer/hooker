@@ -34,9 +34,9 @@
 
   <!-- <button ion-button (click)="removeItem()">Remove</button> -->
 
-  <div *ngIf="!!images && !isLoading">
+  <div *ngIf="images && !isLoading">
     <div class="pins" padding [@listAnimation]="images.length">
-      <div class="pin" *ngFor="let image of images">
+      <div class="pin" *ngFor="let image of images" (tap)="previewImage()">
         <img [src]="image" alt="">
       </div>
     </div>

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, Events, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { STORAGE_KEY, COLLECTION } from '../../utils/consts';
 import { User } from '../../models/user';
-import { Ratings } from '../../models/ratings';
 import { bounceIn } from '../../utils/animations';
 import { Photo } from '../../models/photo';
 import { MediaProvider } from '../../providers/media/media';
@@ -11,6 +10,7 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 import firebase from 'firebase';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { PreviewPage } from '../preview/preview';
 
 
 @IonicPage()
@@ -37,6 +37,7 @@ export class ProfilePage {
     public feedbackProvider: FeedbackProvider,
     public firebaseApiProvider: FirebaseApiProvider,
     public afDB: AngularFireDatabase,
+    public modalCtrl: ModalController,
     public ionEvents: Events) {
 
   }
@@ -50,10 +51,16 @@ export class ProfilePage {
     // })
   }
 
+  previewImage() {
+    let profileModal = this.modalCtrl.create(PreviewPage, { images: this.images });
+    profileModal.present();
+  }
+
 
   getAllImages() {
     this.isLoading = true;
     const firebaseDBRef = firebase.database().ref(`${this.imagesRef}`);
+    this.isLoading = false;
     firebaseDBRef.on('value', tasksnap => {
       let tmp = [];
       tasksnap.forEach(taskData => {
@@ -61,22 +68,25 @@ export class ProfilePage {
       });
       this.imageObjects = tmp;
       this.downloadImages(tmp);
-    }, () => {
     });
   }
 
-
   downloadImages(images: any[]) {
     this.images = [];
-    this.isLoading = false;
+    const tmpImg = [];
     images.forEach(img => {
       this.mediaProvider.getImageByFilename(img.url).then(resImg => {
-        this.images.push(resImg);
+        // this.images.push(resImg);
         console.log(resImg);
+        tmpImg.push(resImg);
       }).catch(err => {
         console.log(err);
       });
     });
+
+    this.images = tmpImg;
+    console.log(tmpImg);
+
   }
 
   selectPhoto() {

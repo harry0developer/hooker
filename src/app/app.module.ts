@@ -22,7 +22,7 @@ import { AuthProvider } from '../providers/auth/auth';
 import { FeedbackProvider } from '../providers/feedback/feedback';
 import { DataProvider } from '../providers/data/data';
 import { SignupPage } from '../pages/signup/signup';
-import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password'; 
+import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
 
 import { RatingModule } from "ngx-rating";
 import { RequestsPage } from '../pages/requests/requests';
@@ -48,7 +48,7 @@ import { PlacesPage } from '../pages/places/places';
 import { LocationProvider } from '../providers/location/location';
 
 import { Geolocation } from '@ionic-native/geolocation';
-import { MediaProvider } from '../providers/media/media'; 
+import { MediaProvider } from '../providers/media/media';
 import { ComponentsModule } from '../components/components.module';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
@@ -56,6 +56,7 @@ import { FirebaseAuthProvider } from '../providers/firebase-auth/firebase-auth';
 import { FirebaseApiProvider } from '../providers/firebase-api/firebase-api';
 import { VisitorPage } from '../pages/visitor/visitor';
 import { FilterPage } from '../pages/filter/filter';
+import { PreviewPage } from '../pages/preview/preview';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { FilterPage } from '../pages/filter/filter';
     SetupPage,
     VisitorPage,
     FilterPage,
+    PreviewPage,
     LoginPage
   ],
   imports: [
@@ -125,6 +127,7 @@ import { FilterPage } from '../pages/filter/filter';
     SetupPage,
     VisitorPage,
     FilterPage,
+    PreviewPage,
     LoginPage
   ],
   providers: [

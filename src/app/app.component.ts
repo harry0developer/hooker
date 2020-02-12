@@ -21,6 +21,7 @@ import { IntroPage } from '../pages/intro/intro';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { VisitorPage } from '../pages/visitor/visitor';
+import { PreviewPage } from '../pages/preview/preview';
 
 @Component({
   templateUrl: 'app.html'
