@@ -25,7 +25,6 @@ export class ProfilePage {
   allRatings: any = [];
 
   images: string[] = [];
-  imageObjects = [];
   imagesRef: string;
   isLoading: boolean;
 
@@ -46,12 +45,9 @@ export class ProfilePage {
     this.profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
     this.imagesRef = `${COLLECTION.images}/${this.profile.uid}`;
     this.getAllImages();
-    // this.mediaProvider.getFiles(COLLECTION.images, this.profile.uid).subscribe(imgs => {
-    //   console.log(imgs);
-    // })
   }
 
-  previewImage() {
+  previewImage(img) {
     let profileModal = this.modalCtrl.create(PreviewPage, { images: this.images });
     profileModal.present();
   }
@@ -60,33 +56,25 @@ export class ProfilePage {
   getAllImages() {
     this.isLoading = true;
     const firebaseDBRef = firebase.database().ref(`${this.imagesRef}`);
-    this.isLoading = false;
     firebaseDBRef.on('value', tasksnap => {
       let tmp = [];
       tasksnap.forEach(taskData => {
         tmp.push({ key: taskData.key, ...taskData.val() })
       });
-      this.imageObjects = tmp;
       this.downloadImages(tmp);
     });
   }
 
   downloadImages(images: any[]) {
     this.images = [];
-    const tmpImg = [];
     images.forEach(img => {
       this.mediaProvider.getImageByFilename(img.url).then(resImg => {
-        // this.images.push(resImg);
-        console.log(resImg);
-        tmpImg.push(resImg);
+        this.isLoading = false;
+        this.images.push(resImg);
       }).catch(err => {
         console.log(err);
       });
     });
-
-    this.images = tmpImg;
-    console.log(tmpImg);
-
   }
 
   selectPhoto() {

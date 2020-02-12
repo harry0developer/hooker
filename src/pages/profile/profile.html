@@ -36,7 +36,7 @@
 
   <div *ngIf="images && !isLoading">
     <div class="pins" padding [@listAnimation]="images.length">
-      <div class="pin" *ngFor="let image of images" (tap)="previewImage()">
+      <div class="pin" *ngFor="let image of images" (tap)="previewImage(image)">
         <img [src]="image" alt="">
       </div>
     </div>

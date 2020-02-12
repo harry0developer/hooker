@@ -15,6 +15,7 @@ export class PreviewPage {
   // ];
 
   images = [];
+  active: any;
 
   @ViewChild(Slides) slides: Slides;
 
@@ -38,12 +39,10 @@ export class PreviewPage {
   }
 
   makeProfilePicture() {
-    console.log(this.slides.getActiveIndex());
     this.presentActionSheet('Make profile photo');
   }
 
   deleteImage() {
-    console.log(this.slides.getActiveIndex());
     this.presentActionSheet('Delete photo');
   }
 
