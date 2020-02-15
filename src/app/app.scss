@@ -60,3 +60,19 @@ ion-footer {
 		color: white !important;
 	}
 }
+
+.ion-ios-logo, .ion-md-logo {
+	content: url('../../assets/logo-icon.svg');
+	width: 24px;
+	height: 24px;
+}
+.ion-ios-logo-outline {
+	content: url('../../assets/logo-icon.svg');
+	width: 24px;
+	height: 24px;
+}
+.ion-md-logo[ng-reflect-is-active=false]{
+	content: url('../../assets/logo-icon.svg');
+	width: 24px;
+	height: 24px;
+}

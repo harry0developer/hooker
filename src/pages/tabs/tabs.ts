@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'; 
+import { Component } from '@angular/core';
 import { HomePage } from '../home/home';
 import { ChatsPage } from '../chats/chats';
 import { ProfilePage } from '../profile/profile';
@@ -10,7 +10,7 @@ import { SellersPage } from '../sellers/sellers';
 import { User } from '../../models/user';
 
 @Component({
-  templateUrl: 'tabs.html'
+  templateUrl: 'tabs.html',
 })
 export class TabsPage {
 
@@ -21,12 +21,12 @@ export class TabsPage {
   tab4Root = SettingsPage;
   icon: string;
 
-  constructor(public navParams: NavParams) { 
+  constructor(public navParams: NavParams) {
     this.user = this.navParams.get('user');
   }
 
   ionViewWillLoad() {
-    if(this.isSeller()) {
+    if (this.isSeller()) {
       this.tab1Root = DashboardPage;
       this.icon = "apps";
     } else {
@@ -35,7 +35,7 @@ export class TabsPage {
     }
   }
 
-  isSeller(): boolean{ 
+  isSeller(): boolean {
     return this.user && this.user.userType.toLocaleLowerCase() === USER_TYPE.seller.toLocaleLowerCase();
   }
 }
