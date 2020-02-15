@@ -53,6 +53,7 @@ export class DashboardPage {
     this.navCtrl.push(ChatPage, { user });
   }
 
+
   getProfilePicture(): string {
     return `assets/imgs/users/${this.profile.gender}.svg`;
   }

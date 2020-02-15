@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, Events, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { STORAGE_KEY, COLLECTION } from '../../utils/consts';
@@ -37,7 +37,7 @@ export class ProfilePage {
     public firebaseApiProvider: FirebaseApiProvider,
     public afDB: AngularFireDatabase,
     public modalCtrl: ModalController,
-    public ionEvents: Events) {
+    public ionEvents: Events, public zone: NgZone) {
 
   }
 
@@ -67,12 +67,15 @@ export class ProfilePage {
 
   downloadImages(images: any[]) {
     this.images = [];
-    images.forEach(img => {
-      this.mediaProvider.getImageByFilename(img.url).then(resImg => {
-        this.isLoading = false;
-        this.images.push(resImg);
-      }).catch(err => {
-        console.log(err);
+    this.zone.run(() => {
+      console.log('force update the screen');
+      images.forEach(img => {
+        this.mediaProvider.getImageByFilename(img.url).then(resImg => {
+          this.isLoading = false;
+          this.images.push(resImg);
+        }).catch(err => {
+          console.log(err);
+        });
       });
     });
   }

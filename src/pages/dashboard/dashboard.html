@@ -15,7 +15,7 @@
       <ion-badge color="primary">{{profile?.age}}</ion-badge>
     </div>
     <h2 class="animated slideInLeft">{{profile?.nickname}}</h2>
-    <button ion-button small class="primary animated zoomIn" (click)="viewProfile()" color="primary">View Profile</button>
+    <!-- <button ion-button small class="primary animated zoomIn" (click)="viewProfile()" color="primary">View Profile</button> -->
   </div>
 
   <div *ngIf="isLoading" class="skeleton-top">
@@ -54,6 +54,23 @@
     </ion-card>
   </ion-list>  
 
+  <ion-list *ngIf="isLoading" class="user">
+    <ion-item-divider color="light">Recent chats</ion-item-divider>
+    <ion-card  *ngFor="let user of [1,2,3]">
+      <ion-item>
+        <ion-avatar item-start>
+          <skeleton-item class="avatar" height="50px" width="50px"></skeleton-item>
+        </ion-avatar>
+        <h2 class="name">
+          <skeleton-item height="10px" width="50%"></skeleton-item>
+        </h2> 
+        <p item-end>
+          <i class="fa fa-chevron-right"></i>
+        </p>
+      </ion-item>
+    </ion-card>
+  </ion-list> 
+
   <ion-list *ngIf="!isLoading" class="user" [@listAnimation]="chats.length">
     <ion-item-divider color="light">Recent chats</ion-item-divider>
     <ion-card  *ngFor="let user of chats">
@@ -69,6 +86,12 @@
         </p>
       </ion-item>
     </ion-card>
-  </ion-list> 
+
+    <ion-card *ngIf="chats.length < 1">
+      <ion-item>
+        <p>You do not have recent chats</p>      
+      </ion-item>
+    </ion-card>
+  </ion-list>  
    
 </ion-content>
