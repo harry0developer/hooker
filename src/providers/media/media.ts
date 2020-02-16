@@ -89,8 +89,13 @@ export class MediaProvider {
   }
 
   getImageByFilename(url): Promise<any> {
-    const ref = firebase.storage().ref(`images/${this.profile.uid}/`).child(url);
+    const ref = firebase.storage().ref(`${COLLECTION.images}/${this.profile.uid}/`).child(url);
     return ref.getDownloadURL();
+  }
+
+  removeImageByFilename(url: string): Promise<any> {
+    const ref = firebase.storage().ref(`${COLLECTION.images}/${this.profile.uid}/`).child(url);
+    return ref.delete();
   }
 
   getImagecx(): any {

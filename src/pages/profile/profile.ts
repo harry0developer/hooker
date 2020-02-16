@@ -1,7 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, Events, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
-import { STORAGE_KEY, COLLECTION } from '../../utils/consts';
+import { STORAGE_KEY, COLLECTION, OBJECT_NOT_FOUND } from '../../utils/consts';
 import { User } from '../../models/user';
 import { bounceIn } from '../../utils/animations';
 import { Photo } from '../../models/photo';
@@ -47,7 +47,7 @@ export class ProfilePage {
     this.getAllImages();
   }
 
-  previewImage(img) {
+  previewImage() {
     let profileModal = this.modalCtrl.create(PreviewPage, { images: this.images });
     profileModal.present();
   }
@@ -68,15 +68,33 @@ export class ProfilePage {
   downloadImages(images: any[]) {
     this.images = [];
     this.zone.run(() => {
-      console.log('force update the screen');
       images.forEach(img => {
         this.mediaProvider.getImageByFilename(img.url).then(resImg => {
+          const myImg = { ...img, path: resImg };
+          this.images.push(myImg);
           this.isLoading = false;
-          this.images.push(resImg);
         }).catch(err => {
           console.log(err);
+          if (err.code === OBJECT_NOT_FOUND) {
+            this.removeImageKeyFromDB(err.message);
+          }
         });
       });
+    });
+  }
+
+  removeImageKeyFromDB(errorMessage: string) {
+    console.log(errorMessage);
+
+    const imgPath = errorMessage.split("\'")[1].split(".")[0].split("/")[2];
+
+    console.log(imgPath);
+    const ref = `${COLLECTION.images}/${this.profile.uid}`;
+    this.firebaseApiProvider.removeItem(ref, imgPath).then(() => {
+      console.log('Cleaned ...');
+    }).catch(err => {
+      console.log('Oops something went wrong');
+
     });
   }
 

@@ -43,4 +43,4 @@ export const STORAGE_KEY = {
 export const EMAIL_EXISTS = 'auth/email-already-in-use';
 export const USER_NOT_FOUND = 'auth/user-not-found';
 export const INVALID_PASSWORD = 'auth/wrong-password';
-
+export const OBJECT_NOT_FOUND = 'storage/object-not-found';

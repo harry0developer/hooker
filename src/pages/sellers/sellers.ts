@@ -77,29 +77,6 @@ export class SellersPage {
     return returnArr;
   }
 
-  // downloadImages() {
-  //   this.oldImages.forEach(img => {
-  //     this.mediaProvider.getImage(img.url).then(resImg => {
-  //       this.images.push(resImg);
-  //       console.log(resImg);
-
-  //     }).catch(err => {
-  //       console.log(err);
-  //     });
-  //   });
-  // }
-
-  addImage() {
-    const newImage: Photo = { dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg' };
-    this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImage);
-  }
-
-  getImages() {
-    this.dataProvider.getAllFromCollection(COLLECTION.images).subscribe(imgs => {
-      console.log(imgs);
-    })
-  }
-
   selectPhotoAndUpload() {
     this.mediaProvider.selectPhoto().then(imageData => {
       const captureDataUrl = 'data:image/jpeg;base64,' + imageData;
