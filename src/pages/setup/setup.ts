@@ -35,6 +35,7 @@ export class SetupPage {
     dateCreated: '',
     userType: '',
     verified: false,
+    profilePic: '',
     location: {
       address: '',
       geo: {

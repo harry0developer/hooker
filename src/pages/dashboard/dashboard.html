@@ -7,8 +7,7 @@
 <ion-content>
   <div class="top" *ngIf="profile && !isLoading">
     <div class="profile">
-      <img alt="profile" [src]="getProfilePicture()" class="animated zoomIn" (error)="img.src = defaultImg"
-        #img>
+      <img alt="profile" [src]="profile?.profilePic" class="animated zoomIn" #img>
     </div>
     <div class="animated slideInRight">
       <rating [float]="true" [(ngModel)]="myRating" [readonly]="true" ></rating>

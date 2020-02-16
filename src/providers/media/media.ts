@@ -56,29 +56,8 @@ export class MediaProvider {
 
   getFiles(userId) {
     const ref = this.db.list(userId + '/');
-    // this.getImage(filename);
-
     return ref.snapshotChanges().pipe(
       map(actions => {
-        return actions.map(a => {
-          const data: Object = a.payload.val();
-          const key = a.payload.key;
-          return { key, ...data };
-        });
-      })
-    );
-  }
-
-
-  getImageX() {
-
-    const ref = this.db.list(this.profile.uid + '/');
-    console.log(ref);
-
-    return ref.snapshotChanges().pipe(
-      map(actions => {
-        console.log(actions);
-
         return actions.map(a => {
           const data: Object = a.payload.val();
           const key = a.payload.key;
@@ -96,18 +75,6 @@ export class MediaProvider {
   removeImageByFilename(url: string): Promise<any> {
     const ref = firebase.storage().ref(`${COLLECTION.images}/${this.profile.uid}/`).child(url);
     return ref.delete();
-  }
-
-  getImagecx(): any {
-    let storageRef = this.db.list(this.profile.uid + '/');
-
-    console.log(storageRef);
-
-    // const imageRef = storageRef.child(`${this.profile.uid}/${filename}`);
-    // console.log(imageRef);
-
-
-    // return imageRef.getDownloadURL();
   }
 
   downloadImages(images: any[]): any[] {

@@ -4,7 +4,7 @@ import { User } from '../../models/user';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { AuthProvider } from '../../providers/auth/auth';
 import { DataProvider } from '../../providers/data/data';
-import { COLLECTION } from '../../utils/consts';
+import { COLLECTION, STORAGE_KEY } from '../../utils/consts';
 import { ChatPage } from '../chat/chat';
 import { bounceIn } from '../../utils/animations';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
@@ -39,6 +39,10 @@ export class DashboardPage {
     public mediaProvider: MediaProvider
   ) { }
 
+  ionViewWillEnter() {
+    this.profile = this.authProvider.getStoredUser();
+  }
+
   ionViewDidLoad() {
     this.profile = this.authProvider.getStoredUser();
     this.chats = [
@@ -51,11 +55,6 @@ export class DashboardPage {
 
   viewUserProfile(user) {
     this.navCtrl.push(ChatPage, { user });
-  }
-
-
-  getProfilePicture(): string {
-    return `assets/imgs/users/${this.profile.gender}.svg`;
   }
 
 }

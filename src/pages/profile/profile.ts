@@ -28,7 +28,6 @@ export class ProfilePage {
   imagesRef: string;
   isLoading: boolean;
 
-
   constructor(
     public navCtrl: NavController,
     public dataProvider: DataProvider,
@@ -49,9 +48,11 @@ export class ProfilePage {
 
   previewImage() {
     let profileModal = this.modalCtrl.create(PreviewPage, { images: this.images });
+    profileModal.onDidDismiss(() => {
+      this.profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
+    });
     profileModal.present();
   }
-
 
   getAllImages() {
     this.isLoading = true;
@@ -136,10 +137,6 @@ export class ProfilePage {
 
   getDistance(geo) {
     return this.dataProvider.getLocationFromGeo(geo);
-  }
-
-  getProfilePicture(): string {
-    return `assets/imgs/users/${this.profile.gender}.svg`;
   }
 
   capitalizeFirstLetter(str) {

@@ -6,12 +6,12 @@
 
 <ion-content> 
   <div class="profile" *ngIf="profile">
-    <img class="profile-image animated slideInDown" [src]="getProfilePicture()">
+    <img class="profile-image animated slideInDown" [src]="profile?.profilePic">
     <ion-grid>
       <ion-row>
         <ion-col col-7 class="name animated slideInLeft">
           <p class="nickname">{{capitalizeFirstLetter(profile?.nickname)}}
-            <ion-badge primary>26</ion-badge> 
+            <ion-badge primary>{{profile?.age}}</ion-badge> 
           </p>
           <p class="userType">{{capitalizeFirstLetter(profile?.userType)}}</p>
         </ion-col>
@@ -36,7 +36,7 @@
 
   <div *ngIf="images && !isLoading">
     <div class="pins" padding [@listAnimation]="images.length">
-      <div class="pin" *ngFor="let image of images" (tap)="previewImage()">
+      <div [ngClass]="{'pin': images.length > 2, 'pin-more': images.length <= 2 }" *ngFor="let image of images" (tap)="previewImage()">
         <img [src]="image.path" alt="">
       </div>
     </div>

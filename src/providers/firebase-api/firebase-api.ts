@@ -30,6 +30,7 @@ export class FirebaseApiProvider {
     return dataRef.child(key).update(itemKeyValue);
   }
 
+
   removeItem(ref: string, key: string): Promise<any> {
     const dataRef = this.firebaseRef.ref(`/${ref}`);
     return dataRef.child(key).remove()

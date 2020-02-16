@@ -62,17 +62,17 @@ ion-footer {
 }
 
 .ion-ios-logo, .ion-md-logo {
-	content: url('../../assets/logo-icon.svg');
-	width: 24px;
-	height: 24px;
+	content: url('../../assets/icon.svg');
+	width: 40px;
+	height: 40px;
 }
 .ion-ios-logo-outline {
-	content: url('../../assets/logo-icon.svg');
-	width: 24px;
-	height: 24px;
+	content: url('../../assets/icon.svg');
+	width: 40px;
+	height: 40px;
 }
 .ion-md-logo[ng-reflect-is-active=false]{
-	content: url('../../assets/logo-icon.svg');
-	width: 24px;
-	height: 24px;
+	content: url('../../assets/icon.svg');
+	width: 40px;
+	height: 40px;
 }

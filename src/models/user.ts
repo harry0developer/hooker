@@ -9,6 +9,7 @@ export interface User {
     height: number
     email: string;
     phone: string;
+    profilePic: string;
     password: string;
     uid: string;
     dateCreated: string;

@@ -66,8 +66,30 @@ export class PreviewPage {
     this.slides.slideNext();
   }
 
-  makeProfilePicture() {
-    this.presentActionSheet('Make profile photo');
+  makeProfilePicture(ref) {
+    let toBeProfilePic;
+    this.images.forEach(img => {
+      if (img.url === ref.alt) {
+        toBeProfilePic = img;
+      }
+    });
+    this.presentActionSheet('Make profile photo', 'profile', toBeProfilePic);
+  }
+
+  updateProfilePicture(img) {
+    console.log(img);
+    this.feedbackProvider.presentLoading('Updating profile photo...');
+    const ref = `${COLLECTION.users}`;
+    const key = `${this.profile.uid}`;
+    this.firebaseApiProvider.updateItem(ref, key, { profilePic: img.path }).then(() => {
+      this.feedbackProvider.dismissLoading();
+      this.profile.profilePic = img.path;
+      this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.user, this.profile);
+      this.feedbackProvider.presentToast('Profile photo updated');
+    }).catch(err => {
+      this.feedbackProvider.dismissLoading();
+      console.log('Ooops theres an error', err);
+    });
   }
 
   deleteImage(ref) {
@@ -77,21 +99,25 @@ export class PreviewPage {
         toBeDeleted = img;
       }
     });
-    this.presentActionSheet('Delete photo', toBeDeleted);
+    this.presentActionSheet('Delete photo', 'delete', toBeDeleted);
   }
 
   dismiss() {
     this.viewCtrl.dismiss();
   }
 
-  presentActionSheet(title: string, data = null) {
+  presentActionSheet(title: string, action: string, data) {
     let actionSheet = this.actionSheetCtrl.create({
       title,
       buttons: [
         {
           text: 'Confirm',
           handler: () => {
-            this.removeImage(data);
+            if (action === 'delete') {
+              this.removeImage(data);
+            } else {
+              this.updateProfilePicture(data);
+            }
           }
         },
         {
@@ -104,6 +130,10 @@ export class PreviewPage {
       ]
     });
     actionSheet.present();
+  }
+
+  getProfilePicture(): string {
+    return !!this.profile.profilePic ? this.profile.profilePic : `assets/imgs/users/${this.profile.gender}.svg`;
   }
 
 }

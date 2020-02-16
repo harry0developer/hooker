@@ -52,8 +52,9 @@ export class MyApp {
       this.statusBar.styleLightContent();
       const intro = this.dataProvider.getItemFromLocalStorage(STORAGE_KEY.intro);
       const a = Object.getOwnPropertyNames(intro).length;
-      if (a === 0)
+      if (a === 0) {
         this.openIntroPage();
+      }
     });
   }
 
