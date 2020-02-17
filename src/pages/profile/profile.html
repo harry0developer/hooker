@@ -6,7 +6,7 @@
 
 <ion-content> 
   <div class="profile" *ngIf="profile">
-    <img class="profile-image animated slideInDown" [src]="profile?.profilePic">
+    <img class="profile-image animated slideInDown" [src]="getProfilePicture()">
     <ion-grid>
       <ion-row>
         <ion-col col-7 class="name animated slideInLeft">
@@ -35,8 +35,9 @@
   <!-- <button ion-button (click)="removeItem()">Remove</button> -->
 
   <div *ngIf="images && !isLoading">
-    <div class="pins" padding [@listAnimation]="images.length">
-      <div [ngClass]="{'pin': images.length > 2, 'pin-more': images.length <= 2 }" *ngFor="let image of images" (tap)="previewImage()">
+    <div class="pins" padding>
+      <div [ngClass]="{'pin animated fadeIn': images.length > 2, 'pin-more animated fadeIn': images.length <= 2 }" 
+          *ngFor="let image of images" (tap)="previewImage(image)">
         <img [src]="image.path" alt="">
       </div>
     </div>

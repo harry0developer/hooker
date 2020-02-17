@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { COLLECTION } from '../../utils/consts';
+import { COLLECTION, STORAGE_KEY } from '../../utils/consts';
+import { User } from '../../models/user';
 
 
 @Injectable()
@@ -10,11 +11,15 @@ export class FirebaseApiProvider {
   constructor(public afAuth: AngularFireAuth) {
   }
 
+  getLoggedInUser(): User {
+    return this.getItemFromLocalStorage(STORAGE_KEY.user);
+  }
+
+
   addItem(ref: string, item: any): Promise<any> {
     const dataRef = this.firebaseRef.ref(`/${ref}/${item.uid}`);
     return dataRef.set(item);
   }
-
 
   addImageToRealtimeDB(ref: string, img, imgRef: string): Promise<any> {
     const dataRef = this.firebaseRef.ref(`/${ref}/${imgRef}`);
@@ -25,7 +30,7 @@ export class FirebaseApiProvider {
     return this.firebaseRef.ref(`/${ref}/${key}`).once('value', function (snapshot) { });
   }
 
-  updateItem(ref: string, key: string, itemKeyValue): Promise<any> {
+  updateItem(ref: string, key: string, itemKeyValue: any): Promise<any> {
     const dataRef = this.firebaseRef.ref(`/${ref}`);
     return dataRef.child(key).update(itemKeyValue);
   }

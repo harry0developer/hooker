@@ -6,12 +6,38 @@
 
 <ion-content>
 
-  <ion-list no-lines>
-    <ion-item-divider color="light">Administration</ion-item-divider>
-
-    <ion-item (tap)="logout()">
-      <ion-icon ios="ios-log-out" md="md-log-out" item-start></ion-icon>
-      Logout
+  <ion-list>
+    <ion-item-divider color="light">Preference</ion-item-divider>
+    <ion-item >
+      <ion-icon name="compass" item-start></ion-icon>
+      Allow location
     </ion-item>
+    
+    <ion-item-divider color="light">Account</ion-item-divider>
+    <ion-item >
+      <ion-icon name="contact" item-start></ion-icon>
+      Change password
+    </ion-item>
+
+    <ion-item >
+      <ion-icon name="contact" item-start></ion-icon>
+      Deactivate Account
+    </ion-item>
+    
+    <ion-item-divider color="light">Support</ion-item-divider>
+
+    <ion-item >
+      <ion-icon name="bug" item-start></ion-icon>
+      Report a problem
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="document" item-start></ion-icon>
+      Privary policy
+    </ion-item>
+ 
   </ion-list>
+
+
+  <button ion-button round small (click)='logout()'>Logout</button>
 </ion-content>

@@ -98,4 +98,8 @@ export class AuthProvider {
     const auth = this.afAuth.auth;
     return auth && auth.currentUser && auth.currentUser.emailVerified;
   }
+
+  getCurrentUser() {
+    return this.afAuth.auth;
+  }
 }

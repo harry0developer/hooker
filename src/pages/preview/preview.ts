@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, ActionSheetController, ViewControl
 import { Slides } from 'ionic-angular';
 import { MediaProvider } from '../../providers/media/media';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
-import { COLLECTION, STORAGE_KEY } from '../../utils/consts';
+import { COLLECTION, STORAGE_KEY, ACTION } from '../../utils/consts';
 import { User } from '../../models/user';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 
@@ -22,7 +22,8 @@ export class PreviewPage {
   images = [];
   profile: User;
   @ViewChild(Slides) slides: Slides;
-
+  active: number = 0;
+  activeImgSlide: any;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -33,21 +34,30 @@ export class PreviewPage {
     public feedbackProvider: FeedbackProvider
   ) { }
 
-
-  ionViewWillLoad() {
+  ionViewDidLoad() {
     this.images = this.navParams.get('images');
+    const activeImg = this.navParams.get('active');
+    this.active = this.images.indexOf(activeImg);
     this.profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
   }
 
   removeImage(img) {
-    console.log(img);
     this.feedbackProvider.presentLoading('Deleting photo...');
     this.mediaProvider.removeImageByFilename(img.url).then(r => {
       this.feedbackProvider.dismissLoading();
-      this.viewCtrl.dismiss();
       this.feedbackProvider.presentLoading('Updating profile...');
       this.firebaseApiProvider.removeItem(`${COLLECTION.images}/${this.profile.uid}`, img.key).then(() => {
         this.feedbackProvider.dismissLoading();
+        if (this.profile.profilePic === img.path) {
+          this.profile.profilePic = "";
+        }
+        this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.user, this.profile);
+        this.firebaseApiProvider.updateItem(`${COLLECTION.users}`, `${this.profile.uid}`, { profilePic: '' }).then(() => {
+          console.log('User profile pic update');
+          this.viewCtrl.dismiss(ACTION.delete);
+        }).catch(err => {
+          console.log('user profile pic failed');
+        });
       }).catch(err => {
         this.feedbackProvider.dismissLoading();
         console.log(err);
@@ -66,18 +76,11 @@ export class PreviewPage {
     this.slides.slideNext();
   }
 
-  makeProfilePicture(ref) {
-    let toBeProfilePic;
-    this.images.forEach(img => {
-      if (img.url === ref.alt) {
-        toBeProfilePic = img;
-      }
-    });
-    this.presentActionSheet('Make profile photo', 'profile', toBeProfilePic);
+  slideChanged() {
+    this.activeImgSlide = this.images[this.slides.realIndex];
   }
 
   updateProfilePicture(img) {
-    console.log(img);
     this.feedbackProvider.presentLoading('Updating profile photo...');
     const ref = `${COLLECTION.users}`;
     const key = `${this.profile.uid}`;
@@ -92,14 +95,12 @@ export class PreviewPage {
     });
   }
 
-  deleteImage(ref) {
-    let toBeDeleted;
-    this.images.forEach(img => {
-      if (img.url === ref.alt) {
-        toBeDeleted = img;
-      }
-    });
-    this.presentActionSheet('Delete photo', 'delete', toBeDeleted);
+  makeProfilePicture() {
+    this.presentActionSheet('Make profile photo', 'profile', this.activeImgSlide);
+  }
+
+  deleteImage() {
+    this.presentActionSheet('Delete photo', 'delete', this.activeImgSlide);
   }
 
   dismiss() {
@@ -132,8 +133,6 @@ export class PreviewPage {
     actionSheet.present();
   }
 
-  getProfilePicture(): string {
-    return !!this.profile.profilePic ? this.profile.profilePic : `assets/imgs/users/${this.profile.gender}.svg`;
-  }
+
 
 }

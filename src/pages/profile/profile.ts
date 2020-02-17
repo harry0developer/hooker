@@ -1,9 +1,8 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, Events, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
-import { STORAGE_KEY, COLLECTION, OBJECT_NOT_FOUND } from '../../utils/consts';
+import { STORAGE_KEY, COLLECTION, OBJECT_NOT_FOUND, ACTION } from '../../utils/consts';
 import { User } from '../../models/user';
-import { bounceIn } from '../../utils/animations';
 import { Photo } from '../../models/photo';
 import { MediaProvider } from '../../providers/media/media';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -16,8 +15,7 @@ import { PreviewPage } from '../preview/preview';
 @IonicPage()
 @Component({
   selector: 'page-profile',
-  templateUrl: 'profile.html',
-  animations: [bounceIn]
+  templateUrl: 'profile.html'
 })
 export class ProfilePage {
   profile: User;
@@ -27,7 +25,7 @@ export class ProfilePage {
   images: string[] = [];
   imagesRef: string;
   isLoading: boolean;
-
+  active: any;
   constructor(
     public navCtrl: NavController,
     public dataProvider: DataProvider,
@@ -37,18 +35,20 @@ export class ProfilePage {
     public afDB: AngularFireDatabase,
     public modalCtrl: ModalController,
     public ionEvents: Events, public zone: NgZone) {
-
   }
 
   ionViewDidLoad() {
-    this.profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
+    this.profile = this.firebaseApiProvider.getLoggedInUser();
     this.imagesRef = `${COLLECTION.images}/${this.profile.uid}`;
     this.getAllImages();
   }
 
-  previewImage() {
-    let profileModal = this.modalCtrl.create(PreviewPage, { images: this.images });
-    profileModal.onDidDismiss(() => {
+  previewImage(img) {
+    let profileModal = this.modalCtrl.create(PreviewPage, { images: this.images, active: img });
+    profileModal.onDidDismiss((action) => {
+      if (action === ACTION.delete) {
+        this.profile.profilePic = '';
+      }
       this.profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
     });
     profileModal.present();
@@ -69,27 +69,27 @@ export class ProfilePage {
   downloadImages(images: any[]) {
     this.images = [];
     this.zone.run(() => {
-      images.forEach(img => {
-        this.mediaProvider.getImageByFilename(img.url).then(resImg => {
-          const myImg = { ...img, path: resImg };
-          this.images.push(myImg);
-          this.isLoading = false;
-        }).catch(err => {
-          console.log(err);
-          if (err.code === OBJECT_NOT_FOUND) {
-            this.removeImageKeyFromDB(err.message);
-          }
+      if (images && images.length > 0) {
+        images.forEach(img => {
+          this.mediaProvider.getImageByFilename(img.url).then(resImg => {
+            const myImg = { ...img, path: resImg };
+            this.images.push(myImg);
+            this.isLoading = false;
+          }).catch(err => {
+            console.log(err);
+            if (err.code === OBJECT_NOT_FOUND) {
+              this.removeImageKeyFromDB(err.message);
+            }
+          });
         });
-      });
+      } else {
+        this.isLoading = false;
+      }
     });
   }
 
   removeImageKeyFromDB(errorMessage: string) {
-    console.log(errorMessage);
-
     const imgPath = errorMessage.split("\'")[1].split(".")[0].split("/")[2];
-
-    console.log(imgPath);
     const ref = `${COLLECTION.images}/${this.profile.uid}`;
     this.firebaseApiProvider.removeItem(ref, imgPath).then(() => {
       console.log('Cleaned ...');
@@ -133,6 +133,14 @@ export class ProfilePage {
       this.feedbackProvider.presentToast('An error occured uploading the photo');
     });
 
+  }
+
+  getDefaultProfilePic(): string {
+    return `assets/imgs/users/${this.profile.gender}.svg`;
+  }
+
+  getProfilePicture(): string {
+    return !!this.profile.profilePic ? this.profile.profilePic : `assets/imgs/users/${this.profile.gender}.svg`;
   }
 
   getDistance(geo) {

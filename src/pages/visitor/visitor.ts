@@ -82,7 +82,8 @@ export class VisitorPage {
       dateCreated: this.dataProvider.getDateTime(),
       userType: 'seller',
       location: null,
-      verified: false
+      verified: false,
+      profilePic: ''
     }
     this.firebaseApiProvder.addItem(COLLECTION.users, user).then(r => {
       console.log('User added ', r);

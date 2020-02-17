@@ -40,6 +40,10 @@ export const STORAGE_KEY = {
     verified: 'verified'
 }
 
+export const ACTION = {
+    profile: 'profile',
+    delete: 'delete'
+}
 export const EMAIL_EXISTS = 'auth/email-already-in-use';
 export const USER_NOT_FOUND = 'auth/user-not-found';
 export const INVALID_PASSWORD = 'auth/wrong-password';

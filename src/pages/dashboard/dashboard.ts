@@ -40,7 +40,8 @@ export class DashboardPage {
   ) { }
 
   ionViewWillEnter() {
-    this.profile = this.authProvider.getStoredUser();
+    this.profile = this.firebaseApiProvider.getLoggedInUser();
+    console.log(this.profile);
   }
 
   ionViewDidLoad() {
@@ -57,4 +58,7 @@ export class DashboardPage {
     this.navCtrl.push(ChatPage, { user });
   }
 
+  getProfilePicture(): string {
+    return !!this.profile.profilePic ? this.profile.profilePic : `assets/imgs/users/${this.profile.gender}.svg`;
+  }
 }
