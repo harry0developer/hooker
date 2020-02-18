@@ -56,7 +56,6 @@ import { FirebaseApiProvider } from '../providers/firebase-api/firebase-api';
 import { VisitorPage } from '../pages/visitor/visitor';
 import { FilterPage } from '../pages/filter/filter';
 import { PreviewPage } from '../pages/preview/preview';
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 
 @NgModule({
   declarations: [
@@ -85,7 +84,6 @@ import { EditProfilePage } from '../pages/edit-profile/edit-profile';
     VisitorPage,
     FilterPage,
     PreviewPage,
-    EditProfilePage,
     LoginPage
   ],
   imports: [
@@ -129,7 +127,6 @@ import { EditProfilePage } from '../pages/edit-profile/edit-profile';
     VisitorPage,
     FilterPage,
     PreviewPage,
-    EditProfilePage,
     LoginPage
   ],
   providers: [

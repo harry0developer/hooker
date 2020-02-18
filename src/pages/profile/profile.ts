@@ -10,7 +10,6 @@ import firebase from 'firebase';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { PreviewPage } from '../preview/preview';
-import { EditProfilePage } from '../edit-profile/edit-profile';
 
 
 @IonicPage()
@@ -65,16 +64,6 @@ export class ProfilePage {
       });
       this.downloadImages(tmp);
     });
-  }
-
-  editProfile() {
-    let editProfileModal = this.modalCtrl.create(EditProfilePage, { profile: this.profile });
-    editProfileModal.onDidDismiss((data) => {
-      if (data) {
-        console.log(data);
-      }
-    });
-    editProfileModal.present();
   }
 
   downloadImages(images: any[]) {
