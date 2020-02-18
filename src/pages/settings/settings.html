@@ -11,17 +11,20 @@
     <ion-item >
       <ion-icon name="compass" item-start></ion-icon>
       Allow location
+      <i class="fa fa-chevron-right" item-end></i>
     </ion-item>
     
     <ion-item-divider color="light">Account</ion-item-divider>
     <ion-item >
-      <ion-icon name="contact" item-start></ion-icon>
+      <ion-icon name="unlock" item-start></ion-icon>
       Change password
+      <i class="fa fa-chevron-right" item-end></i>
     </ion-item>
 
-    <ion-item >
-      <ion-icon name="contact" item-start></ion-icon>
+    <ion-item>
+      <ion-icon name="lock" item-start></ion-icon>
       Deactivate Account
+      <i class="fa fa-chevron-right" item-end></i>
     </ion-item>
     
     <ion-item-divider color="light">Support</ion-item-divider>
@@ -29,15 +32,18 @@
     <ion-item >
       <ion-icon name="bug" item-start></ion-icon>
       Report a problem
+      <i class="fa fa-chevron-right" item-end></i>
     </ion-item>
 
     <ion-item>
       <ion-icon name="document" item-start></ion-icon>
       Privary policy
+      <i class="fa fa-chevron-right" item-end></i>
     </ion-item>
  
   </ion-list>
 
-
-  <button ion-button round small (click)='logout()'>Logout</button>
+  <div class="logout">
+    <button ion-button round small block (click)='logout()'>Logout</button>
+  </div>
 </ion-content>

@@ -52,11 +52,11 @@ import { MediaProvider } from '../providers/media/media';
 import { ComponentsModule } from '../components/components.module';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
-import { FirebaseAuthProvider } from '../providers/firebase-auth/firebase-auth';
 import { FirebaseApiProvider } from '../providers/firebase-api/firebase-api';
 import { VisitorPage } from '../pages/visitor/visitor';
 import { FilterPage } from '../pages/filter/filter';
 import { PreviewPage } from '../pages/preview/preview';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 
 @NgModule({
   declarations: [
@@ -85,6 +85,7 @@ import { PreviewPage } from '../pages/preview/preview';
     VisitorPage,
     FilterPage,
     PreviewPage,
+    EditProfilePage,
     LoginPage
   ],
   imports: [
@@ -128,6 +129,7 @@ import { PreviewPage } from '../pages/preview/preview';
     VisitorPage,
     FilterPage,
     PreviewPage,
+    EditProfilePage,
     LoginPage
   ],
   providers: [
@@ -144,7 +146,6 @@ import { PreviewPage } from '../pages/preview/preview';
     LocationProvider,
     Geolocation,
     MediaProvider,
-    FirebaseAuthProvider,
     FirebaseApiProvider
   ]
 })

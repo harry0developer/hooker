@@ -11,13 +11,17 @@ page-profile {
       color: $primary !important;
     }
   }
+  ion-header {
+    .toolbar {
+      position: absolute;
   
-  .header::after {
-      display: none !important; 
-  }
-
-  .header-ios .toolbar-ios:last-child .toolbar-background-ios {
-      border-width: 0 !important;
+      .toolbar-background {
+        background: transparent;
+      }
+      .toolbar-title {
+        color: black;
+      }
+    }
   }
  
   .pins {
@@ -45,20 +49,17 @@ page-profile {
       width: 70px;
     }
   }
-
-  .name {
-    padding-left: 20px;
-  }
-
+ 
   .profile {
+    text-align: center;
+    background-image: url('../../assets/bg-1.png');
+    padding-top: 20%;
     .profile-image {
       border-radius: 100px;
       border: 2px solid $primary;
       width: 60px;
       height: 60px;
       margin: 20px 20px 0 20px;
-
-
     } 
     .nickname {
       font-size: 1.1em;
@@ -72,7 +73,6 @@ page-profile {
     }
   } 
  
-
   .star-icon {
     font-size: $small !important;
     color: $primary !important;

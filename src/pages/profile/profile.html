@@ -1,32 +1,30 @@
 <ion-header>
   <ion-navbar color="dark"> 
     <ion-title>Profile</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only clear (click)="editProfile()">
+        <!-- <i class="fa fa-edit"></i> -->
+        <ion-icon name="menu" item-end></ion-icon>
+
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content> 
   <div class="profile" *ngIf="profile">
     <img class="profile-image animated slideInDown" [src]="getProfilePicture()">
-    <ion-grid>
-      <ion-row>
-        <ion-col col-7 class="name animated slideInLeft">
-          <p class="nickname">{{capitalizeFirstLetter(profile?.nickname)}}
-            <ion-badge primary>{{profile?.age}}</ion-badge> 
-          </p>
-          <p class="userType">{{capitalizeFirstLetter(profile?.userType)}}</p>
-        </ion-col>
-        <ion-col col-5 class="ratings animated slideInRight">
-          <p><ion-badge primary>{{userRating || 0}}</ion-badge> 
-          <rating [float]="true" [(ngModel)]="userRating" [readonly]="true" ></rating></p>
-        </ion-col>
-      </ion-row>
-      <hr>
-      <ion-row class="stats animated bounceIn">
-        <ion-badge primary >{{profile?.gender}}</ion-badge> 
-        <ion-badge primary>{{profile?.race}}</ion-badge> 
-        <ion-badge primary>{{profile?.bodyType}}</ion-badge> 
-      </ion-row>
-    </ion-grid>
+    <div class="name animated slideInLeft">
+      <p class="nickname">{{capitalizeFirstLetter(profile?.nickname)}}
+        <ion-badge primary>{{profile?.age}}</ion-badge> 
+      </p>
+      <p class="userType">{{capitalizeFirstLetter(profile?.userType)}}</p>
+    </div> 
+    <div class="stats animated bounceIn">
+      <ion-badge primary >{{profile?.gender}}</ion-badge> 
+      <ion-badge primary>{{profile?.race}}</ion-badge> 
+      <ion-badge primary>{{profile?.bodyType}}</ion-badge> 
+    </div>
   </div>
 
   <ion-item-divider color="light">My photos</ion-item-divider>
@@ -36,7 +34,7 @@
 
   <div *ngIf="images && !isLoading">
     <div class="pins" padding>
-      <div [ngClass]="{'pin animated fadeIn': images.length > 2, 'pin-more animated fadeIn': images.length <= 2 }" 
+      <div class="animated fadeIn " [ngClass]="{'pin': images.length > 2, 'pin-more': images.length <= 2 }" 
           *ngFor="let image of images" (tap)="previewImage(image)">
         <img [src]="image.path" alt="">
       </div>

@@ -7,9 +7,8 @@ import { TermsPage } from '../terms/terms';
 import { DataProvider } from '../../providers/data/data';
 import { User } from '../../models/user';
 import { TabsPage } from '../tabs/tabs';
-import { FirebaseAuthProvider } from '../../providers/firebase-auth/firebase-auth';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
-import { COLLECTION, STORAGE_KEY } from '../../utils/consts';
+import { STORAGE_KEY } from '../../utils/consts';
 
 @IonicPage()
 @Component({

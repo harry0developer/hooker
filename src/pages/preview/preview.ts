@@ -51,10 +51,10 @@ export class PreviewPage {
         if (this.profile.profilePic === img.path) {
           this.profile.profilePic = "";
         }
+        this.viewCtrl.dismiss(ACTION.delete);
         this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.user, this.profile);
         this.firebaseApiProvider.updateItem(`${COLLECTION.users}`, `${this.profile.uid}`, { profilePic: '' }).then(() => {
           console.log('User profile pic update');
-          this.viewCtrl.dismiss(ACTION.delete);
         }).catch(err => {
           console.log('user profile pic failed');
         });

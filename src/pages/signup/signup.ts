@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { Country } from '../../models/country';
 import { User } from '../../models/user';
 import { NationalityPage } from '../nationality/nationality';
 import { SetupPage } from '../setup/setup';
-import { DataProvider } from '../../providers/data/data';
-import { AuthProvider } from '../../providers/auth/auth';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
-import { EMAIL_EXISTS, MESSAGES, COLLECTION } from '../../utils/consts';
-import { FirebaseAuthProvider } from '../../providers/firebase-auth/firebase-auth';
+import { COLLECTION } from '../../utils/consts';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 
 
@@ -64,7 +60,6 @@ export class SignupPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    private dataProvider: DataProvider,
     private firebaseApiProvider: FirebaseApiProvider,
     public feedbackProvider: FeedbackProvider) {
   }
