@@ -3,25 +3,16 @@ import { Nav, Platform, Events, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { UsersPage } from '../pages/users/users';
-import { RequestsPage } from '../pages/requests/requests';
-import { ProfilePage } from '../pages/profile/profile';
 import { AuthProvider } from '../providers/auth/auth';
 import { FeedbackProvider } from '../providers/feedback/feedback';
-import { MESSAGES, USER_TYPE } from '../utils/consts';
 import { User } from '../models/user';
-import { DashboardPage } from '../pages/dashboard/dashboard';
-import { ViewedPage } from '../pages/viewed/viewed';
-import { RatedPage } from '../pages/rated/rated';
-import { ChatsPage } from '../pages/chats/chats';
 import { DataProvider } from '../providers/data/data';
 
-import { EVENTS, STORAGE_KEY } from '../utils/consts';
+import { STORAGE_KEY, NETWORK } from '../utils/consts';
 import { IntroPage } from '../pages/intro/intro';
 import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
-import { VisitorPage } from '../pages/visitor/visitor';
-import { PreviewPage } from '../pages/preview/preview';
+import { Network } from '@ionic-native/network';
+import { NetworkErrorPage } from '../pages/network-error/network-error';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,7 +24,7 @@ export class MyApp {
 
   pages: any;
   profile: User;
-
+  networkModal = this.modalCtrl.create(NetworkErrorPage);
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
@@ -42,7 +33,8 @@ export class MyApp {
     public feebackProvider: FeedbackProvider,
     public ionEvents: Events,
     public modalCtrl: ModalController,
-    public splashScreen: SplashScreen) {
+    public splashScreen: SplashScreen,
+    private network: Network) {
     this.initializeApp();
   }
 
@@ -55,7 +47,27 @@ export class MyApp {
       if (a === 0) {
         this.openIntroPage();
       }
+      this.network.onchange().subscribe(connection => {
+        if (connection.type.toLowerCase() === NETWORK.offline) {
+          this.handleNetworkError();
+        }
+        else {
+          this.dissmissNetworkErrorPage();
+        }
+      });
+
     });
+  }
+
+  dissmissNetworkErrorPage() {
+    this.networkModal.dismiss();
+  }
+
+  handleNetworkError() {
+    this.networkModal.onDidDismiss((data) => {
+      console.log(data);
+    });
+    this.networkModal.present();
   }
 
   openIntroPage() {

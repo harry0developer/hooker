@@ -15,13 +15,13 @@
     </ion-item>
     
     <ion-item-divider color="light">Account</ion-item-divider>
-    <ion-item >
+    <ion-item (tap)="changePassword()">
       <ion-icon name="unlock" item-start></ion-icon>
       Change password
       <i class="fa fa-chevron-right" item-end></i>
     </ion-item>
 
-    <ion-item>
+    <ion-item (tap)="presentDeactivateAccountActionsheet()">
       <ion-icon name="lock" item-start></ion-icon>
       Deactivate Account
       <i class="fa fa-chevron-right" item-end></i>
@@ -29,13 +29,13 @@
     
     <ion-item-divider color="light">Support</ion-item-divider>
 
-    <ion-item >
+    <ion-item (tap)="reportBug()">
       <ion-icon name="bug" item-start></ion-icon>
       Report a problem
       <i class="fa fa-chevron-right" item-end></i>
     </ion-item>
 
-    <ion-item>
+    <ion-item (tap)="showTermsAndConditions()">
       <ion-icon name="document" item-start></ion-icon>
       Privary policy
       <i class="fa fa-chevron-right" item-end></i>

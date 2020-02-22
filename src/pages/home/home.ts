@@ -25,11 +25,12 @@ export class HomePage {
     public navParams: NavParams,
     public dataProvider: DataProvider,
     public firebaseApiProvider: FirebaseApiProvider) {
-
   }
 
   ionViewDidLoad() {
     const profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
+    console.log(this.profile);
+
     if (profile && profile.uid) {
       this.navigate(profile);
     }

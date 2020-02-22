@@ -44,6 +44,12 @@ export const ACTION = {
     profile: 'profile',
     delete: 'delete'
 }
+
+export const NETWORK = {
+    online: 'online',
+    offline: 'offline'
+}
+
 export const EMAIL_EXISTS = 'auth/email-already-in-use';
 export const USER_NOT_FOUND = 'auth/user-not-found';
 export const INVALID_PASSWORD = 'auth/wrong-password';

@@ -14,6 +14,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { firebaseConfig } from '../config';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { Network } from '@ionic-native/network';
 
 import { BrMaskerModule } from 'brmasker-ionic-3';
 import { HttpClientModule } from '@angular/common/http';
@@ -56,6 +57,9 @@ import { FirebaseApiProvider } from '../providers/firebase-api/firebase-api';
 import { VisitorPage } from '../pages/visitor/visitor';
 import { FilterPage } from '../pages/filter/filter';
 import { PreviewPage } from '../pages/preview/preview';
+import { NetworkErrorPage } from '../pages/network-error/network-error';
+import { ChangePasswordPage } from '../pages/change-password/change-password';
+import { ReportBugPage } from '../pages/report-bug/report-bug';
 
 @NgModule({
   declarations: [
@@ -84,6 +88,9 @@ import { PreviewPage } from '../pages/preview/preview';
     VisitorPage,
     FilterPage,
     PreviewPage,
+    ChangePasswordPage,
+    NetworkErrorPage,
+    ReportBugPage,
     LoginPage
   ],
   imports: [
@@ -127,6 +134,9 @@ import { PreviewPage } from '../pages/preview/preview';
     VisitorPage,
     FilterPage,
     PreviewPage,
+    ChangePasswordPage,
+    NetworkErrorPage,
+    ReportBugPage,
     LoginPage
   ],
   providers: [
@@ -143,7 +153,8 @@ import { PreviewPage } from '../pages/preview/preview';
     LocationProvider,
     Geolocation,
     MediaProvider,
-    FirebaseApiProvider
+    FirebaseApiProvider,
+    Network
   ]
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, Events, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { SellerDetailsPage } from '../seller-details/seller-details';
@@ -8,11 +8,11 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { MediaProvider } from '../../providers/media/media';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { Photo } from '../../models/photo';
-import firebase from 'firebase';
 import { bounceIn } from '../../utils/animations';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { FilterPage } from '../filter/filter';
 import { Filter } from '../../models/filter';
+import firebase from 'firebase';
 
 
 @IonicPage()
@@ -42,14 +42,17 @@ export class SellersPage {
     public feedbackProvider: FeedbackProvider,
     public mediaProvider: MediaProvider,
     public modalCtrl: ModalController,
-    public firebaseApiProvider: FirebaseApiProvider) {
+    public firebaseApiProvider: FirebaseApiProvider,
+    public zone: NgZone) {
   }
 
   ionViewDidLoad() {
     const ref = this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`);
     ref.on("value", snap => {
-      this.sellers = this.snapshotToArray(snap);
-      this.isLoading = false;
+      this.zone.run(() => {
+        this.sellers = this.snapshotToArray(snap);
+        this.isLoading = false;
+      });
     });
   }
 

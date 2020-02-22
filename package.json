@@ -23,13 +23,16 @@
     "@ionic-native/camera": "^4.20.0",
     "@ionic-native/core": "4.20.0",
     "@ionic-native/geolocation": "^4.20.0",
+    "@ionic-native/network": "^4.20.0",
     "@ionic-native/splash-screen": "4.20.0",
     "@ionic-native/status-bar": "4.20.0",
     "@ionic/storage": "2.2.0",
     "brmasker-ionic-3": "^1.6.3",
     "cordova-browser": "6.0.0",
+    "cordova-ios": "5.1.1",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-geolocation": "^4.0.2",
+    "cordova-plugin-network-information": "^2.0.2",
     "firebase": "^7.7.0",
     "ionic-angular": "3.9.9",
     "ionicons": "3.0.0",
@@ -62,10 +65,12 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-network-information": {}
     },
     "platforms": [
-      "browser"
+      "browser",
+      "ios"
     ]
   }
 }

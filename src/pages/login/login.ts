@@ -182,10 +182,6 @@ export class LoginPage {
   //   });
   // }
 
-  cancelLogin() {
-    this.navCtrl.pop();
-  }
-
   showPassword() {
     this.showPass = !this.showPass;
     if (this.showPass) {
