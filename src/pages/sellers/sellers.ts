@@ -1,13 +1,14 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, Events, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { SellerDetailsPage } from '../seller-details/seller-details';
-import { COLLECTION, USER_TYPE, EVENTS } from '../../utils/consts';
+import { COLLECTION, USER_TYPE, MESSAGES } from '../../utils/consts';
 import { User } from '../../models/user';
 import { AuthProvider } from '../../providers/auth/auth';
 import { MediaProvider } from '../../providers/media/media';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { Photo } from '../../models/photo';
+import { UserLocation, Geo } from '../../models/location';
 import { bounceIn } from '../../utils/animations';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { FilterPage } from '../filter/filter';
@@ -35,6 +36,10 @@ export class SellersPage {
     age: 99,
     race: 'all'
   };
+  locationAccess: {
+    allowed: boolean,
+    msg: string;
+  };
   constructor(
     public navCtrl: NavController,
     public dataProvider: DataProvider,
@@ -47,6 +52,13 @@ export class SellersPage {
   }
 
   ionViewDidLoad() {
+    this.profile = this.firebaseApiProvider.getLoggedInUser();
+    console.log(this.profile);
+
+    this.locationAccess = {
+      allowed: this.profile.location && this.profile.location.geo ? true : false,
+      msg: MESSAGES.locationAccessError
+    }
     const ref = this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`);
     ref.on("value", snap => {
       this.zone.run(() => {
@@ -54,6 +66,11 @@ export class SellersPage {
         this.isLoading = false;
       });
     });
+  }
+
+  calculateUserDistance(user: User): User {
+    user.distance = this.dataProvider.getLocationFromGeo(this.profile.location.geo, user.location.geo);
+    return user;
   }
 
   filterUsers() {
@@ -122,7 +139,12 @@ export class SellersPage {
     this.navCtrl.push(SellerDetailsPage, { user });
   }
 
-  getDistance(geo) {
-    return this.dataProvider.getLocationFromGeo(geo);
+  getDistance(user): string {
+    if (this.dataProvider.hasLocation(this.profile, user)) {
+      const distance = this.dataProvider.getLocationFromGeo(this.profile.location.geo, user.location.geo);
+      return distance;
+    } else {
+      return null;
+    }
   }
 }

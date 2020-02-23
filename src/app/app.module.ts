@@ -26,7 +26,6 @@ import { SignupPage } from '../pages/signup/signup';
 import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
 
 import { RatingModule } from "ngx-rating";
-import { RequestsPage } from '../pages/requests/requests';
 import { ProfilePage } from '../pages/profile/profile';
 import { ChatPage } from '../pages/chat/chat';
 import { ImagePage } from '../pages/image/image';
@@ -68,7 +67,6 @@ import { ReportBugPage } from '../pages/report-bug/report-bug';
     SettingsPage,
     SignupPage,
     ForgotPasswordPage,
-    RequestsPage,
     ProfilePage,
     ChatPage,
     ImagePage,
@@ -114,7 +112,6 @@ import { ReportBugPage } from '../pages/report-bug/report-bug';
     SettingsPage,
     SignupPage,
     ForgotPasswordPage,
-    RequestsPage,
     ProfilePage,
     ChatPage,
     ImagePage,

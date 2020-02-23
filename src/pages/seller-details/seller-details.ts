@@ -10,6 +10,7 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { User } from '../../models/user';
 import { UserLocation } from '../../models/location';
 import { AuthProvider } from '../../providers/auth/auth';
+import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 
 @IonicPage()
 @Component({
@@ -26,18 +27,27 @@ export class SellerDetailsPage {
   allRatings: any[] = [];
   isLoading: boolean = false;
   allRatingsSubscription$: Observable<any>;
-
+  locationAllowed: boolean;
+  locationAccess: {
+    allowed: boolean,
+    msg: string;
+  };
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
     public feedbackProvider: FeedbackProvider,
+    public firebaseApiProvider: FirebaseApiProvider,
     public dataProvider: DataProvider,
     public authProvider: AuthProvider) {
   }
 
   ionViewDidLoad() {
     this.profile = this.authProvider.getStoredUser();
+    this.locationAccess = {
+      allowed: this.profile.location && this.profile.location.geo ? true : false,
+      msg: MESSAGES.locationAccessError
+    }
     this.user = this.navParams.get('user');
     this.img = `assets/imgs/users/user3.jpg`;
   }
@@ -50,13 +60,14 @@ export class SellerDetailsPage {
     return this.dataProvider.getAgeFromDate(date);
   }
 
-  getDistance(loc) {
-    if (loc && loc.geo.lat && loc.geo.lng) {
-      return this.dataProvider.getLocationFromGeo(loc);
+  getDistance(user: User) {
+    if (this.dataProvider.hasLocation(user, this.profile)) {
+      return this.dataProvider.getLocationFromGeo(this.profile.location.geo, user.location.geo);
     } else {
-      return 'Unknown';
+      return null;
     }
   }
+
 
   openChats() {
     this.navCtrl.push(ChatPage);

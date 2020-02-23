@@ -31,7 +31,8 @@ export const MESSAGES = {
     emailAlreadyRegistered: 'Email address is already registered, please login.',
     emailNotRegistered: 'Username and password does not match',
     phoneNotRegistered: 'Phone number provided is not registered',
-    phoneAlreadyRegistered: 'Phone number is already registered, please login.'
+    phoneAlreadyRegistered: 'Phone number is already registered, please login.',
+    locationAccessError: 'Please allow access to your location'
 }
 
 export const STORAGE_KEY = {

@@ -142,13 +142,8 @@ export class ProfilePage {
   getProfilePicture(): string {
     return !!this.profile.profilePic ? this.profile.profilePic : `assets/imgs/users/${this.profile.gender}.svg`;
   }
-
-  getDistance(geo) {
-    return this.dataProvider.getLocationFromGeo(geo);
-  }
-
-  capitalizeFirstLetter(str) {
-    return this.firebaseApiProvider.capitalizeFirstLetter(str)
+  capitalizeFirstLetter(str): string {
+    return this.dataProvider.capitalizeFirstLetter(str);
   }
 
 }

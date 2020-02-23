@@ -78,6 +78,9 @@ page-seller-details {
       margin-top: 0;
       padding-top: 2px;
     }
+    i {
+      color: $primary;
+    }
   }
 
   .btn-group {
@@ -97,6 +100,14 @@ page-seller-details {
         color: $primary;
     }
   }
+
+  .location-error{
+    color: $primary;
+    i {
+        padding-right: 4px;;
+    }
+  }
+
 
   ion-fab[bottom] {
     bottom: 110px;

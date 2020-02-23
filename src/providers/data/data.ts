@@ -10,6 +10,7 @@ import * as moment from 'moment'
 import { HttpClient } from '@angular/common/http';
 import { Ratings } from '../../models/ratings';
 import { Events } from 'ionic-angular';
+import { Geo } from '../../models/location';
 
 @Injectable()
 export class DataProvider {
@@ -50,7 +51,7 @@ export class DataProvider {
   isLoggedIn(): boolean {
     return !!this.getStoredUser();
   }
-  
+
   updateUserData(userData: UserData) {
     this.userData = new UserData(userData);
     this.userDataSubject.next(userData);
@@ -105,7 +106,7 @@ export class DataProvider {
         });
       })
     );
-  } 
+  }
 
   getItemById(collectionName: string, id: string) {
     return this.afStore.collection(collectionName).doc<any>(id).valueChanges();
@@ -144,15 +145,15 @@ export class DataProvider {
       return JSON.parse(data);
     }
   }
-  
+
   addItemToLocalStorage(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
-  addItemToUserDB(collection: string, user: any, newItem: any){
+  addItemToUserDB(collection: string, user: any, newItem: any) {
     const key = new Date().getTime().toString();
     this.getDocumentFromCollectionById(collection, user.uid).subscribe(items => {
-      if (!!items) {  
+      if (!!items) {
         const data: Object = items;
         const newItems = { ...data, [key]: newItem };
         this.updateCollection(collection, newItems, user.uid).then(res => {
@@ -162,9 +163,9 @@ export class DataProvider {
         })
       } else { //Job is NOT root document eg /viewed-jobs/otherjobIdNotThisOne
         const newItems = { [key]: newItem };
-         this.updateCollection(collection, newItems, user.uid).then(res => {
+        this.updateCollection(collection, newItems, user.uid).then(res => {
           this.ionEvents.publish(EVENTS.imageUploadSuccess, res);
-         }).catch(err => {
+        }).catch(err => {
           this.ionEvents.publish(EVENTS.imageUploadError, err);
         });
       }
@@ -237,8 +238,8 @@ export class DataProvider {
   addUserImage(collection: string, images, newImage: any, rootKey: string): Promise<any> {
     const key = new Date().getTime().toString();
     if (!!images) {
-        const newImages = { ...images, [key]: newImage };
-      return  this.updateCollection(collection, newImages, rootKey);
+      const newImages = { ...images, [key]: newImage };
+      return this.updateCollection(collection, newImages, rootKey);
     } else { //Job is NOT root document eg /viewed-services/otherjobIdNotThisOne
       const newImageObject = { [key]: newImage }; // team = {[var]: '', id: 1}
       return this.updateCollection(collection, newImageObject, rootKey);
@@ -312,28 +313,22 @@ export class DataProvider {
     return str ? str.charAt(0).toUpperCase() + str.substring(1) : str;
   }
 
-  getDistanceBetweenPoints(start, end, units) {
-    let earthRadius = {
+  private getDistanceBetweenPoints(start: Geo, end: Geo, units) {
+    let EARTH_RADIUS = {
       miles: 3958.8,
       km: 6371
     };
-
-    let R = earthRadius[units || 'miles'];
-    let lat1 = start.lat;
-    let lon1 = start.lng;
-    let lat2 = end.lat;
-    let lon2 = end.lng;
-
-    let dLat = this.toRad((lat2 - lat1));
-    let dLon = this.toRad((lon2 - lon1));
+    const RADIUS = EARTH_RADIUS[units || 'miles'];
+    let dLat = this.toRad((end.lat - start.lat));
+    let dLon = this.toRad((end.lng - start.lng));
     let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) *
+      Math.cos(this.toRad(start.lat)) * Math.cos(this.toRad(end.lat)) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    let d = R * c;
+    const distance = RADIUS * c;
 
-    return d * this.KM; //convert miles to km
+    return distance * this.KM; //convert miles to km
   }
 
   toRad(x) {
@@ -346,15 +341,16 @@ export class DataProvider {
     return moment(date, "YYYY/MM/DD").month(0).from(moment().month(0)).split(" ")[0];
   }
 
-  getLocationFromGeo(geo) {
-    const myLocation = {
-      lat: -25.850187,
-      lng: 28.998042
-    };
-    return this.getDistanceBetweenPoints(myLocation, geo, 'miles').toFixed(0);;
+  getLocationFromGeo(myGeo: Geo, otherGeo: Geo): string {
+    return this.getDistanceBetweenPoints(myGeo, otherGeo, 'miles').toFixed(0);;
   }
 
   getCountries() {
     return this.http.get('assets/countries.json').toPromise();
+  }
+
+  hasLocation(profile: User, user: User): boolean {
+    return user.location && user.location.geo && user.location.geo.lat && user.location.geo.lng
+      && profile.location && profile.location.geo && profile.location.geo.lat && profile.location.geo.lng ? true : false;
   }
 }

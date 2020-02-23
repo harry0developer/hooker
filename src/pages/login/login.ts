@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
-import { Country } from '../../models/country';
 import { User } from '../../models/user';
 import { NationalityPage } from '../nationality/nationality';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { AuthProvider } from '../../providers/auth/auth';
-import { take } from 'rxjs/operators';
-import { STORAGE_KEY, USER_NOT_FOUND, MESSAGES, INVALID_PASSWORD, USER_TYPE, EVENTS, COLLECTION } from '../../utils/consts';
-import { DashboardPage } from '../dashboard/dashboard';
-import { SellersPage } from '../sellers/sellers';
+import { STORAGE_KEY, MESSAGES, COLLECTION } from '../../utils/consts';
 import { LocationProvider } from '../../providers/location/location';
 import { TabsPage } from '../tabs/tabs';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
@@ -121,6 +117,7 @@ export class LoginPage {
         {
           text: 'Ok',
           handler: () => {
+            user.location = null;
             this.navigate(user);
           }
         }

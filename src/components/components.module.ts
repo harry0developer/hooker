@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { SkeletonItemComponent } from './skeleton-item/skeleton-item';
+import { LocationStatusComponent } from './location-status/location-status';
 @NgModule({
-	declarations: [SkeletonItemComponent],
+	declarations: [SkeletonItemComponent,
+    LocationStatusComponent],
 	imports: [IonicModule],
-	exports: [SkeletonItemComponent]
+	exports: [SkeletonItemComponent,
+    LocationStatusComponent]
 })
 export class ComponentsModule {}

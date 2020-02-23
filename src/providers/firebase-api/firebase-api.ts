@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
+
 import { AngularFireAuth } from '@angular/fire/auth';
-import { COLLECTION, STORAGE_KEY } from '../../utils/consts';
+import { STORAGE_KEY } from '../../utils/consts';
 import { User } from '../../models/user';
 
 
@@ -62,10 +63,6 @@ export class FirebaseApiProvider {
 
   addItemToLocalStorage(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(data));
-  }
-
-  capitalizeFirstLetter(str: string): string {
-    return str ? str.charAt(0).toUpperCase() + str.substring(1) : str;
   }
 
 }

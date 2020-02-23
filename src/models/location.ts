@@ -1,8 +1,9 @@
 
 export interface UserLocation {
     address: string;
-    geo: {
-        lat: number,
-        lng: number;
-    }
-} 
+    geo: Geo;
+}
+export interface Geo {
+    lat: number,
+    lng: number;
+}

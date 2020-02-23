@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, ModalController, AlertController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { SellerDetailsPage } from '../seller-details/seller-details';
 import { COLLECTION, USER_TYPE, EVENTS } from '../../utils/consts';
@@ -13,6 +13,8 @@ import { bounceIn } from '../../utils/animations';
 import { FilterPage } from '../filter/filter';
 import firebase from 'firebase';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
+import { LocationProvider } from '../../providers/location/location';
+import { Geo } from '../../models/location';
 
 @IonicPage()
 @Component({
@@ -31,7 +33,8 @@ export class VisitorPage {
     distance: 100,
     age: 99,
     race: 'all'
-  }
+  };
+  geo: Geo;
   constructor(
     public navCtrl: NavController,
     public dataProvider: DataProvider,
@@ -39,64 +42,39 @@ export class VisitorPage {
     public feedbackProvider: FeedbackProvider,
     public mediaProvider: MediaProvider,
     public modalCtrl: ModalController,
-    public firebaseApiProvder: FirebaseApiProvider
+    public firebaseApiProvder: FirebaseApiProvider,
+    public locationProvider: LocationProvider,
+    public alertCtrl: AlertController
   ) {
   }
 
   ionViewDidLoad() {
-    this.profile = this.authProvider.getStoredUser();
-    this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(users => {
-      this.sellers = users;
-      this.isLoading = false;
-    });
-
-    this.dataProvider.getAllFromCollection(COLLECTION.images).subscribe(r => {
-      console.log(r);
-
-      // const myOldImages = r.filter(a => a.id === this.profile.uid);
-      // if(myOldImages.length > 0 && myOldImages[0]) {
-      //   delete myOldImages[0].id;
-      //   this.oldImages = this.dataProvider.getArrayFromObjectList(myOldImages[0]);
-      //   console.log(this.oldImages);
-      //   this.downloadImages();
-      // } else {
-      //   this.oldImages = this.dataProvider.getArrayFromObjectList(myOldImages[0]);
-      //   console.log(this.oldImages);
-      //   this.downloadImages();
-      // }
+    this.locationProvider.getLocation().then(res => {
+      this.feedbackProvider.dismissLoading();
+      this.geo = {
+        lat: res.coords.latitude,
+        lng: res.coords.longitude
+      }
+      //load user
+    }).catch(err => {
+      this.feedbackProvider.dismissLoading();
+      this.handleLocationError();
+      //load user
     });
   }
 
-  addUsers() {
-    const user: User = {
-      nickname: 'Jon',
-      gender: 'male',
-      age: 34,
-      race: 'black',
-      bodyType: 'fat',
-      height: 160,
-      email: 'jon@test.com',
-      phone: '078000778888',
-      password: '123456',
-      uid: 'Jondfcgda24gfd24ad',
-      dateCreated: this.dataProvider.getDateTime(),
-      userType: 'seller',
-      location: null,
-      verified: false,
-      profilePic: ''
-    }
-    this.firebaseApiProvder.addItem(COLLECTION.users, user).then(r => {
-      console.log('User added ', r);
 
-    })
-  }
-
-  updateUser() {
-    const key = "Jondfcgda24gfd24ad";
-    this.firebaseApiProvder.updateItem(COLLECTION.users, key, { height: 182 }).then(r => {
-      console.log('User updated ', r);
-
-    })
+  handleLocationError() {
+    const confirm = this.alertCtrl.create({
+      title: 'Location error',
+      message: 'Ooops, we could not get your current location, please allow access to your location',
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+    confirm.present();
   }
 
   capitalizeFirstLetter(str: string): string {
@@ -181,7 +159,7 @@ export class VisitorPage {
     this.navCtrl.push(SellerDetailsPage, { user });
   }
 
-  getDistance(geo) {
-    return this.dataProvider.getLocationFromGeo(geo);
+  getDistance(user) {
+    return this.dataProvider.getLocationFromGeo(this.geo, user.location);
   }
 }

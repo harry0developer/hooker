@@ -2,9 +2,11 @@
   <ion-navbar >
     <ion-title>{{ capitalizeFirstLetter(user?.nickname) }}</ion-title>
   </ion-navbar>
+ 
 </ion-header>
   
 <ion-content>
+
   <ion-slides pager>
     <ion-slide>
       <img src="assets/imgs/users/user1.jpg"> 
@@ -23,9 +25,13 @@
     <h2>{{capitalizeFirstLetter(user?.nickname)}} 
       <ion-badge color="primary" class="age">{{user?.age}}</ion-badge>
     </h2>
-    <p class="distance"> 
+    <p class="distance" *ngIf="locationAccess.allowed"> 
       <i class="fa fa-map-marker"></i>
-      <span>{{getDistance()}} </span>km away
+      <span>{{getDistance(user)}} </span>km away
+    </p>
+    <p class="location-error" *ngIf="!locationAccess.allowed">
+      <i class="fa fa-location-arrow" item-start></i>
+      {{locationAccess.msg}}
     </p>
     <p>{{user?.description}}</p> 
 

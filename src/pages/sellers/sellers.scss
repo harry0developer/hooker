@@ -11,6 +11,9 @@ page-sellers {
             height: 60px !important;
             border: 2px solid $primary;
         }
+        ion-badge {
+            margin-left: 10px;
+        }
         i {
             color: $primary;
             padding-right: 4px;
@@ -35,7 +38,6 @@ page-sellers {
         }
 
         .distance {
-            padding-top: 10px;
             span {
                 font-weight: bold;
                 color: $primary;
@@ -43,6 +45,16 @@ page-sellers {
         }
     }
 
+    .allow-location {
+        padding: 20px;
+        color: $white;
+        text-align: center;
+        background-color: $secondary;
+        font-size: 1em;
+        i {
+            padding-right: 4px;;
+        }
+    }
 
 	skeleton-item.sk-item-end {
 		div:first-child {

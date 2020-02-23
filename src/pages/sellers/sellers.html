@@ -10,6 +10,10 @@
 </ion-header>
  
 <ion-content>
+  <div class="allow-location animated slideInDown" *ngIf="!locationAccess?.allowed"> 
+    <i class="fa fa-location-arrow" item-start></i>
+    {{locationAccess?.msg}}
+  </div>
   <ion-list *ngIf="isLoading">
     <ion-card *ngFor="let i of [1,2,3,4,5,6]">
       <ion-item>
@@ -36,17 +40,18 @@
 
   <ion-list *ngIf="!isLoading" class="user" [@listAnimation]="sellers.length">
     <ion-card  *ngFor="let user of sellers">
-      <ion-item (tap)="viewUserProfile(user)">
+      <ion-item (tap)="viewUserProfile(user)" *ngIf="user">
         <ion-avatar item-start>
           <img src="assets/imgs/users/{{user.gender}}.svg">
         </ion-avatar>
         <h2 class="name">
           {{user?.nickname}} 
+          <ion-badge primary>{{user?.age}}</ion-badge> 
         </h2>
         <p class="description">{{user?.description}}</p>
-        <p class="distance"> 
+        <p class="distance" *ngIf="locationAccess?.allowed"> 
           <i class="fa fa-map-marker"></i>
-          <span *ngIf="user.location && user.location.geo">{{getDistance(user?.location?.geo)}} </span>km away
+          <span> {{getDistance(user)}} </span> km away
         </p>
         <p item-end>
           <i class="fa fa-chevron-right"></i>
