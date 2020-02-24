@@ -10,6 +10,7 @@ import { SellersPage } from '../sellers/sellers';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { TabsPage } from '../tabs/tabs';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage()
 @Component({
@@ -48,6 +49,7 @@ export class SetupPage {
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
+    public authProvider: AuthProvider,
     public dataProvider: DataProvider,
     public feedbackProvider: FeedbackProvider,
     public firebaseApiProvider: FirebaseApiProvider) {
@@ -74,21 +76,18 @@ export class SetupPage {
 
   completeSignup() {
     this.feedbackProvider.presentLoading();
-    this.firebaseApiProvider.signupWithEmailAndPassword(this.data.email, this.data.password).then((u) => {
-      this.data.uid = u.user.uid
-      this.data.dateCreated = this.dataProvider.getDateTime();
-      this.firebaseApiProvider.addItem(COLLECTION.users, this.data).then(() => {
-        this.feedbackProvider.dismissLoading();
+    this.authProvider.signUpWithEmailAndPassword(this.data.email, this.data.password).then(res => {
+      this.feedbackProvider.dismissLoading();
+      this.data.uid = res.user.uid;
+      this.dataProvider.addNewItem(COLLECTION.users, this.data).then(() => {
         this.navCtrl.setRoot(TabsPage, { user: this.data });
       }).catch(err => {
-        this.feedbackProvider.dismissLoading();
         this.feedbackProvider.presentAlert(MESSAGES.signupFailed, 'Oops something went wrong, please try again');
-      })
+        console.log(err);
+      });
     }).catch(err => {
       this.feedbackProvider.dismissLoading();
-      if (err.code === EMAIL_EXISTS) {
-        this.feedbackProvider.presentAlert(MESSAGES.signupFailed, MESSAGES.emailAlreadyRegistered);
-      }
+      console.log(err);
     });
   }
 

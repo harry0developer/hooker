@@ -4,10 +4,12 @@ import { User } from '../../models/user';
 import { NationalityPage } from '../nationality/nationality';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { AuthProvider } from '../../providers/auth/auth';
-import { STORAGE_KEY, MESSAGES, COLLECTION } from '../../utils/consts';
+import { STORAGE_KEY, MESSAGES, COLLECTION, USER_NOT_FOUND, INVALID_PASSWORD } from '../../utils/consts';
 import { LocationProvider } from '../../providers/location/location';
 import { TabsPage } from '../tabs/tabs';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
+import { DataProvider } from '../../providers/data/data';
+import { take } from 'rxjs/operators';
 
 
 @IonicPage()
@@ -48,7 +50,7 @@ export class LoginPage {
     public feedbackProvider: FeedbackProvider,
     public authProvider: AuthProvider,
     public locationProvider: LocationProvider,
-    public firebaseApiProvider: FirebaseApiProvider,
+    public dataProvider: DataProvider,
     public alertCtrl: AlertController) {
   }
 
@@ -61,52 +63,24 @@ export class LoginPage {
   }
 
   loginWithEmailAndPassword() {
-    let results;
-    let user: User;
     this.feedbackProvider.presentLoading();
-    this.authProvider.signInWithEmailAndPassword(this.data.email, this.data.password).then(credUser => {
-      results = credUser.user;
-      this.firebaseApiProvider.getItem(COLLECTION.users, results.uid).then(regUser => {
-        user = regUser.val();
-        user.uid = results.uid;
-        this.locationProvider.getLocation().then(res => {
-          this.feedbackProvider.dismissLoading();
-          const loc = {
-            lat: res.coords.latitude,
-            lng: res.coords.longitude
-          }
-          user.location.geo = loc;
-          this.navigate(user);
-        }).catch(err => {
-          this.feedbackProvider.dismissLoading();
-          this.handleLocationError(user);
-
-        });
-      }).catch(err => {
+    this.authProvider.signInWithEmailAndPassword(this.data.email, this.data.password).then(res => {
+      this.dataProvider.getCollectionByKeyValuePair(COLLECTION.users, 'uid', res.user.uid).pipe(take(1)).subscribe(r => {
+        console.log(r);
         this.feedbackProvider.dismissLoading();
-        this.feedbackProvider.presentAlert(MESSAGES.loginFailed, MESSAGES.oops);
+        this.dataProvider.addItemToLocalStorage(STORAGE_KEY.verified, res.user.emailVerified);
+        this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, r[0]);
+        this.navigate(r[0]);
+      }, err => {
+        this.feedbackProvider.dismissLoading();
+        this.feedbackProvider.presentToast(MESSAGES.oops);
       });
     }).catch(err => {
       this.feedbackProvider.dismissLoading();
-      this.feedbackProvider.presentAlert(MESSAGES.loginFailed, MESSAGES.oops);
-    })
-
-    // this.authProvider.signInWithEmailAndPassword(this.data.email, this.data.password).then(res => {
-    //   this.dataProvider.getUserById(res.user.uid).pipe(take(1)).subscribe(user => {
-    //     this.feedbackProvider.dismissLoading();
-    //     const isVerified = this.authProvider.isUserVerified();
-    //     this.dataProvider.addItemToLocalStorage(STORAGE_KEY.verified, isVerified);
-    //     this.navigate(user);
-    //   }, err => {
-    //     this.feedbackProvider.dismissLoading();
-    //     this.feedbackProvider.presentToast(MESSAGES.oops);
-    //   });
-    // }).catch(err => {
-    //   this.feedbackProvider.dismissLoading();
-    //   if (err.code === USER_NOT_FOUND || err.code == INVALID_PASSWORD) {
-    //     this.feedbackProvider.presentErrorAlert(MESSAGES.loginFailed, MESSAGES.emailNotRegistered);
-    //   }
-    // });
+      if (err.code === USER_NOT_FOUND || err.code == INVALID_PASSWORD) {
+        this.feedbackProvider.presentErrorAlert(MESSAGES.loginFailed, MESSAGES.emailNotRegistered);
+      }
+    });
   }
 
   handleLocationError(user) {
@@ -127,7 +101,7 @@ export class LoginPage {
   }
 
   navigate(user) {
-    this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.user, user);
+    this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, user);
     this.navCtrl.setRoot(TabsPage, { user });
   }
 

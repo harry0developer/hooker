@@ -53,19 +53,47 @@ export class SellersPage {
 
   ionViewDidLoad() {
     this.profile = this.firebaseApiProvider.getLoggedInUser();
-    console.log(this.profile);
-
-    this.locationAccess = {
-      allowed: this.profile.location && this.profile.location.geo ? true : false,
-      msg: MESSAGES.locationAccessError
-    }
-    const ref = this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`);
-    ref.on("value", snap => {
-      this.zone.run(() => {
-        this.sellers = this.snapshotToArray(snap);
-        this.isLoading = false;
-      });
+    this.isLoading = true;
+    this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(users => {
+      this.sellers = users.filter(u => u.userType === USER_TYPE.seller);
+      this.locationAccess = {
+        allowed: this.profile.location && this.profile.location.geo ? true : false,
+        msg: MESSAGES.locationAccessError
+      }
+      this.isLoading = false;
     });
+    // this.locationAccess = {
+    //   allowed: this.profile.location && this.profile.location.geo ? true : false,
+    //   msg: MESSAGES.locationAccessError
+    // }
+    // const ref = this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`);
+    // ref.on("value", snap => {
+    //   this.zone.run(() => {
+    //     this.sellers = this.snapshotToArray(snap);
+    //     this.isLoading = false;
+    //   });
+    // });
+  }
+
+  getUserProfile(user: User) {
+    console.log(user);
+    const imagesRef = `${COLLECTION.images}/${user.uid}`;
+
+    const firebaseDBRef = firebase.database().ref(`${imagesRef}`);
+
+    firebaseDBRef.on('value', tasksnap => {
+      let tmp = [];
+      tasksnap.forEach(taskData => {
+        tmp.push({ key: taskData.key, ...taskData.val() })
+      });
+
+      console.log(tmp);
+
+      // this.downloadImages(tmp);
+
+    });
+
+
   }
 
   calculateUserDistance(user: User): User {
@@ -116,22 +144,22 @@ export class SellersPage {
   }
 
   uploadPhotoAndUpdateUserDatabase(oldImages, newImage): any {
-    this.feedbackProvider.presentLoading('Please wait, Uploading...');
-    let storageRef = firebase.storage().ref();
-    const filename = Math.floor(Date.now() / 1000);
-    const imageRef = storageRef.child(`${this.profile.uid}/${filename}.jpg`);
+    // this.feedbackProvider.presentLoading('Please wait, Uploading...');
+    // let storageRef = firebase.storage().ref();
+    // const filename = Math.floor(Date.now() / 1000);
+    // const imageRef = storageRef.child(`${this.profile.uid}/${filename}.jpg`);
 
-    imageRef.putString(newImage, firebase.storage.StringFormat.DATA_URL).then(() => {
-      this.feedbackProvider.dismissLoading();
-      const newImageObject: Photo = {
-        url: filename + '.jpg',
-        dateCreated: this.dataProvider.getDateTime()
-      }
-      this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImageObject);
-    }).catch(err => {
-      this.feedbackProvider.dismissLoading();
-      this.feedbackProvider.presentToast('Image upload failed');
-    });
+    // imageRef.putString(newImage, firebase.storage.StringFormat.DATA_URL).then(() => {
+    //   this.feedbackProvider.dismissLoading();
+    //   const newImageObject: Photo = {
+    //     url: filename + '.jpg',
+    //     dateCreated: this.dataProvider.getDateTime()
+    //   }
+    //   this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImageObject);
+    // }).catch(err => {
+    //   this.feedbackProvider.dismissLoading();
+    //   this.feedbackProvider.presentToast('Image upload failed');
+    // });
 
   }
 

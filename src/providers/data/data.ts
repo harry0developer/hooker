@@ -31,7 +31,7 @@ export class DataProvider {
     public http: HttpClient,
     public ionEvents: Events,
     private authProvider: AuthProvider) {
-    this.profile = this.authProvider.getStoredUser();
+    // this.profile = this.authProvider.getStoredUser();
 
     if (this.profile) {
 
@@ -150,20 +150,20 @@ export class DataProvider {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
-  addItemToUserDB(collection: string, user: any, newItem: any) {
+  addItemToUserDB(collection: string, id: string, newItem: any) {
     const key = new Date().getTime().toString();
-    this.getDocumentFromCollectionById(collection, user.uid).subscribe(items => {
+    this.getDocumentFromCollectionById(collection, id).subscribe(items => {
       if (!!items) {
         const data: Object = items;
         const newItems = { ...data, [key]: newItem };
-        this.updateCollection(collection, newItems, user.uid).then(res => {
+        this.updateCollection(collection, newItems, id).then(res => {
           this.ionEvents.publish(EVENTS.imageUploadSuccess, res);
         }).catch(err => {
           this.ionEvents.publish(EVENTS.imageUploadError, err);
         })
       } else { //Job is NOT root document eg /viewed-jobs/otherjobIdNotThisOne
         const newItems = { [key]: newItem };
-        this.updateCollection(collection, newItems, user.uid).then(res => {
+        this.updateCollection(collection, newItems, id).then(res => {
           this.ionEvents.publish(EVENTS.imageUploadSuccess, res);
         }).catch(err => {
           this.ionEvents.publish(EVENTS.imageUploadError, err);

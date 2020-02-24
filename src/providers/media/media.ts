@@ -29,7 +29,7 @@ export class MediaProvider {
     private authProvider: AuthProvider,
     public ionEvents: Events,
     private db: AngularFireDatabase) {
-    this.profile = this.authProvider.getStoredUser();
+    // this.profile = this.authProvider.getStoredUser();
   }
 
   takePhoto(): Promise<any> {

@@ -6,6 +6,7 @@ import { SetupPage } from '../setup/setup';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { COLLECTION } from '../../utils/consts';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
+import { DataProvider } from '../../providers/data/data';
 
 
 @IonicPage()
@@ -61,19 +62,24 @@ export class SignupPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     private firebaseApiProvider: FirebaseApiProvider,
+    private dataProvider: DataProvider,
     public feedbackProvider: FeedbackProvider) {
   }
 
   ionViewDidLoad() {
     this.signupType = this.navParams.get('signupType'); // 'emailAddress'//
     console.log(this.signupType);
-    this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`).once('value', function (snapshot) {
-      snapshot.forEach(function (childSnapshot) {
-        var childKey = childSnapshot.key;
-        var childData = childSnapshot.val();
-        console.log(childData);
-      });
-    });
+    // this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`).once('value', function (snapshot) {
+    //   snapshot.forEach(function (childSnapshot) {
+    //     var childKey = childSnapshot.key;
+    //     var childData = childSnapshot.val();
+    //     console.log(childData);
+    //   });
+    // });
+
+    this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(r => {
+      this.users = r;
+    })
   }
 
   signupWithPhoneNumber() {

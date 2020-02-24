@@ -23,13 +23,12 @@ export class HomePage {
     public navCtrl: NavController,
     public actionSheetCtrl: ActionSheetController,
     public navParams: NavParams,
-    public dataProvider: DataProvider,
-    public firebaseApiProvider: FirebaseApiProvider) {
+    public dataProvider: DataProvider) {
   }
 
   ionViewDidLoad() {
-    const profile = this.firebaseApiProvider.getItemFromLocalStorage(STORAGE_KEY.user);
-    console.log(this.profile);
+    const profile = this.dataProvider.getItemFromLocalStorage(STORAGE_KEY.user);
+    console.log(profile);
 
     if (profile && profile.uid) {
       this.navigate(profile);

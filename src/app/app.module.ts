@@ -32,7 +32,6 @@ import { ImagePage } from '../pages/image/image';
 import { Camera } from '@ionic-native/camera';
 import { WindowProvider } from '../providers/window/window';
 import { NationalityPage } from '../pages/nationality/nationality';
-import { MultiLoginPage } from '../pages/multi-login/multi-login';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { SellersPage } from '../pages/sellers/sellers';
 import { SellerDetailsPage } from '../pages/seller-details/seller-details';
@@ -70,7 +69,6 @@ import { ReportBugPage } from '../pages/report-bug/report-bug';
     ProfilePage,
     ChatPage,
     ImagePage,
-    MultiLoginPage,
     NationalityPage,
     DashboardPage,
     SellersPage,
@@ -115,7 +113,6 @@ import { ReportBugPage } from '../pages/report-bug/report-bug';
     ProfilePage,
     ChatPage,
     ImagePage,
-    MultiLoginPage,
     NationalityPage,
     DashboardPage,
     SellersPage,

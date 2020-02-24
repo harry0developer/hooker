@@ -10,7 +10,7 @@
 </ion-header>
  
 <ion-content>
-  <div class="allow-location animated slideInDown" *ngIf="!locationAccess?.allowed"> 
+  <div class="allow-location animated slideInDown" *ngIf="!!locationAccess && locationAccess?.allowed"> 
     <i class="fa fa-location-arrow" item-start></i>
     {{locationAccess?.msg}}
   </div>
@@ -42,7 +42,7 @@
     <ion-card  *ngFor="let user of sellers">
       <ion-item (tap)="viewUserProfile(user)" *ngIf="user">
         <ion-avatar item-start>
-          <img src="assets/imgs/users/{{user.gender}}.svg">
+          <img [src]="getUserProfile(user)">
         </ion-avatar>
         <h2 class="name">
           {{user?.nickname}} 
@@ -63,7 +63,7 @@
   <ion-list *ngIf="!isLoading && sellers.length < 1" class="user">
     <ion-card>
       <ion-item> 
-        <h2 >
+        <h2 text-wrap>
           No service providers found matching the filter
         </h2>
       </ion-item>

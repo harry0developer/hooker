@@ -43,7 +43,7 @@ export class SellerDetailsPage {
   }
 
   ionViewDidLoad() {
-    this.profile = this.authProvider.getStoredUser();
+    // this.profile = this.authProvider.getStoredUser();
     this.locationAccess = {
       allowed: this.profile.location && this.profile.location.geo ? true : false,
       msg: MESSAGES.locationAccessError

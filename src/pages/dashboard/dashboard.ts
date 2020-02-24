@@ -45,7 +45,7 @@ export class DashboardPage {
   }
 
   ionViewDidLoad() {
-    this.profile = this.authProvider.getStoredUser();
+    // this.profile = this.authProvider.getStoredUser();
     this.chats = [
       { nickname: 'Charle', pic: 'assets/imgs/users/user1.jpg' },
       { nickname: 'Mark', pic: 'assets/imgs/users/user2.jpg' },

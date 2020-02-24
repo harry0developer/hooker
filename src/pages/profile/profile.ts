@@ -41,6 +41,10 @@ export class ProfilePage {
     this.profile = this.firebaseApiProvider.getLoggedInUser();
     this.imagesRef = `${COLLECTION.images}/${this.profile.uid}`;
     this.getAllImages();
+
+    this.dataProvider.getAllFromCollection(COLLECTION.images).subscribe(r => {
+      console.log(r);
+    });
   }
 
   previewImage(img) {
@@ -142,6 +146,7 @@ export class ProfilePage {
   getProfilePicture(): string {
     return !!this.profile.profilePic ? this.profile.profilePic : `assets/imgs/users/${this.profile.gender}.svg`;
   }
+
   capitalizeFirstLetter(str): string {
     return this.dataProvider.capitalizeFirstLetter(str);
   }

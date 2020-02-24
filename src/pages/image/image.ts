@@ -21,7 +21,7 @@ export class ImagePage {
   }
 
   ionViewDidLoad() {
-    this.profile = this.authProvider.getStoredUser();
+    // this.profile = this.authProvider.getStoredUser();
   }
 
   // takePicture() {
