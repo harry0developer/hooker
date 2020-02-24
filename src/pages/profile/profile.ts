@@ -58,6 +58,7 @@ export class ProfilePage {
     profileModal.present();
   }
 
+
   getAllImages() {
     this.isLoading = true;
     const firebaseDBRef = firebase.database().ref(`${this.imagesRef}`);

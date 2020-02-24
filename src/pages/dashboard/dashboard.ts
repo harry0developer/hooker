@@ -40,7 +40,7 @@ export class DashboardPage {
   ) { }
 
   ionViewWillEnter() {
-    this.profile = this.firebaseApiProvider.getLoggedInUser();
+    this.profile = this.dataProvider.getStoredUser();
     console.log(this.profile);
   }
 

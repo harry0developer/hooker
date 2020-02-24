@@ -5,7 +5,9 @@
     <div class="profile">
       <img alt="profile" [src]="getProfilePicture()" class="animated zoomIn" #img>
     </div> 
-    <h2 class="animated slideInLeft">{{profile?.nickname}}</h2>
+    <h2 class="animated slideInLeft">{{profile?.nickname}} 
+      <ion-badge primary>{{profile?.age}}</ion-badge>
+    </h2>
     <p class="animated slideInLeft">{{profile?.userType}}</p>
   </div>
 
