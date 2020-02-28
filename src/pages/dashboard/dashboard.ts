@@ -61,4 +61,8 @@ export class DashboardPage {
   getProfilePicture(): string {
     return !!this.profile.profilePic ? this.profile.profilePic : `assets/imgs/users/${this.profile.gender}.svg`;
   }
+
+  capitalizeFirstLetter(str): string {
+    return this.dataProvider.capitalizeFirstLetter(str);
+  }
 }

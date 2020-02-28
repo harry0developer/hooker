@@ -62,17 +62,6 @@ export class SellersPage {
       }
       this.isLoading = false;
     });
-    // this.locationAccess = {
-    //   allowed: this.profile.location && this.profile.location.geo ? true : false,
-    //   msg: MESSAGES.locationAccessError
-    // }
-    // const ref = this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`);
-    // ref.on("value", snap => {
-    //   this.zone.run(() => {
-    //     this.sellers = this.snapshotToArray(snap);
-    //     this.isLoading = false;
-    //   });
-    // });
   }
 
   getUserProfile(user: User) {
