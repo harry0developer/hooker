@@ -47,6 +47,21 @@ export class ProfilePage {
     });
   }
 
+
+  updateDate() {
+    this.updateUserProp(COLLECTION.users, this.profile.uid, { dateCreated: this.dataProvider.getDateTime() });
+  }
+
+  updateUserProp(ref: string, uid: string, keyValue) {
+    console.log(ref, uid, keyValue);
+
+    this.firebaseApiProvider.updateItem(ref, uid, keyValue).then(() => {
+      console.log('Updated ', uid);
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
   previewImage(img) {
     let profileModal = this.modalCtrl.create(PreviewPage, { images: this.images, active: img });
     profileModal.onDidDismiss((action) => {

@@ -40,15 +40,21 @@
             <ion-label>
               Seller
             </ion-label>
-            <ion-radio mode="md" value="Seller"></ion-radio>
+            <ion-radio mode="md" value="seller"></ion-radio>
           </ion-item>
         </ion-list>
         <div class="slides-counter">{{getSlideNumber()}}</div>
       </ion-card>
-       <div padding class="controls">
+      <div padding class="controls">
         <button ion-button block small round icon-end [disabled]="!data.userType" (click)="nextSlide()">
           Next
           <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+      </div>
+      <div padding class="controls">
+        <button ion-button block small clear icon-start (click)="previousSlide()">
+          <ion-icon name="arrow-back"></ion-icon>
+          Prev
         </button>
       </div>
     </ion-slide>
@@ -91,6 +97,12 @@
             <ion-icon name="arrow-forward"></ion-icon>
           </button>
         </div>
+        <div padding class="controls">
+          <button ion-button block small clear icon-start (click)="previousSlide()">
+            <ion-icon name="arrow-back"></ion-icon>
+            Prev
+          </button>
+        </div>
       </ion-list>
     </ion-slide>
 
@@ -113,6 +125,12 @@
         <button ion-button block small round icon-end [disabled]="!data.age" (click)="nextSlide()">
           Next
           <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+      </div>
+      <div padding class="controls">
+        <button ion-button block small clear icon-start (click)="previousSlide()">
+          <ion-icon name="arrow-back"></ion-icon>
+          Prev
         </button>
       </div>
     </ion-slide>
@@ -149,6 +167,12 @@
           <button ion-button block small round icon-end [disabled]="!data.race" (click)="nextSlide()">
             Next
             <ion-icon name="arrow-forward"></ion-icon>
+          </button>
+        </div>
+        <div padding class="controls">
+          <button ion-button block small clear icon-start (click)="previousSlide()">
+            <ion-icon name="arrow-back"></ion-icon>
+            Prev
           </button>
         </div>
       </ion-list>
@@ -188,6 +212,13 @@
             <ion-icon name="arrow-forward"></ion-icon>
           </button>
         </div>
+
+        <div padding class="controls">
+          <button ion-button block small clear icon-start (click)="previousSlide()">
+            <ion-icon name="arrow-back"></ion-icon>
+            Prev
+          </button>
+        </div>
       </ion-list>
     </ion-slide>
 
@@ -209,18 +240,10 @@
       <div padding class="controls" >
         <button ion-button block small round icon-end [disabled]="!data.height" (click)="completeSignup()">
           Done
-          <ion-icon name="arrow-forward"></ion-icon>
+          <ion-icon name="checkmark"></ion-icon>
         </button>
       </div>
     </ion-slide>
   </ion-slides>
 </ion-content>
-
-
-<ion-footer *ngIf="!isFirstSlide()">
-  <button ion-button block clear color="light" icon-start (click)="previousSlide()">
-    <ion-icon name="arrow-back"></ion-icon>
-    Previous
-  </button>
-</ion-footer>
  

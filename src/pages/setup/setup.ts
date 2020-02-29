@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { PlacesPage } from '../places/places';
 import { DataProvider } from '../../providers/data/data';
 import { COLLECTION, USER_TYPE, STORAGE_KEY, EMAIL_EXISTS, MESSAGES } from '../../utils/consts';
@@ -8,9 +8,9 @@ import { Slides } from 'ionic-angular';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SellersPage } from '../sellers/sellers';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
-import { TabsPage } from '../tabs/tabs';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { AuthProvider } from '../../providers/auth/auth';
+import { LocationProvider } from '../../providers/location/location';
 
 @IonicPage()
 @Component({
@@ -36,14 +36,7 @@ export class SetupPage {
     dateCreated: '',
     userType: '',
     verified: false,
-    profilePic: '',
-    location: {
-      address: '',
-      geo: {
-        lat: 0,
-        lng: 0
-      }
-    }
+    profilePic: ''
   }
 
   constructor(public navCtrl: NavController,
@@ -52,6 +45,8 @@ export class SetupPage {
     public authProvider: AuthProvider,
     public dataProvider: DataProvider,
     public feedbackProvider: FeedbackProvider,
+    public locationProvider: LocationProvider,
+    public alertCtrl: AlertController,
     public firebaseApiProvider: FirebaseApiProvider) {
   }
 
@@ -64,27 +59,31 @@ export class SetupPage {
         this.data.email = data.email;
         this.data.password = data.password,
           this.data.uid = data.uid;
+        this.data.dateCreated = this.dataProvider.getDateTime();
       } else { //phone signup
         this.data.nickname = data.nickname;
         this.data.phone = data.phone;
         this.data.uid = data.uid;
+        this.data.dateCreated = this.dataProvider.getDateTime();
       }
     } else {
       console.log('Cannot be here');
     }
   }
 
+  addUserToRealtimeDatabase(user) {
+    this.firebaseApiProvider.addItemWithKey(COLLECTION.users, user.uid, user).then(() => {
+      this.getUserLocation();
+    }).catch(err => {
+      this.feedbackProvider.presentAlert(MESSAGES.signupFailed, 'Oops something went wrong, please try again');
+    });
+  }
   completeSignup() {
     this.feedbackProvider.presentLoading();
     this.authProvider.signUpWithEmailAndPassword(this.data.email, this.data.password).then(res => {
       this.feedbackProvider.dismissLoading();
       this.data.uid = res.user.uid;
-      this.dataProvider.addNewItem(COLLECTION.users, this.data).then(() => {
-        this.navCtrl.setRoot(TabsPage, { user: this.data });
-      }).catch(err => {
-        this.feedbackProvider.presentAlert(MESSAGES.signupFailed, 'Oops something went wrong, please try again');
-        console.log(err);
-      });
+      this.addUserToRealtimeDatabase(this.data);
     }).catch(err => {
       this.feedbackProvider.dismissLoading();
       console.log(err);
@@ -94,11 +93,51 @@ export class SetupPage {
 
   navigate() {
     this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, this.data);
-    if (this.data.userType === USER_TYPE.seller) {
+    if (this.data.userType.toLocaleLowerCase() === USER_TYPE.seller) {
       this.navCtrl.setRoot(DashboardPage);
     } else {
       this.navCtrl.setRoot(SellersPage);
     }
+  }
+
+  getUserLocation() {
+    this.feedbackProvider.presentLoading('Getting location...');
+    this.locationProvider.getLocation().then(res => {
+      this.feedbackProvider.dismissLoading();
+      const loc = {
+        lat: res.coords.latitude,
+        lng: res.coords.longitude
+      }
+      this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.location, loc);
+      this.navigate();
+    }).catch(err => {
+      this.feedbackProvider.dismissLoading();
+      this.handleLocationError();
+    });
+  }
+
+  handleLocationError() {
+    let alert = this.alertCtrl.create({
+      title: 'Location error',
+      message: 'An error occured while retrieving your location. Would you like to retry?',
+      buttons: [
+        {
+          text: "Don't retry",
+          role: 'cancel',
+          handler: () => {
+            console.log('Dont retry clicked');
+          }
+        },
+        {
+          text: 'Yes retry',
+          handler: () => {
+            console.log('Retry clicked');
+            this.getUserLocation();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   nextSlide() {
@@ -111,6 +150,10 @@ export class SetupPage {
     this.slides.lockSwipes(false);
     this.slides.slidePrev();
     this.slides.lockSwipes(true);
+  }
+
+  slideChange(data) {
+    console.log(data);
   }
 
   isFirstSlide(): boolean {
@@ -130,7 +173,6 @@ export class SetupPage {
     modal.onDidDismiss(data => {
       if (data) {
         this.loc = data.address;
-        this.data.location = data;
       }
     });
     modal.present();

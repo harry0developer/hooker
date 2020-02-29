@@ -15,6 +15,5 @@ export interface User {
     dateCreated: string;
     userType: string;
     verified?: boolean;
-    location: UserLocation;
     distance?: string;
 };

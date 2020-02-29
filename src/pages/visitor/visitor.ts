@@ -107,7 +107,7 @@ export class VisitorPage {
 
   addImage() {
     const newImage: Photo = { dateCreated: this.dataProvider.getDateTime(), url: 'photo2.jpg' };
-    this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImage);
+    // this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImage);
   }
 
   getImages() {
@@ -147,7 +147,7 @@ export class VisitorPage {
         url: filename + '.jpg',
         dateCreated: this.dataProvider.getDateTime()
       }
-      this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImageObject);
+      // this.dataProvider.addItemToUserDB(COLLECTION.images, this.profile, newImageObject);
     }).catch(err => {
       this.feedbackProvider.dismissLoading();
       this.feedbackProvider.presentToast('Image upload failed');

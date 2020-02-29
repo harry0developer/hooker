@@ -69,6 +69,8 @@ export class SignupPage {
   ionViewDidLoad() {
     this.signupType = this.navParams.get('signupType'); // 'emailAddress'//
     console.log(this.signupType);
+    console.log(this.firebaseApiProvider.getLoggedInUser());
+
     // this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`).once('value', function (snapshot) {
     //   snapshot.forEach(function (childSnapshot) {
     //     var childKey = childSnapshot.key;

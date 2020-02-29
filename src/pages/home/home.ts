@@ -28,8 +28,6 @@ export class HomePage {
 
   ionViewDidLoad() {
     const profile = this.dataProvider.getItemFromLocalStorage(STORAGE_KEY.user);
-    console.log(profile);
-
     if (profile && profile.uid) {
       this.navigate(profile);
     }

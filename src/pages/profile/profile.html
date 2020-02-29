@@ -5,6 +5,8 @@
 </ion-header>
 
 <ion-content> 
+
+  <button ion-button block (click)="updateDate()">Update date</button>
   <div class="profile" *ngIf="profile">
     <img class="profile-image animated slideInDown" [src]="getProfilePicture()">
     <div class="name animated slideInLeft">

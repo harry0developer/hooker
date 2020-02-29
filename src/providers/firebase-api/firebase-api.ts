@@ -22,18 +22,23 @@ export class FirebaseApiProvider {
     return dataRef.set(item);
   }
 
+  addItemWithKey(ref: string, key: string, item: any): Promise<any> {
+    const dataRef = this.firebaseRef.ref(`/${ref}/${key}`);
+    return dataRef.set(item);
+  }
+
   addImageToRealtimeDB(ref: string, img, imgRef: string): Promise<any> {
     const dataRef = this.firebaseRef.ref(`/${ref}/${imgRef}`);
     return dataRef.set(img);
   }
 
   getItem(ref: string, key: string): Promise<any> {
-    return this.firebaseRef.ref(`/${ref}/${key}`).once('value', function (snapshot) { });
+    return this.firebaseRef.ref(`/${ref}/${key}`).once('value', snap => snap);
   }
 
-  updateItem(ref: string, key: string, itemKeyValue: any): Promise<any> {
+  updateItem(ref: string, uid: string, itemKeyValue: any): Promise<any> {
     const dataRef = this.firebaseRef.ref(`/${ref}`);
-    return dataRef.child(key).update(itemKeyValue);
+    return dataRef.child(uid).update(itemKeyValue);
   }
 
 

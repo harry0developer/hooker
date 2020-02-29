@@ -8,6 +8,7 @@ import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { User } from '../../models/user';
 import { TermsPage } from '../terms/terms';
 import { ReportBugPage } from '../report-bug/report-bug';
+import { STORAGE_KEY } from '../../utils/consts';
 
 
 
@@ -84,6 +85,8 @@ export class SettingsPage {
 
   logout() {
     this.authProvider.logout().then(() => {
+      this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.location, null);
+      this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.user, null);
       this.app.getRootNav().setRoot(HomePage);
     }).catch(err => {
       this.feedbackProvider.presentAlert('Logout failed', 'Oopsie, this is rather odd. Please try again');

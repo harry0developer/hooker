@@ -37,6 +37,7 @@ export const MESSAGES = {
 
 export const STORAGE_KEY = {
     user: 'user',
+    location: 'location',
     intro: 'intro',
     verified: 'verified'
 }

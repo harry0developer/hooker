@@ -10,6 +10,7 @@ import { TabsPage } from '../tabs/tabs';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { DataProvider } from '../../providers/data/data';
 import { take } from 'rxjs/operators';
+import firebase from 'firebase';
 
 
 @IonicPage()
@@ -49,6 +50,7 @@ export class LoginPage {
     public modalCtrl: ModalController,
     public feedbackProvider: FeedbackProvider,
     public authProvider: AuthProvider,
+    public firebaseApiProvider: FirebaseApiProvider,
     public locationProvider: LocationProvider,
     public dataProvider: DataProvider,
     public alertCtrl: AlertController) {
@@ -62,16 +64,17 @@ export class LoginPage {
     console.log('loginWithPhoneNumber');
   }
 
+
   loginWithEmailAndPassword() {
     this.feedbackProvider.presentLoading();
     this.authProvider.signInWithEmailAndPassword(this.data.email, this.data.password).then(res => {
-      this.dataProvider.getCollectionByKeyValuePair(COLLECTION.users, 'uid', res.user.uid).pipe(take(1)).subscribe(r => {
-        console.log(r);
+      const isVerified = res.user.emailVerified;
+      this.firebaseApiProvider.getItem(COLLECTION.users, res.user.uid).then(snap => {
         this.feedbackProvider.dismissLoading();
-        this.dataProvider.addItemToLocalStorage(STORAGE_KEY.verified, res.user.emailVerified);
-        this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, r[0]);
-        this.navigate(r[0]);
-      }, err => {
+        const user = snap.val();
+        user.verified = isVerified;
+        this.navigate(user);
+      }).catch(err => {
         this.feedbackProvider.dismissLoading();
         this.feedbackProvider.presentToast(MESSAGES.oops);
       });
@@ -83,7 +86,9 @@ export class LoginPage {
     });
   }
 
-  handleLocationError(user) {
+
+
+  handleLocationError(user: User) {
     const confirm = this.alertCtrl.create({
       title: 'Location error',
       message: 'Ooops, we could not get your current location, please allow access to your location',
@@ -91,7 +96,6 @@ export class LoginPage {
         {
           text: 'Ok',
           handler: () => {
-            user.location = null;
             this.navigate(user);
           }
         }
@@ -100,7 +104,7 @@ export class LoginPage {
     confirm.present();
   }
 
-  navigate(user) {
+  navigate(user: User) {
     this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, user);
     this.navCtrl.setRoot(TabsPage, { user });
   }
@@ -123,6 +127,7 @@ export class LoginPage {
   //     this.feedbackProvider.presentAlert('Oopise', 'Somwthing went wrong please try again');
   //   });
   // }
+
   // navigate(user: User) {
   //   this.feedbackProvider.presentLoading('Getting location...');
   //   this.locationProvider.getLocation().then(res => {
