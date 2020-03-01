@@ -43,7 +43,7 @@ export class PreviewPage {
 
   removeImage(img) {
     this.feedbackProvider.presentLoading('Deleting photo...');
-    this.mediaProvider.removeImageByFilename(img.url).then(r => {
+    this.mediaProvider.removeImageByFilename(this.profile.uid, img.url).then(r => {
       this.feedbackProvider.dismissLoading();
       this.feedbackProvider.presentLoading('Updating profile...');
       this.firebaseApiProvider.removeItem(`${COLLECTION.images}/${this.profile.uid}`, img.key).then(() => {
