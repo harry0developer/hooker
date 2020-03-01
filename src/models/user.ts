@@ -1,4 +1,4 @@
-import { UserLocation } from "./location";
+import { UserLocation, Geo } from "./location";
 
 export interface User {
     nickname: string;
@@ -16,4 +16,5 @@ export interface User {
     userType: string;
     verified?: boolean;
     distance?: string;
+    location: Geo;
 };

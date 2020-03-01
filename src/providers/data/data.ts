@@ -349,8 +349,4 @@ export class DataProvider {
     return this.http.get('assets/countries.json').toPromise();
   }
 
-  hasLocation(profile: User, user: User): boolean {
-    return user.location && user.location.geo && user.location.geo.lat && user.location.geo.lng
-      && profile.location && profile.location.geo && profile.location.geo.lat && profile.location.geo.lng ? true : false;
-  }
 }

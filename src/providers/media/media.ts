@@ -29,7 +29,7 @@ export class MediaProvider {
     private authProvider: AuthProvider,
     public ionEvents: Events,
     private db: AngularFireDatabase) {
-    // this.profile = this.authProvider.getStoredUser();
+    this.profile = this.authProvider.getStoredUser();
   }
 
   takePhoto(): Promise<any> {
@@ -67,20 +67,20 @@ export class MediaProvider {
     );
   }
 
-  getImageByFilename(url): Promise<any> {
-    const ref = firebase.storage().ref(`${COLLECTION.images}/${this.profile.uid}/`).child(url);
+  getImageByFilename(uid: string, url: string): Promise<any> {
+    const ref = firebase.storage().ref(`${COLLECTION.images}/${uid}/`).child(url);
     return ref.getDownloadURL();
   }
 
-  removeImageByFilename(url: string): Promise<any> {
-    const ref = firebase.storage().ref(`${COLLECTION.images}/${this.profile.uid}/`).child(url);
+  removeImageByFilename(uid: string, url: string): Promise<any> {
+    const ref = firebase.storage().ref(`${COLLECTION.images}/${uid}/`).child(url);
     return ref.delete();
   }
 
-  downloadImages(images: any[]): any[] {
+  downloadImages(uid: string, images: any[]): any[] {
     let imgs = [];
     images.forEach(img => {
-      this.getImageByFilename(img.url).then(resImg => {
+      this.getImageByFilename(uid, img.url).then(resImg => {
         imgs.push(resImg);
       }).catch(err => {
         console.log(err);

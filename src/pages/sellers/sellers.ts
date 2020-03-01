@@ -2,7 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { SellerDetailsPage } from '../seller-details/seller-details';
-import { COLLECTION, USER_TYPE, MESSAGES } from '../../utils/consts';
+import { COLLECTION, USER_TYPE, MESSAGES, STORAGE_KEY } from '../../utils/consts';
 import { User } from '../../models/user';
 import { AuthProvider } from '../../providers/auth/auth';
 import { MediaProvider } from '../../providers/media/media';
@@ -40,6 +40,7 @@ export class SellersPage {
     allowed: boolean,
     msg: string;
   };
+
   constructor(
     public navCtrl: NavController,
     public dataProvider: DataProvider,
@@ -54,50 +55,28 @@ export class SellersPage {
   ionViewDidLoad() {
     this.profile = this.firebaseApiProvider.getLoggedInUser();
     this.isLoading = true;
-    this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(users => {
-      this.sellers = users.filter(u => u.userType === USER_TYPE.seller);
-      this.locationAccess = {
-        allowed: this.profile.location && this.profile.location.geo ? true : false,
-        msg: MESSAGES.locationAccessError
-      }
-      this.isLoading = false;
-    });
-    // this.locationAccess = {
-    //   allowed: this.profile.location && this.profile.location.geo ? true : false,
-    //   msg: MESSAGES.locationAccessError
-    // }
-    // const ref = this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`);
-    // ref.on("value", snap => {
-    //   this.zone.run(() => {
-    //     this.sellers = this.snapshotToArray(snap);
-    //     this.isLoading = false;
-    //   });
-    // });
-  }
-
-  getUserProfile(user: User) {
-    console.log(user);
-    const imagesRef = `${COLLECTION.images}/${user.uid}`;
-
-    const firebaseDBRef = firebase.database().ref(`${imagesRef}`);
-
-    firebaseDBRef.on('value', tasksnap => {
-      let tmp = [];
-      tasksnap.forEach(taskData => {
-        tmp.push({ key: taskData.key, ...taskData.val() })
+    this.locationAccess = {
+      allowed: this.profile.location && this.profile.location.lat && this.profile.location.lat ? true : false,
+      msg: MESSAGES.locationAccessError
+    }
+    const ref = this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`);
+    ref.on("value", snap => {
+      this.zone.run(() => {
+        const users = this.firebaseApiProvider.convertObjectToArray(snap.val());
+        const sellers = users.filter(u => u.userType === USER_TYPE.seller);
+        sellers.forEach(seller => {
+          this.sellers.push(this.calculateUserDistance(seller));
+        });
+        this.isLoading = false;
       });
-
-      console.log(tmp);
-
-      // this.downloadImages(tmp);
-
     });
-
-
   }
 
   calculateUserDistance(user: User): User {
-    user.distance = this.dataProvider.getLocationFromGeo(this.profile.location.geo, user.location.geo);
+    if (user.location && user.location.lat && user.location.lng && this.profile.location && this.profile.location.lat && this.profile.location.lng) {
+      user.distance = this.dataProvider.getLocationFromGeo(this.profile.location, user.location);
+      return user;
+    }
     return user;
   }
 
@@ -106,7 +85,6 @@ export class SellersPage {
     modal.onDidDismiss(data => {
       if (data) {
         this.filter = { ...data };
-        console.log(this.filter);
       }
     });
     modal.present();
@@ -143,6 +121,31 @@ export class SellersPage {
     });
   }
 
+  viewUserProfile(user) {
+    this.navCtrl.push(SellerDetailsPage, { user, locationAccess: this.locationAccess });
+  }
+
+  getUserProfile(user: User): string {
+    return user && user.profilePic ? user.profilePic : `assets/imgs/users/${user.gender}.svg`;
+  }
+
+  capitalizeFirstLetter(str: string): string {
+    return this.dataProvider.capitalizeFirstLetter(str);
+  }
+
+  // getUserProfile(user: User) {
+  //   const imagesRef = `${COLLECTION.images}/${user.uid}`;
+  //   const firebaseDBRef = firebase.database().ref(`${imagesRef}`);
+  //   firebaseDBRef.on('value', tasksnap => {
+  //     let tmp = [];
+  //     tasksnap.forEach(taskData => {
+  //       tmp.push({ key: taskData.key, ...taskData.val() })
+  //     });
+  //     console.log(tmp);
+  //     // this.downloadImages(tmp);
+  //   });
+  // }
+
   uploadPhotoAndUpdateUserDatabase(oldImages, newImage): any {
     // this.feedbackProvider.presentLoading('Please wait, Uploading...');
     // let storageRef = firebase.storage().ref();
@@ -163,16 +166,4 @@ export class SellersPage {
 
   }
 
-  viewUserProfile(user) {
-    this.navCtrl.push(SellerDetailsPage, { user });
-  }
-
-  getDistance(user): string {
-    if (this.dataProvider.hasLocation(this.profile, user)) {
-      const distance = this.dataProvider.getLocationFromGeo(this.profile.location.geo, user.location.geo);
-      return distance;
-    } else {
-      return null;
-    }
-  }
 }

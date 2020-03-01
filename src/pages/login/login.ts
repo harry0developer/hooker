@@ -4,13 +4,16 @@ import { User } from '../../models/user';
 import { NationalityPage } from '../nationality/nationality';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { AuthProvider } from '../../providers/auth/auth';
-import { STORAGE_KEY, MESSAGES, COLLECTION, USER_NOT_FOUND, INVALID_PASSWORD } from '../../utils/consts';
+import { STORAGE_KEY, MESSAGES, COLLECTION, USER_NOT_FOUND, INVALID_PASSWORD, USER_TYPE } from '../../utils/consts';
 import { LocationProvider } from '../../providers/location/location';
 import { TabsPage } from '../tabs/tabs';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { DataProvider } from '../../providers/data/data';
 import { take } from 'rxjs/operators';
 import firebase from 'firebase';
+import { Geo } from '../../models/location';
+import { DashboardPage } from '../dashboard/dashboard';
+import { SellersPage } from '../sellers/sellers';
 
 
 @IonicPage()
@@ -45,6 +48,7 @@ export class LoginPage {
   countries: any = [];
   users: User[] = [];
 
+  profile: User;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
@@ -64,16 +68,15 @@ export class LoginPage {
     console.log('loginWithPhoneNumber');
   }
 
-
   loginWithEmailAndPassword() {
     this.feedbackProvider.presentLoading();
     this.authProvider.signInWithEmailAndPassword(this.data.email, this.data.password).then(res => {
       const isVerified = res.user.emailVerified;
       this.firebaseApiProvider.getItem(COLLECTION.users, res.user.uid).then(snap => {
         this.feedbackProvider.dismissLoading();
-        const user = snap.val();
-        user.verified = isVerified;
-        this.navigate(user);
+        this.profile = snap.val();
+        this.profile.verified = isVerified;
+        this.getUserLocation();
       }).catch(err => {
         this.feedbackProvider.dismissLoading();
         this.feedbackProvider.presentToast(MESSAGES.oops);
@@ -86,9 +89,39 @@ export class LoginPage {
     });
   }
 
+  getUserLocation() {
+    this.feedbackProvider.presentLoading('Getting location...');
+    this.locationProvider.getLocation().then(res => {
+      this.feedbackProvider.dismissLoading();
+      const loc: Geo = {
+        lat: res.coords.latitude,
+        lng: res.coords.longitude
+      };
+      this.updateUserProfile(this.profile, loc);
+      this.navigate();
+    }).catch(err => {
+      this.feedbackProvider.dismissLoading();
+      this.handleLocationError();
+    });
+  }
 
+  updateUserProfile(user: User, location: Geo) {
+    this.feedbackProvider.presentLoading('Updating location...');
+    this.firebaseApiProvider.updateItem(COLLECTION.users, user.uid, { location }).then(loc => {
+      console.log(loc);
+      this.feedbackProvider.dismissLoading();
+    }).catch(err => {
+      console.log(err);
+      this.feedbackProvider.dismissLoading();
+    })
+  }
 
-  handleLocationError(user: User) {
+  navigate() {
+    this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, this.profile);
+    this.navCtrl.setRoot(TabsPage, { user: this.profile });
+  }
+
+  handleLocationError() {
     const confirm = this.alertCtrl.create({
       title: 'Location error',
       message: 'Ooops, we could not get your current location, please allow access to your location',
@@ -96,67 +129,13 @@ export class LoginPage {
         {
           text: 'Ok',
           handler: () => {
-            this.navigate(user);
+            this.getUserLocation();
           }
         }
       ]
     });
     confirm.present();
   }
-
-  navigate(user: User) {
-    this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, user);
-    this.navCtrl.setRoot(TabsPage, { user });
-  }
-
-
-  // getUserLocation(user: User) {
-  //   this.feedbackProvider.presentLoading('Getting location...');
-  //   this.locationProvider.getLocation().then(res => {
-  //     this.feedbackProvider.dismissLoading();
-  //     const loc = {
-  //       lat: res.coords.latitude,
-  //       lng: res.coords.longitude
-  //     }
-  //     user.location.geo = loc;
-  //     this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.user, user);
-  //     this.ionEvents.publish(EVENTS.loggedIn, user);
-  //     this.navCtrl.setRoot(TabsPage, { user });
-  //   }).catch(err => {
-  //     this.feedbackProvider.dismissLoading();
-  //     this.feedbackProvider.presentAlert('Oopise', 'Somwthing went wrong please try again');
-  //   });
-  // }
-
-  // navigate(user: User) {
-  //   this.feedbackProvider.presentLoading('Getting location...');
-  //   this.locationProvider.getLocation().then(res => {
-  //     this.feedbackProvider.dismissLoading();
-  //     const loc = {
-  //       lat: res.coords.latitude,
-  //       lng: res.coords.longitude
-  //     }
-  //     user.location.geo = loc;
-  //     this.updateUserLocation(user);
-  //     this.ionEvents.publish(EVENTS.loggedIn, user);
-  //     this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, user);
-  //     this.navCtrl.setRoot(TabsPage, { user });
-  //   }).catch(err => {
-  //     this.feedbackProvider.dismissLoading();
-  //     this.feedbackProvider.presentAlert('Oopise', 'Somwthing went wrong please try again');
-  //   });
-  // }
-
-  // updateUserLocation(user) {
-  //   this.feedbackProvider.presentLoading();
-  //   this.dataProvider.updateCollection(COLLECTION.users, user, user.uid).then(() => {
-  //     console.log('Location updated');
-  //     this.feedbackProvider.dismissLoading();
-  //   }).catch(err => {
-  //     this.feedbackProvider.dismissLoading();
-  //     console.log('Location update failed');
-  //   });
-  // }
 
   showPassword() {
     this.showPass = !this.showPass;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { NationalityPage } from '../nationality/nationality';
@@ -62,25 +62,16 @@ export class SignupPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     private firebaseApiProvider: FirebaseApiProvider,
-    private dataProvider: DataProvider,
+    private zone: NgZone,
     public feedbackProvider: FeedbackProvider) {
   }
 
   ionViewDidLoad() {
-    this.signupType = this.navParams.get('signupType'); // 'emailAddress'//
-    console.log(this.signupType);
-    console.log(this.firebaseApiProvider.getLoggedInUser());
-
-    // this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`).once('value', function (snapshot) {
-    //   snapshot.forEach(function (childSnapshot) {
-    //     var childKey = childSnapshot.key;
-    //     var childData = childSnapshot.val();
-    //     console.log(childData);
-    //   });
-    // });
-
-    this.dataProvider.getAllFromCollection(COLLECTION.users).subscribe(r => {
-      this.users = r;
+    this.signupType = this.navParams.get('signupType'); // 'emailAddress'// 
+    this.firebaseApiProvider.getAllItems(COLLECTION.users).then(res => {
+      this.users = this.firebaseApiProvider.convertObjectToArray(res.val());
+    }).catch(err => {
+      console.log(err);
     })
   }
 

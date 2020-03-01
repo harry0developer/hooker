@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { ChatPage } from '../chat/chat';
 import { RateUserPage } from '../rate-user/rate-user';
-import { COLLECTION, MESSAGES } from '../../utils/consts';
-import { Ratings } from '../../models/ratings';
+import { MESSAGES, COLLECTION } from '../../utils/consts';
 import { Observable } from 'rxjs';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { User } from '../../models/user';
-import { UserLocation } from '../../models/location';
+import { Image } from '../../models/image';
 import { AuthProvider } from '../../providers/auth/auth';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
+import { MediaProvider } from '../../providers/media/media';
 
 @IonicPage()
 @Component({
@@ -20,8 +20,6 @@ import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 export class SellerDetailsPage {
   profile: User;
   user: User;
-  img: string = "";
-  category: string = 'info';
   openMenu: boolean = false;
   userRating = 0.0;
   allRatings: any[] = [];
@@ -32,6 +30,7 @@ export class SellerDetailsPage {
     allowed: boolean,
     msg: string;
   };
+  images: Image[];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -39,18 +38,62 @@ export class SellerDetailsPage {
     public feedbackProvider: FeedbackProvider,
     public firebaseApiProvider: FirebaseApiProvider,
     public dataProvider: DataProvider,
+    public mediaProvider: MediaProvider,
+    public zone: NgZone,
     public authProvider: AuthProvider) {
   }
 
   ionViewDidLoad() {
-    // this.profile = this.authProvider.getStoredUser();
-    this.locationAccess = {
-      allowed: this.profile.location && this.profile.location.geo ? true : false,
-      msg: MESSAGES.locationAccessError
-    }
+    this.profile = this.authProvider.getStoredUser();
+    this.locationAccess = this.navParams.get('locationAccess');
     this.user = this.navParams.get('user');
-    this.img = `assets/imgs/users/user3.jpg`;
+
+    this.getUserImages(this.user);
+    // this.locationAccess = {
+    //   allowed: this.profile.location && this.profile.location.lat && this.profile.location.lat ? true : false,
+    //   msg: MESSAGES.locationAccessError
+    // }
   }
+
+  getUserImages(user: User) {
+    this.firebaseApiProvider.getItem(COLLECTION.images, user.uid).then(res => {
+      const imgObj = res.val()
+      const imgs = this.firebaseApiProvider.convertObjectToArray(imgObj);
+      this.downloadImagesFromStorage(user, imgs);
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+  downloadImagesFromStorage(user: User, imgs: Image[]) {
+    this.images = [];
+    this.zone.run(() => {
+      imgs.forEach(img => {
+        this.mediaProvider.getImageByFilename(user.uid, img.url).then(resImg => {
+          const myImg = { ...img, path: resImg };
+          console.log(myImg);
+
+          this.images.push(myImg);
+        }).catch(err => {
+          console.log(err);
+        })
+      })
+    });
+  }
+
+  // downloadImageFromFirebaseStorage(user: User, img: Image): any {
+  //   let dImg;
+  //   this.mediaProvider.getImageByFilename(user.uid, img.url).then(resImg => {
+  //     const myImg = { ...img, path: resImg };
+  //     dImg = myImg;
+  //     console.log(myImg);
+
+  //   }).catch(err => {
+  //     console.log(err);
+  //     dImg = null;
+  //   });
+  //   return dImg;
+  // }
 
   capitalizeFirstLetter(str: string): string {
     return this.dataProvider.capitalizeFirstLetter(str);
@@ -59,15 +102,6 @@ export class SellerDetailsPage {
   getAge(date: string): string {
     return this.dataProvider.getAgeFromDate(date);
   }
-
-  getDistance(user: User) {
-    if (this.dataProvider.hasLocation(user, this.profile)) {
-      return this.dataProvider.getLocationFromGeo(this.profile.location.geo, user.location.geo);
-    } else {
-      return null;
-    }
-  }
-
 
   openChats() {
     this.navCtrl.push(ChatPage);
@@ -81,25 +115,9 @@ export class SellerDetailsPage {
     return this.openMenu = !this.openMenu;
   }
 
-  followUser(user) {
-    console.log(user);
-  }
-  likeUser(user) {
-    console.log(user);
-  }
   chatWithUser(user) {
     this.openMenu = false;
     this.navCtrl.push(ChatPage, { user });
-  }
-
-  rateUser() {
-    const modal = this.modalCtrl.create(RateUserPage, { company: this.profile });
-    modal.onDidDismiss(data => {
-      if (data) {
-        this.updateCompanyRating(data);
-      }
-    });
-    modal.present();
   }
 
   updateCompanyRating(data) {

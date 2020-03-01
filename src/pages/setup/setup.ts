@@ -11,6 +11,7 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import { AuthProvider } from '../../providers/auth/auth';
 import { LocationProvider } from '../../providers/location/location';
+import { Geo } from '../../models/location';
 
 @IonicPage()
 @Component({
@@ -36,7 +37,8 @@ export class SetupPage {
     dateCreated: '',
     userType: '',
     verified: false,
-    profilePic: ''
+    profilePic: '',
+    location: null
   }
 
   constructor(public navCtrl: NavController,
@@ -78,6 +80,7 @@ export class SetupPage {
       this.feedbackProvider.presentAlert(MESSAGES.signupFailed, 'Oops something went wrong, please try again');
     });
   }
+
   completeSignup() {
     this.feedbackProvider.presentLoading();
     this.authProvider.signUpWithEmailAndPassword(this.data.email, this.data.password).then(res => {
@@ -90,6 +93,21 @@ export class SetupPage {
     });
   }
 
+  getUserLocation() {
+    this.feedbackProvider.presentLoading('Getting location...');
+    this.locationProvider.getLocation().then(res => {
+      this.feedbackProvider.dismissLoading();
+      const loc: Geo = {
+        lat: res.coords.latitude,
+        lng: res.coords.longitude
+      };
+      this.updateUserProfile(this.data, loc);
+      this.navigate();
+    }).catch(err => {
+      this.feedbackProvider.dismissLoading();
+      this.handleLocationError();
+    });
+  }
 
   navigate() {
     this.dataProvider.addItemToLocalStorage(STORAGE_KEY.user, this.data);
@@ -100,20 +118,15 @@ export class SetupPage {
     }
   }
 
-  getUserLocation() {
-    this.feedbackProvider.presentLoading('Getting location...');
-    this.locationProvider.getLocation().then(res => {
+  updateUserProfile(user: User, location: Geo) {
+    this.feedbackProvider.presentLoading('Updating location...');
+    this.firebaseApiProvider.updateItem(COLLECTION.users, user.uid, { location }).then(loc => {
+      console.log(loc);
       this.feedbackProvider.dismissLoading();
-      const loc = {
-        lat: res.coords.latitude,
-        lng: res.coords.longitude
-      }
-      this.firebaseApiProvider.addItemToLocalStorage(STORAGE_KEY.location, loc);
-      this.navigate();
     }).catch(err => {
+      console.log(err);
       this.feedbackProvider.dismissLoading();
-      this.handleLocationError();
-    });
+    })
   }
 
   handleLocationError() {

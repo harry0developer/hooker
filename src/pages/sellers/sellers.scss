@@ -2,10 +2,7 @@ page-sellers {
     .content {
         background-color: $light;
     }
-    .user {
-        ion-item {
-            height: 100px;
-        }
+    .user { 
         ion-avatar img{
             width: 60px !important;
             height: 60px !important;

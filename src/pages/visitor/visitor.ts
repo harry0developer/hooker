@@ -93,15 +93,15 @@ export class VisitorPage {
   }
 
   downloadImages() {
-    this.oldImages.forEach(img => {
-      this.mediaProvider.getImageByFilename(img.url).then(resImg => {
-        this.images.push(resImg);
-        console.log(resImg);
+    // this.oldImages.forEach(img => {
+    //   this.mediaProvider.getImageByFilename(img.url).then(resImg => {
+    //     this.images.push(resImg);
+    //     console.log(resImg);
 
-      }).catch(err => {
-        console.log(err);
-      });
-    });
+    //   }).catch(err => {
+    //     console.log(err);
+    //   });
+    // });
   }
 
 

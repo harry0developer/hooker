@@ -90,14 +90,16 @@ export class ProfilePage {
     this.zone.run(() => {
       if (images && images.length > 0) {
         images.forEach(img => {
-          this.mediaProvider.getImageByFilename(img.url).then(resImg => {
+          this.mediaProvider.getImageByFilename(this.profile.uid, img.url).then(resImg => {
             const myImg = { ...img, path: resImg };
             this.images.push(myImg);
             this.isLoading = false;
           }).catch(err => {
             console.log(err);
             if (err.code === OBJECT_NOT_FOUND) {
-              this.removeImageKeyFromDB(err.message);
+              console.log(err);
+
+              // this.removeImageKeyFromDB(err.message);
             }
           });
         });

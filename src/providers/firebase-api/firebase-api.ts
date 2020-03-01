@@ -36,6 +36,10 @@ export class FirebaseApiProvider {
     return this.firebaseRef.ref(`/${ref}/${key}`).once('value', snap => snap);
   }
 
+  getAllItems(ref: string): Promise<any> {
+    return this.firebaseRef.ref(`/${ref}`).once('value', snap => snap);
+  }
+
   updateItem(ref: string, uid: string, itemKeyValue: any): Promise<any> {
     const dataRef = this.firebaseRef.ref(`/${ref}`);
     return dataRef.child(uid).update(itemKeyValue);
@@ -68,6 +72,24 @@ export class FirebaseApiProvider {
 
   addItemToLocalStorage(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(data));
+  }
+
+
+  convertObjectToArray(obj): any[] {
+    return Object.keys(obj).map(i => obj[i])
+  }
+
+
+  snapshotToArray(snapshot: any[]): any[] {
+    let returnArr = [];
+    console.log(snapshot);
+
+    snapshot.forEach(childSnapshot => {
+      let item = childSnapshot.val();
+      item.key = childSnapshot.key;
+      returnArr.push(item);
+    });
+    return returnArr;
   }
 
 }

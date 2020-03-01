@@ -10,7 +10,7 @@
 </ion-header>
  
 <ion-content>
-  <div class="allow-location animated slideInDown" *ngIf="!!locationAccess && locationAccess?.allowed"> 
+  <div class="allow-location animated slideInDown" *ngIf="!locationAccess?.allowed"> 
     <i class="fa fa-location-arrow" item-start></i>
     {{locationAccess?.msg}}
   </div>
@@ -45,13 +45,13 @@
           <img [src]="getUserProfile(user)">
         </ion-avatar>
         <h2 class="name">
-          {{user?.nickname}} 
+          {{capitalizeFirstLetter(user?.nickname)}}
           <ion-badge primary>{{user?.age}}</ion-badge> 
         </h2>
         <p class="description">{{user?.description}}</p>
         <p class="distance" *ngIf="locationAccess?.allowed"> 
           <i class="fa fa-map-marker"></i>
-          <span> {{getDistance(user)}} </span> km away
+          <span> {{user?.distance}} </span> km away
         </p>
         <p item-end>
           <i class="fa fa-chevron-right"></i>

@@ -7,17 +7,9 @@
   
 <ion-content>
 
-  <ion-slides pager>
-    <ion-slide>
-      <img src="assets/imgs/users/user1.jpg"> 
-    </ion-slide>
-  
-    <ion-slide>
-      <img src="assets/imgs/users/user1.jpg"> 
-    </ion-slide>
-  
-    <ion-slide>
-      <img src="assets/imgs/users/user1.jpg"> 
+  <ion-slides pager >
+    <ion-slide *ngFor="let img of images">
+      <img [src]="img.path">  
     </ion-slide>
   </ion-slides> 
 
@@ -27,7 +19,7 @@
     </h2>
     <p class="distance" *ngIf="locationAccess.allowed"> 
       <i class="fa fa-map-marker"></i>
-      <span>{{getDistance(user)}} </span>km away
+      <span>{{user?.distance}} </span>km away
     </p>
     <p class="location-error" *ngIf="!locationAccess.allowed">
       <i class="fa fa-location-arrow" item-start></i>
