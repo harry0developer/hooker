@@ -30,7 +30,7 @@ export class SellerDetailsPage {
     allowed: boolean,
     msg: string;
   };
-  images: Image[];
+  images: Image[] = [];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -44,6 +44,7 @@ export class SellerDetailsPage {
   }
 
   ionViewDidLoad() {
+    this.isLoading = true;
     this.profile = this.authProvider.getStoredUser();
     this.locationAccess = this.navParams.get('locationAccess');
     this.user = this.navParams.get('user');
@@ -53,6 +54,10 @@ export class SellerDetailsPage {
     //   allowed: this.profile.location && this.profile.location.lat && this.profile.location.lat ? true : false,
     //   msg: MESSAGES.locationAccessError
     // }
+  }
+
+  hasPhotos(): boolean {
+    return this.images.length > 0;
   }
 
   getUserImages(user: User) {
@@ -71,8 +76,7 @@ export class SellerDetailsPage {
       imgs.forEach(img => {
         this.mediaProvider.getImageByFilename(user.uid, img.url).then(resImg => {
           const myImg = { ...img, path: resImg };
-          console.log(myImg);
-
+          this.isLoading = false;
           this.images.push(myImg);
         }).catch(err => {
           console.log(err);

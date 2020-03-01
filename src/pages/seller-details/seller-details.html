@@ -6,12 +6,27 @@
 </ion-header>
   
 <ion-content>
-
-  <ion-slides pager >
+ 
+  <div class="skeleton" *ngIf="isLoading">
+    <skeleton-item height="460px"></skeleton-item>
+    <div class="content">
+      <skeleton-item class="text" height="20px" width="180px"></skeleton-item>
+      <p class="distance" > 
+        <skeleton-item class="text" height="10px" width="220px"></skeleton-item>
+      </p> 
+    </div> 
+  </div>
+    
+  <ion-slides pager *ngIf="!isLoading && hasPhotos()">
     <ion-slide *ngFor="let img of images">
       <img [src]="img.path">  
     </ion-slide>
   </ion-slides> 
+
+  <div class="no-photos" *ngIf="!isLoading && !hasPhotos()">
+    <img src="assets/no-photos.svg" alt="">
+    <h2>User has no images</h2>
+  </div> 
 
   <div class="profile" *ngIf="user">
     <h2>{{capitalizeFirstLetter(user?.nickname)}} 
@@ -26,7 +41,6 @@
       {{locationAccess.msg}}
     </p>
     <p>{{user?.description}}</p> 
-
   </div>
 
   <ion-fab right bottom (click)="openChats()">  
