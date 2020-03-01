@@ -2,8 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { ChatPage } from '../chat/chat';
-import { RateUserPage } from '../rate-user/rate-user';
-import { MESSAGES, COLLECTION } from '../../utils/consts';
+import { COLLECTION } from '../../utils/consts';
 import { Observable } from 'rxjs';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { User } from '../../models/user';
@@ -20,17 +19,15 @@ import { MediaProvider } from '../../providers/media/media';
 export class SellerDetailsPage {
   profile: User;
   user: User;
-  openMenu: boolean = false;
-  userRating = 0.0;
-  allRatings: any[] = [];
   isLoading: boolean = false;
+  hasImages: boolean = true;
   allRatingsSubscription$: Observable<any>;
   locationAllowed: boolean;
   locationAccess: {
     allowed: boolean,
     msg: string;
   };
-  images: Image[] = [];
+  images: Image[];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -41,10 +38,11 @@ export class SellerDetailsPage {
     public mediaProvider: MediaProvider,
     public zone: NgZone,
     public authProvider: AuthProvider) {
+    this.isLoading = true;
+    this.hasImages = true;
   }
 
   ionViewDidLoad() {
-    this.isLoading = true;
     this.profile = this.authProvider.getStoredUser();
     this.locationAccess = this.navParams.get('locationAccess');
     this.user = this.navParams.get('user');
@@ -56,30 +54,36 @@ export class SellerDetailsPage {
     // }
   }
 
-  hasPhotos(): boolean {
-    return this.images.length > 0;
-  }
 
   getUserImages(user: User) {
     this.firebaseApiProvider.getItem(COLLECTION.images, user.uid).then(res => {
-      const imgObj = res.val()
-      const imgs = this.firebaseApiProvider.convertObjectToArray(imgObj);
-      this.downloadImagesFromStorage(user, imgs);
+      const imgObj = res.val();
+      if (imgObj) {
+        const imgs = this.firebaseApiProvider.convertObjectToArray(imgObj);
+        this.downloadImagesFromStorage(user, imgs);
+      } else {
+        this.images = [];
+        this.isLoading = false;
+        this.hasImages = false;
+      }
     }).catch(err => {
       console.log(err);
     });
   }
 
-  downloadImagesFromStorage(user: User, imgs: Image[]) {
+  downloadImagesFromStorage(user: User, imgs: Image[]): void {
     this.images = [];
     this.zone.run(() => {
       imgs.forEach(img => {
         this.mediaProvider.getImageByFilename(user.uid, img.url).then(resImg => {
           const myImg = { ...img, path: resImg };
-          this.isLoading = false;
           this.images.push(myImg);
+          this.isLoading = false;
+          this.hasImages = true;
         }).catch(err => {
           console.log(err);
+          this.isLoading = false;
+          this.hasImages = true;
         })
       })
     });
@@ -115,14 +119,6 @@ export class SellerDetailsPage {
     console.log(user);
   }
 
-  togglePopupMenu() {
-    return this.openMenu = !this.openMenu;
-  }
-
-  chatWithUser(user) {
-    this.openMenu = false;
-    this.navCtrl.push(ChatPage, { user });
-  }
 
   updateCompanyRating(data) {
     // const newRatingData: Ratings = {
