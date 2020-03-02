@@ -1,5 +1,26 @@
 @import '../theme/main.scss';
+// page-seller-details{
+// 	position: absolute !important;
+// 	bottom: 0 !important;
+// 	height: 86% !important;
+//     top: 15% !important;
+// 	border-radius: 20px;
+// }
 
+ion-modal {
+    ion-backdrop {
+        visibility: visible;
+    }
+    .modal-wrapper {
+		width: 100%;
+		top: 15%;
+        height: 86%;
+        position: absolute;
+		border-top-left-radius: 20px;
+		border-top-right-radius: 20px;
+		overflow: hidden;
+    }
+}
 .user-profile {
   background-color: $primary !important;
 	color: $white !important;

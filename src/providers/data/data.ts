@@ -314,6 +314,10 @@ export class DataProvider {
   }
 
   private getDistanceBetweenPoints(start: Geo, end: Geo, units) {
+
+    console.log(start);
+    console.log(end);
+
     let EARTH_RADIUS = {
       miles: 3958.8,
       km: 6371
@@ -327,6 +331,7 @@ export class DataProvider {
       Math.sin(dLon / 2);
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = RADIUS * c;
+
 
     return distance * this.KM; //convert miles to km
   }

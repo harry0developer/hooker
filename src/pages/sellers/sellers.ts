@@ -41,6 +41,70 @@ export class SellersPage {
     msg: string;
   };
 
+  users = [
+    {
+      nickname: "Palesa Paka",
+      age: 24,
+      img: 'assets/imgs/users/user1.jpg',
+      distance: 16
+    },
+
+    {
+      nickname: "Mary Van Dyk",
+      age: 31,
+      img: 'assets/imgs/users/user2.jpg',
+      distance: 36
+    },
+    {
+      nickname: "Nosipho Ma Dlamini Ndlovu",
+      age: 31,
+      img: 'assets/imgs/users/user3.jpg',
+      distance: 21
+    },
+    {
+      nickname: "Chelsea Moo",
+      age: 19,
+      img: 'assets/imgs/users/user4.jpg',
+      distance: 8
+    },
+    {
+      nickname: "Cherry Amy",
+      age: 19,
+      img: 'assets/imgs/users/user5.jpg',
+      distance: 11
+    },
+    {
+      nickname: "Mary Van Dyk",
+      age: 31,
+      img: 'assets/imgs/users/user2.jpg',
+      distance: 36
+    },
+    {
+      nickname: "Nosipho Ndlovu",
+      age: 31,
+      img: 'assets/imgs/users/user3.jpg',
+      distance: 21
+    },
+    {
+      nickname: "Chelsea Moo",
+      age: 19,
+      img: 'assets/imgs/users/user4.jpg',
+      distance: 8
+    },
+    {
+      nickname: "Cherry Amy",
+      age: 19,
+      img: 'assets/imgs/users/user5.jpg',
+      distance: 11
+    },
+    {
+      nickname: "Rea Letswalo",
+      age: 19,
+      img: 'assets/imgs/users/user7.jpg',
+      distance: 11
+    }
+
+  ]
   constructor(
     public navCtrl: NavController,
     public dataProvider: DataProvider,
@@ -90,6 +154,17 @@ export class SellersPage {
     modal.present();
   }
 
+
+  viewProfile(user) {
+    let modal = this.modalCtrl.create(SellerDetailsPage, { user, locationAccess: this.locationAccess });
+    modal.onDidDismiss(data => {
+      if (data) {
+        console.log(data);
+      }
+    });
+    modal.present();
+  }
+
   snapshotToArray(snapshot): any[] {
     let returnArr = [];
     snapshot.forEach(childSnapshot => {
@@ -121,9 +196,9 @@ export class SellersPage {
     });
   }
 
-  viewUserProfile(user) {
-    this.navCtrl.push(SellerDetailsPage, { user, locationAccess: this.locationAccess });
-  }
+  // viewUserProfile(user) {
+  //   this.navCtrl.push(SellerDetailsPage, { user, locationAccess: this.locationAccess });
+  // }
 
   getUserProfile(user: User): string {
     return user && user.profilePic ? user.profilePic : `assets/imgs/users/${user.gender}.svg`;

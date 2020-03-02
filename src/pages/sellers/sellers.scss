@@ -1,69 +1,129 @@
-page-sellers {
-    .content {
-        background-color: $light;
+page-sellers {  
+    .toolbar-ios-dark .bar-button-default-ios,
+    .toolbar-md-dark .bar-button-default-md  {
+        color: #222;
     }
-    .user { 
-        ion-avatar img{
-            width: 50px !important;
-            height: 50px !important;
-            border: 2px solid $primary;
-        }
-        ion-badge {
-            margin-left: 10px;
-        }
-        i {
-            color: $primary;
-            padding-right: 4px;
-        }
-        .name {
+    .header-md::after {
+        display: none;
+    }
+
+    .sub-header {
+        &__title {
             text-align: left;
-            font-size: 1em;
+            font-size: 21px;
+            margin-left: 20px;
+            margin-top: 0;
         }
+    } 
 
-        .online {
-            color: green;
-        }
-        .offline {
-            color: $primary; 
-        }
+    .item-ios [item-start], .item-md [item-start]{
+        margin: 8px 4px 8px 0;
+    }
 
-        .online, .offline {
-            font-size: .6em;
-            padding-bottom: 4px;
-            padding-left: 10px;
-            float: right;
-        }
-
-        .distance {
-            span {
-                font-weight: bold;
-                color: $primary;
+    .toolbar-background{
+        background-color: $white !important;
+        border: none !important;
+    } 
+    .main-card {
+        ion-col {
+            padding: 0;
+            ion-card {
+                text-align: left;
+                border-radius: 8px !important;
+                h2 {
+                    text-align: left;
+                    font-size: 14px;
+                    margin-top: 16px;
+                    margin-bottom: 0;
+                }
+                p {
+                    font-size: 12px;
+                }
             }
         }
     }
 
-    .allow-location {
-        padding: 20px;
-        color: $white;
-        text-align: center;
-        background-color: $secondary;
-        font-size: 1em;
-        i {
-            padding-right: 4px;;
+    skeleton-item.avatar div {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+    }
+    .main-card-skeleton {
+        ion-item {
+            display: block
+        }
+        ion-card {
+            border-radius: 8px !important;
+        }
+        .col {
+            padding: 0 !important;
         }
     }
+    // .content {
+    //     background-color: $light;
+    // }
+    // .user { 
+    //     ion-avatar img{
+    //         width: 50px !important;
+    //         height: 50px !important;
+    //         border: 2px solid $primary;
+    //     }
+    //     ion-badge {
+    //         margin-left: 10px;
+    //     }
+    //     i {
+    //         color: $primary;
+    //         padding-right: 4px;
+    //     }
+    //     .name {
+    //         text-align: left;
+    //         font-size: 1em;
+    //     }
 
-	skeleton-item.sk-item-end {
-		div:first-child {
-			float: right;
-		}
-    }
+    //     .online {
+    //         color: green;
+    //     }
+    //     .offline {
+    //         color: $primary; 
+    //     }
+
+    //     .online, .offline {
+    //         font-size: .6em;
+    //         padding-bottom: 4px;
+    //         padding-left: 10px;
+    //         float: right;
+    //     }
+
+    //     .distance {
+    //         span {
+    //             font-weight: bold;
+    //             color: $primary;
+    //         }
+    //     }
+    // }
+
+    // .allow-location {
+    //     padding: 20px;
+    //     color: $white;
+    //     text-align: center;
+    //     background-color: $secondary;
+    //     font-size: 1em;
+    //     i {
+    //         padding-right: 4px;;
+    //     }
+    // }
+
+	// skeleton-item.sk-item-end {
+	// 	div:first-child {
+	// 		float: right;
+	// 	}
+    // }
     
-    skeleton-item.avatar {
-        div {
+    // skeleton-item.avatar {
+    //     div {
 
-            border-radius: 100%;
-        }
-    }
+    //         border-radius: 100%;
+    //     }
+    // }
      
 }

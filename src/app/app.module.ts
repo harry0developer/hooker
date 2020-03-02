@@ -92,7 +92,7 @@ import { ReportBugPage } from '../pages/report-bug/report-bug';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp, {
-      backButtonText: '',
+      backButtonText: ''
     }),
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(firebaseConfig),

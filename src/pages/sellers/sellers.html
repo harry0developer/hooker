@@ -1,14 +1,62 @@
 <ion-header>
   <ion-navbar color="dark"> 
-    <ion-title>Sellers</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="filterUsers()">
-        Filter
+      <button ion-button ion-only (click)="filterUsers()">
+        <ion-icon name="funnel"></ion-icon>
       </button>
     </ion-buttons>
-  </ion-navbar>
-</ion-header>
- 
+  </ion-navbar> 
+  <div class="sub-header">
+    <h2 class="sub-header__title">Sellers</h2>
+  </div>
+</ion-header> 
+
+<ion-content>
+  <!-- Skeleton loading -->
+  <ion-list class="main-card-skeleton" *ngIf="isLoading">
+    <ion-grid> 
+      <ion-row >
+        <ion-col col-6 *ngFor="let user of [1,2,3,4,5]">
+          <ion-card> 
+            <ion-item >
+              <ion-avatar item-start>
+                <skeleton-item class="avatar" height="50px" width="50px" border-radius="50%"></skeleton-item>
+              </ion-avatar>
+              <div class="info">
+                <skeleton-item height="8px" width="80%" ></skeleton-item> 
+                <skeleton-item height="6px" width="50%" ></skeleton-item> 
+              </div>
+            </ion-item>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+
+  <ion-list class="main-card">
+    <ion-grid> 
+      <ion-row *ngIf="!isLoading && sellers" [@listAnimation]="sellers.length">
+        <ion-col col-6 *ngFor="let user of sellers">
+          <ion-card (tap)="viewProfile(user)"> 
+            <ion-item >
+                <ion-avatar>
+                  <img [src]="getUserProfile(user)">
+                </ion-avatar>
+                <div class="info">
+                  <h2>{{capitalizeFirstLetter(user?.nickname)}}</h2>
+                  <p class="distance">
+                    <i class="fa fa-map-pin" item-start></i>
+                    {{user.distance || 'Unknown'}} km away
+                  </p>
+                </div>
+              </ion-item>
+            </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+</ion-content>
+<!--  
 <ion-content>
   <div class="allow-location animated slideInDown" *ngIf="!locationAccess?.allowed"> 
     <i class="fa fa-location-arrow" item-start></i>
@@ -69,4 +117,4 @@
       </ion-item>
     </ion-card>
   </ion-list> 
-</ion-content>
+</ion-content> -->

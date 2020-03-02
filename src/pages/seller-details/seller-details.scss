@@ -1,4 +1,8 @@
-page-seller-details {
+ page-seller-details {  
+
+  .bar-button-clear-md {
+    color: $white;
+  }
   .scroll-content {
       margin-top: 0 !important;
   } 
@@ -19,8 +23,7 @@ page-seller-details {
 
   .swiper-pagination-bullet-active {
       background: white;
-  }
-
+  } 
   .swiper-slide img {
     width: 100%;;
   }
@@ -131,6 +134,17 @@ page-seller-details {
   .skeleton {
     .content {
       padding: 20px;
+    }
+  }
+
+  skeleton-item {
+    div {
+      margin: 0 auto;
+    }
+  }
+  .skeleton {
+    .content {
+      padding: 0;
     }
   }
 }

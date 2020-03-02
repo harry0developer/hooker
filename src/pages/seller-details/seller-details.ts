@@ -1,8 +1,8 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { ChatPage } from '../chat/chat';
-import { COLLECTION } from '../../utils/consts';
+import { COLLECTION, MESSAGES } from '../../utils/consts';
 import { Observable } from 'rxjs';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { User } from '../../models/user';
@@ -37,6 +37,7 @@ export class SellerDetailsPage {
     public dataProvider: DataProvider,
     public mediaProvider: MediaProvider,
     public zone: NgZone,
+    public viewCtrl: ViewController,
     public authProvider: AuthProvider) {
     this.isLoading = true;
     this.hasImages = true;
@@ -48,10 +49,10 @@ export class SellerDetailsPage {
     this.user = this.navParams.get('user');
 
     this.getUserImages(this.user);
-    // this.locationAccess = {
-    //   allowed: this.profile.location && this.profile.location.lat && this.profile.location.lat ? true : false,
-    //   msg: MESSAGES.locationAccessError
-    // }
+    this.locationAccess = {
+      allowed: this.user.location && this.user.location.lat && this.user.location.lat ? true : false,
+      msg: MESSAGES.locationAccessError
+    }
   }
 
 
@@ -87,6 +88,9 @@ export class SellerDetailsPage {
         })
       })
     });
+  }
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 
   // downloadImageFromFirebaseStorage(user: User, img: Image): any {
