@@ -89,6 +89,11 @@ export class SellerDetailsPage {
       })
     });
   }
+
+  getUserDistance(user: User): string {
+    return user.distance && user.distance > "0" ? user.distance.toString() : 'unknown';
+  }
+
   dismiss() {
     this.viewCtrl.dismiss();
   }

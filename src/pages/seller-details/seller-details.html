@@ -11,14 +11,14 @@
 </ion-header>
   
 <ion-content>
-  <div class="skeleton"  >
+  <div class="skeleton"  *ngIf="isLoading">
     <skeleton-item height="460px"></skeleton-item>
     <div class="content">
       <skeleton-item class="text" height="10px" width="180px" margin="0 auto"></skeleton-item>
       <skeleton-item class="text" height="10px" width="220px" margin="0 auto"></skeleton-item>
     </div> 
   </div>
-<!-- 
+
   <div class="no-photos" *ngIf="!isLoading && !hasImages">
     <img src="assets/no-photos.svg" alt="">
   </div> 
@@ -35,14 +35,13 @@
     <h2>{{capitalizeFirstLetter(user?.nickname)}} 
       <ion-badge color="primary" class="age">{{user?.age}}</ion-badge>
     </h2>
-    <p class="distance" *ngIf="locationAccess.allowed"> 
-      <i class="fa fa-map-marker"></i>
-      <span>{{user?.distance}} </span>km away
-    </p>
-    <p class="location-error" *ngIf="!locationAccess.allowed">
-      <i class="fa fa-location-arrow" item-start></i>
-      {{locationAccess.msg}}
-    </p>
+    <p>
+      <span class="distance">
+        <i class="fa fa-map-pin" item-start></i>
+        {{getUserDistance(user)}} 
+      </span>
+      km away
+    </p> 
     <p>{{user?.description}}</p> 
   </div>
 
@@ -50,6 +49,6 @@
     <button ion-fab>
       <i class="fa fa-comment"></i>
     </button>
-  </ion-fab> -->
+  </ion-fab>
 </ion-content>
  

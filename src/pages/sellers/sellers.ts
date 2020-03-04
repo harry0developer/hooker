@@ -128,20 +128,19 @@ export class SellersPage {
       this.zone.run(() => {
         const users = this.firebaseApiProvider.convertObjectToArray(snap.val());
         const sellers = users.filter(u => u.userType === USER_TYPE.seller);
-        sellers.forEach(seller => {
-          this.sellers.push(this.calculateUserDistance(seller));
-        });
+        this.sellers = this.calculateUserDistance(sellers);
         this.isLoading = false;
       });
     });
   }
 
-  calculateUserDistance(user: User): User {
-    if (user.location && user.location.lat && user.location.lng && this.profile.location && this.profile.location.lat && this.profile.location.lng) {
-      user.distance = this.dataProvider.getLocationFromGeo(this.profile.location, user.location);
-      return user;
+  calculateUserDistance(users: User[]): User[] {
+    if (users && users.length > 0 && this.profile.location && this.profile.location.lat && this.profile.location.lng) {
+      const userz: User[] = this.dataProvider.getLocationFromGeo(users, this.profile);
+      console.log(userz);
+      return userz;
     }
-    return user;
+    return users;
   }
 
   filterUsers() {
@@ -154,6 +153,9 @@ export class SellersPage {
     modal.present();
   }
 
+  getUserDistance(user: User): string {
+    return user.distance && user.distance !== '-999' ? user.distance.toString() : 'unknown';
+  }
 
   viewProfile(user) {
     let modal = this.modalCtrl.create(SellerDetailsPage, { user, locationAccess: this.locationAccess });

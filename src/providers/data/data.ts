@@ -34,9 +34,6 @@ export class DataProvider {
     // this.profile = this.authProvider.getStoredUser();
 
     if (this.profile) {
-
-      let type = '';
-
       this.getUsers().subscribe(users => {
         this.userData.setUsers(users);
         this.updateUserData(this.userData);
@@ -268,39 +265,6 @@ export class DataProvider {
     return this.getItemById(COLLECTION.users, id).toPromise();
   }
 
-  calculateRating(ratings: Ratings[]): number {
-    let totalRate = 0;
-    ratings.forEach(r => {
-      totalRate += +r.rating;
-    });
-    const rate = (totalRate / ratings.length).toFixed(2);
-    return parseFloat(rate) || 0.0;
-  }
-
-  applyHaversine(jobs, lat, lng) {
-    if (jobs && lat && lng) {
-      let usersLocation = {
-        lat: lat,
-        lng: lng
-      };
-      jobs.map((job) => {
-        let placeLocation = {
-          lat: job.location.latitude,
-          lng: job.location.longitude
-        };
-        job.distance = this.getDistanceBetweenPoints(
-          usersLocation,
-          placeLocation,
-          'miles'
-        ).toFixed(0);
-      });
-      return jobs;
-    } else {
-      return jobs;
-    }
-  }
-
-
   getDateTime(): string {
     return moment(new Date()).format('YYYY/MM/DD HH:mm:ss');
   }
@@ -313,41 +277,67 @@ export class DataProvider {
     return str ? str.charAt(0).toUpperCase() + str.substring(1) : str;
   }
 
-  private getDistanceBetweenPoints(start: Geo, end: Geo, units) {
+  applyHaversine(users: User[], myProfile: User, units: string = 'miles'): User[] {
+    if (users && myProfile.location && myProfile.location.lat && myProfile.location.lng) {
+      let myGeo: Geo = {
+        lat: myProfile.location.lat,
+        lng: myProfile.location.lng
+      };
+      users.map(user => {
+        if (user.location && user.location.lat && user.location.lng) {
+          let otherUserGeo: Geo = {
+            lat: user.location.lat,
+            lng: user.location.lng
+          };
+          user.distance = this.getDistanceBetweenPoints(
+            myGeo,
+            otherUserGeo,
+            units
+          ).toFixed(0);
 
-    console.log(start);
-    console.log(end);
+        }
+      });
+      return users;
+    } else {
+      return users;
+    }
+  }
 
-    let EARTH_RADIUS = {
+  private getDistanceBetweenPoints(start: Geo, end: Geo, units: string): number {
+    let earthRadius = {
       miles: 3958.8,
       km: 6371
     };
-    const RADIUS = EARTH_RADIUS[units || 'miles'];
-    let dLat = this.toRad((end.lat - start.lat));
-    let dLon = this.toRad((end.lng - start.lng));
+
+    let R = earthRadius[units || 'miles'];
+    let lat1 = start.lat;
+    let lon1 = start.lng;
+    let lat2 = end.lat;
+    let lon2 = end.lng;
+
+    let dLat = this.toRad((lat2 - lat1));
+    let dLon = this.toRad((lon2 - lon1));
+
     let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.toRad(start.lat)) * Math.cos(this.toRad(end.lat)) *
+      Math.cos(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = RADIUS * c;
+    let d = R * c;
 
-
-    return distance * this.KM; //convert miles to km
+    return d >= 0 ? d * this.KM : -999; //convert miles to km
   }
 
   toRad(x) {
     return x * Math.PI / 180;
   }
 
-  /*  DATE FUNCTIONS */
-
   getAgeFromDate(date: string): string {
     return moment(date, "YYYY/MM/DD").month(0).from(moment().month(0)).split(" ")[0];
   }
 
-  getLocationFromGeo(myGeo: Geo, otherGeo: Geo): string {
-    return this.getDistanceBetweenPoints(myGeo, otherGeo, 'miles').toFixed(0);;
+  getLocationFromGeo(users: User[], myProfile: User): User[] {
+    return this.applyHaversine(users, myProfile);
   }
 
   getCountries() {

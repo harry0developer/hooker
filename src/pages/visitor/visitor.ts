@@ -160,6 +160,6 @@ export class VisitorPage {
   }
 
   getDistance(user) {
-    return this.dataProvider.getLocationFromGeo(this.geo, user.location);
+    // return this.dataProvider.getLocationFromGeo(this.geo, user.location);
   }
 }

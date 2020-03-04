@@ -1,10 +1,10 @@
 <ion-header>
   <ion-navbar color="dark"> 
-    <ion-buttons end>
+    <!-- <ion-buttons end>
       <button ion-button ion-only (click)="filterUsers()">
         <ion-icon name="funnel"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-navbar> 
   <div class="sub-header">
     <h2 class="sub-header__title">Sellers</h2>
@@ -13,6 +13,11 @@
 
 <ion-content>
   <!-- Skeleton loading -->
+  <div class="quick-filter">
+    <div class="quick-filter__item">Near by</div>
+    <div class="quick-filter__item">Bit far</div>
+    <div class="quick-filter__item">Far away</div>
+  </div>
   <ion-list class="main-card-skeleton" *ngIf="isLoading">
     <ion-grid> 
       <ion-row >
@@ -44,9 +49,12 @@
                 </ion-avatar>
                 <div class="info">
                   <h2>{{capitalizeFirstLetter(user?.nickname)}}</h2>
-                  <p class="distance">
-                    <i class="fa fa-map-pin" item-start></i>
-                    {{user.distance || 'Unknown'}} km away
+                  <p>
+                    <span class="distance">
+                      <i class="fa fa-map-pin" item-start></i>
+                      {{getUserDistance(user)}} 
+                    </span>
+                    km away
                   </p>
                 </div>
               </ion-item>
@@ -73,10 +81,11 @@
         </h2>
         <p class="description">
           <skeleton-item height="8px" width="90%" ></skeleton-item>
-        </p>
-        <p class="distance"> 
+        </p>l
+        <span         <p c>
           <span>
             <skeleton-item height="8px" margin-top="10px" width="50%"></skeleton-item>
+          </span>ass="distance"> 
           </span>
         </p>
         <p item-end>
