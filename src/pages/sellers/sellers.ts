@@ -122,7 +122,8 @@ export class SellersPage {
     this.locationAccess = {
       allowed: this.profile.location && this.profile.location.lat && this.profile.location.lat ? true : false,
       msg: MESSAGES.locationAccessError
-    }
+    };
+
     const ref = this.firebaseApiProvider.firebaseRef.ref(`/${COLLECTION.users}`);
     ref.on("value", snap => {
       this.zone.run(() => {
@@ -137,7 +138,6 @@ export class SellersPage {
   calculateUserDistance(users: User[]): User[] {
     if (users && users.length > 0 && this.profile.location && this.profile.location.lat && this.profile.location.lng) {
       const userz: User[] = this.dataProvider.getLocationFromGeo(users, this.profile);
-      console.log(userz);
       return userz;
     }
     return users;

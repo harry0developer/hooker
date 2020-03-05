@@ -120,8 +120,8 @@ export class SellerDetailsPage {
     return this.dataProvider.getAgeFromDate(date);
   }
 
-  openChats() {
-    this.navCtrl.push(ChatPage);
+  openChats(user) {
+    this.navCtrl.push(ChatPage, { user });
   }
 
   requestUser(user) {

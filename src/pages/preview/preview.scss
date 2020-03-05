@@ -1,4 +1,23 @@
 page-preview {
+ 
+    .scroll-content {
+        margin-top: 0 !important;
+    } 
+    .toolbar-background {
+        background-color: transparent !important;
+    }
+
+    .bar-button-default-md,.bar-button-default-ios, .toolbar-title-md, .toolbar-title-ios{
+    color: $primary;
+    }
+
+    .header-md::after {
+        background-image: none !important;
+    }
+    .header-ios .toolbar-ios:last-child .toolbar-background-ios {
+        border-width: 0;
+    }
+
     .slide-zoom {
         height: 100%;
     }

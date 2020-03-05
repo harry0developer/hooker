@@ -1,30 +1,21 @@
 <ion-header>
   <ion-navbar color="dark">
-    <ion-title>{{user1?.nickname}}</ion-title>
+    <ion-title>{{capitalizeFirstLetter(user?.nickname)}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item text-wrap no-lines *ngIf="user1">
-      <!-- <ion-avatar item-end>
-        <img id="profile-image" src="assets/imgs/users/user{{user1.id}}.jpg">
-      </ion-avatar> -->
-      <div class="bubble bubble-primary">
-        Quidem fugit esse nisi laborum nostrum iste obcaecati nemo eos recusandae.
-      </div>
-      <span class="primary bubble-time">a minute ago</span>
-    </ion-item>
+  <ion-list no-lines>
+    <chat-bubble
+                text="Hey sexy, are you dtf, Hey sexy, are you dtf, Hey sexy, are you dtf" 
+                [pic]="getProfilePicture()"
+                position="start">
+    </chat-bubble>
 
-    <ion-item *ngIf="user2">
-      <ion-avatar item-start>
-        <img id="profile-image" src="assets/imgs/users/user{{user2.id}}.jpg">
-      </ion-avatar>
-      <div class="bubble bubble-secondary">
-        I'm speech bubble
-      </div>
-      <span class="secondary bubble-time">3 minutes ago</span>
-    </ion-item>
+    <chat-bubble
+                text="Hey sexy, are you dtf, Hey sexy, are you dtf, Hey sexy, are you dtf" 
+                position="end">
+    </chat-bubble>
   </ion-list>
 </ion-content>
 

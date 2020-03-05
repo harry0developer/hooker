@@ -39,6 +39,8 @@ export class ProfilePage {
 
   ionViewDidLoad() {
     this.profile = this.firebaseApiProvider.getLoggedInUser();
+    console.log(this.profile);
+
     this.imagesRef = `${COLLECTION.images}/${this.profile.uid}`;
     this.getAllImages();
 

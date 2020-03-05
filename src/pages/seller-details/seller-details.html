@@ -1,6 +1,5 @@
 <ion-header>
   <ion-navbar >
-    <!-- <ion-title>{{ capitalizeFirstLetter(user?.nickname) }}</ion-title> -->
     <ion-buttons end>
       <button ion-button icon-only clear (click)="dismiss()">
         <ion-icon name="close"></ion-icon>
@@ -24,7 +23,6 @@
   </div> 
 
 
-
   <ion-slides pager *ngIf="!isLoading && hasImages">
     <ion-slide *ngFor="let img of images">
       <img [src]="img.path">  
@@ -45,7 +43,7 @@
     <p>{{user?.description}}</p> 
   </div>
 
-  <ion-fab right bottom (click)="openChats()"  *ngIf="!isLoading">  
+  <ion-fab right bottom (click)="openChats(user)"  *ngIf="!isLoading">  
     <button ion-fab>
       <i class="fa fa-comment"></i>
     </button>

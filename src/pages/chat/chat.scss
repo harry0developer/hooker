@@ -1,70 +1,11 @@
 page-chat {
 
     ion-avatar{
-        margin: 0 !important; 
+        margin: 0 0 10px 0  !important; 
+        width: 40px;
+        height: 40px;
     }
-
-    .bubble-time {
-        font-size: 0.7em;
-        color: $dark-grey;
-    }
-
-    .primary {
-        margin-left: 24px;
-    }
-
-    .secondary {
-        margin-right: 24px;
-        float: right;
-    }
-
-    .bubble {
-        // width: 250px;
-        margin: 2px 16px;
-        border-radius: 15px;
-        color: #fff;
-        padding: 14px;
-        font-size: 0.8em;
-        font-weight: normal;
-        position: relative;
-        text-align: left;
-    }
-      
-    /* speech bubble primary */  
-    .bubble-primary {
-        background-color: $dark-grey;
-    }
-    .bubble-primary:before {
-        content: "";
-        width: 0px;
-        height: 0px;
-        position: absolute;
-        border-left: 15px solid $dark-grey;
-        border-right: 15px solid transparent;
-        border-top: 15px solid $dark-grey;
-        border-bottom: 15px solid transparent;
-        right: -16px;
-        // top: 0px;
-    }
-      
-      
-    /* speech bubble secondary */
-    .bubble-secondary {
-        background-color: $secondary;
-    }
-    .bubble-secondary:before {
-        content: "";
-        width: 0px;
-        height: 0px;
-        position: absolute;
-        border-left: 15px solid transparent;
-        border-right: 15px solid $secondary;
-        border-top: 15px solid $secondary;
-        border-bottom: 15px solid transparent;
-        left: -16px;
-        // top: 0px;
-    }
-
+ 
     .item-block:last-child {
         border-bottom: none !important;
     }

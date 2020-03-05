@@ -84,6 +84,16 @@ page-sellers {
         color: $primary;
     }
 
+    .allow-location {
+        padding: 20px;
+        background: $primary;
+        color: $white;
+        text-align: center;
+        i {
+            padding-right: 10px;
+        }
+    }
+
 
 
     // .content {
