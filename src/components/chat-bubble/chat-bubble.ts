@@ -7,23 +7,11 @@ import { Component, Input } from '@angular/core';
 export class ChatBubbleComponent {
 
   @Input() text: string;
-  @Input() pic: string;
+  @Input() pic?: string;
+  @Input() timestamp: string;
   @Input() position: 'start' | 'end' = 'start';
 
   constructor() {
-  }
-
-  ionViewDidLoad() {
-    console.log(this.text);
-    console.log(this.position);
-    console.log(this.pic);
-  }
-
-  ionViewDidEnter() {
-    console.log(this.text);
-    console.log(this.position);
-    console.log(this.pic);
-
   }
 
   isPostionStart(): boolean {

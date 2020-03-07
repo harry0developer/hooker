@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { STORAGE_KEY } from '../../utils/consts';
 import { User } from '../../models/user';
+import moment from 'moment';
 
 
 @Injectable()
@@ -92,4 +93,8 @@ export class FirebaseApiProvider {
     return returnArr;
   }
 
+
+  getDateTimeMoment(dateTime): string {
+    return moment(dateTime).fromNow();
+  }
 }

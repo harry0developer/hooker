@@ -1,8 +1,6 @@
-<ion-item text-wrap>
-  <ion-avatar item-start *ngIf="position === 'start'">
-    <img [src]="pic">
-  </ion-avatar>
-  <div class="bubble" [class.end]="position === 'end'" [class.start]="position === 'start'">
+<ion-item text-wrap >
+  <div class="bubble" [class.bubble__end]="position === 'end'" [class.bubble__start]="position === 'start'">
     {{text}} 
+    <div class="timestamp">{{timestamp}}</div>
   </div>
 </ion-item>

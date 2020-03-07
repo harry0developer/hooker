@@ -1,27 +1,28 @@
 <ion-header>
   <ion-navbar color="dark">
-    <ion-title>{{capitalizeFirstLetter(user?.nickname)}}</ion-title>
+    <img class="profile-pic" [src]="getProfilePic(person)">
+    <ion-title>
+      {{capitalizeFirstLetter(person?.nickname)}}
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list no-lines>
-    <chat-bubble
-                text="Hey sexy, are you dtf, Hey sexy, are you dtf, Hey sexy, are you dtf" 
-                [pic]="getProfilePicture()"
-                position="start">
-    </chat-bubble>
-
-    <chat-bubble
-                text="Hey sexy, are you dtf, Hey sexy, are you dtf, Hey sexy, are you dtf" 
-                position="end">
-    </chat-bubble>
+<ion-content padding-top #content>
+  <ion-list no-lines *ngFor="let msg of messageList">
+    <chat-bubble 
+                [text]="msg.text"
+                [timestamp]="getMomentFromNow(msg.timestamp)"
+                pic=""
+                position="{{msg.from === profile.uid ? 'end' : 'start'}}">
+    </chat-bubble> 
   </ion-list>
 </ion-content>
 
 <ion-footer>
   <ion-item no-lines> 
-    <ion-input type="text" placeholder="Type message"></ion-input>
-    <button ion-button clear item-right (click)="sendMessage()">Send</button>
+    <ion-input type="text" placeholder="Type message..." [(ngModel)]="inputMessage" (keyup.enter)="sendMessage()"></ion-input>
+    <button ion-button clear item-right icon-only (click)="sendMessage()">
+      <ion-icon name="send" color="primary"></ion-icon>
+    </button>
   </ion-item> 
 </ion-footer>

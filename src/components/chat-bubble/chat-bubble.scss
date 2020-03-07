@@ -1,24 +1,40 @@
 chat-bubble {
     .bubble {
         font-size: 12px;
+        display: block;
+        width: fit-content;
+        &__start {
+            background-color: #ec9ea9;
+            color: $white;
+            padding: 10px;
+            max-width: 70%;
+            border-radius: 10px;
+            float: left;
+            line-height: 1.2;
+            margin-left: 4px;
+            .timestamp {
+                font-size: 10px;
+                color: $primary;
+                padding-top: 4px;
+                text-align: right;
+            }
+        }
+        &__end {
+            background-color: $light-grey;
+            color: #1f1f20;
+            padding: 10px;
+            max-width: 70%;
+            border-radius: 10px;
+            float: right;
+            line-height: 1.2;
+             .timestamp {
+                font-size: 10px;
+                color: $primary;
+                padding-top: 4px;
+                text-align: left;
+            }
+        }
     }
-    .start {
-        background-color: #ec9ea9;
-        color: $white;
-        padding: 6px 10px;
-        width: 70%;
-        border-radius: 20px;
-        float: left;
-        line-height: 1.2;
-        margin-left: 4px;
-    }
-    .end {
-        background-color: $light-grey;
-        color: #1f1f20;
-        width: 70%;
-        padding: 6px 10px;
-        border-radius: 20px;
-        float: right;
-        line-height: 1.2;
-    }
+    
+   
 }
