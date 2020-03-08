@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Content, ViewController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { DataProvider } from '../../providers/data/data';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
@@ -26,6 +26,7 @@ export class ChatPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public viewCtrl: ViewController,
     public firebaseApiProvider: FirebaseApiProvider,
     public dataProvider: DataProvider) { }
 
@@ -38,9 +39,7 @@ export class ChatPage {
         this.messageList.push(msg);
       })
     }
-
     this.scrollToEnd();
-
   }
 
   sendMessage() {
@@ -70,7 +69,6 @@ export class ChatPage {
       return `assets/imgs/users/${user.gender}.svg`
     }
     return '';
-
   }
 
   getMomentFromNow(timestamp) {
@@ -84,4 +82,9 @@ export class ChatPage {
       }
     }, 100);
   }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
 }

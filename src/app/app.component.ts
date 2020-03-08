@@ -42,6 +42,7 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.splashScreen.hide();
       this.statusBar.styleLightContent();
+      this.statusBar.styleBlackTranslucent();
       const intro = this.dataProvider.getItemFromLocalStorage(STORAGE_KEY.intro);
       const a = Object.getOwnPropertyNames(intro).length;
       if (a === 0) {

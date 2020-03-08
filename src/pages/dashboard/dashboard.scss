@@ -1,8 +1,11 @@
 page-dashboard {
-    
+	.content {
+		background-color: $light-grey;
+	}
+
 	.top{
 		text-align: center;
-		background-image: url('assets/bg-1.png');
+		background-image: url('../../assets/bg-1.png');
 		color: $dark;
 		padding-top: 10%;
 		border-bottom: 1px solid $light-grey;
