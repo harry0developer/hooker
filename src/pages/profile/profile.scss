@@ -1,7 +1,8 @@
 page-profile {
   .content {
 		background-color: $light-grey;
-	}
+  }
+  
   .profile {
     text-align: center;
     background-image: url('../../assets/bg-1.png');
@@ -34,7 +35,6 @@ page-profile {
       }
     }
     .pin-more {
-      // margin-bottom: 8px;
       img {
         border-radius: 4px;
       }

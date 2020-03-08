@@ -23,9 +23,6 @@
 
   <ion-item-divider color="light">My photos</ion-item-divider>
 
-
-  <!-- <button ion-button (click)="removeItem()">Remove</button> -->
-
   <div *ngIf="images && !isLoading">
     <div class="pins" padding>
       <div class="animated fadeIn " [ngClass]="{'pin': images.length > 2, 'pin-more': images.length <= 2 }" 
@@ -35,13 +32,22 @@
     </div>
   </div>
 
-  <div *ngIf="isLoading">
-    <div class="pins" padding>
-      <div class="pin" *ngFor="let image of [1,2,3,4,5]">
-        <skeleton-item  height="200px" width="160px"></skeleton-item>
-      </div>
-    </div>
-  </div>
+  <ion-grid *ngIf="isLoading">
+    <ion-row>
+      <ion-col col-6>
+        <skeleton-item width="100%" height="240px"></skeleton-item>
+      </ion-col>
+      <ion-col col-6>
+        <skeleton-item width="100%" height="240px"></skeleton-item>
+      </ion-col>
+      <ion-col col-6>
+        <skeleton-item width="100%" height="240px"></skeleton-item>
+      </ion-col>
+      <ion-col col-6>
+        <skeleton-item width="100%" height="240px"></skeleton-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div class="no-images" *ngIf="(!images || images.length < 1) && !isLoading">
     <p>You have not uploaded photos</p>
