@@ -12,8 +12,7 @@
     <chat-bubble 
                 [text]="msg.text"
                 [timestamp]="getMomentFromNow(msg.timestamp)"
-                pic=""
-                position="{{msg.from === profile.uid ? 'end' : 'start'}}">
+                from="{{msg.from === profile.uid ? 'me' : 'other'}}">
     </chat-bubble> 
   </ion-list>
 </ion-content>

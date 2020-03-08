@@ -97,6 +97,8 @@ export class LoginPage {
         lat: res.coords.latitude,
         lng: res.coords.longitude
       };
+      console.log(res);
+
       this.updateUserProfile(this.profile, loc);
       this.navigate();
     }).catch(err => {
@@ -127,7 +129,13 @@ export class LoginPage {
       message: 'Ooops, we could not get your current location, please allow access to your location',
       buttons: [
         {
-          text: 'Ok',
+          text: 'Continue',
+          handler: () => {
+            this.navigate();
+          }
+        },
+        {
+          text: 'Retry',
           handler: () => {
             this.getUserLocation();
           }

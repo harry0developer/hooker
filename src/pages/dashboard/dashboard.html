@@ -3,9 +3,12 @@
 <ion-content>
   <div class="top" *ngIf="profile && !isLoading">
     <div class="profile">
-      <img alt="profile" [src]="getProfilePicture()" class="animated zoomIn" #img>
+      <img alt="profile" [src]="getProfilePicture(profile)" class="animated zoomIn" #img>
     </div> 
-    <h2 class="animated slideInLeft">{{profile?.nickname}}</h2>
+    <h2 class="animated slideInLeft">
+      {{capitalizeFirstLetter(profile?.nickname)}}
+      <ion-badge color="primary">{{profile?.age}}</ion-badge>
+    </h2>
     <p class="animated slideInLeft">{{profile?.userType}}</p>
   </div>
 
@@ -19,35 +22,11 @@
       <skeleton-item height="10px" width="40%" margin-top="10px" ></skeleton-item>
       <skeleton-item height="20px" width="40%"></skeleton-item>
     </div> 
-  </div>
-
-  <ion-list *ngIf="isLoading">
-    <ion-card *ngFor="let i of [1,2,3]">
-      <ion-item>
-        <ion-avatar item-start>
-          <skeleton-item class="avatar" height="50px" margin-right="20px" margin-top="16px"  width="50px"></skeleton-item>
-        </ion-avatar>
-        <h2 class="name">
-          <skeleton-item height="8px" width="60%" ></skeleton-item> 
-        </h2>
-        <p class="description">
-          <skeleton-item height="8px" width="90%" ></skeleton-item>
-        </p>
-        <p class="distance"> 
-          <span>
-            <skeleton-item height="8px" margin-top="10px" width="50%"></skeleton-item>
-          </span>
-        </p>
-        <p item-end>
-          <i class="fa fa-chevron-right"></i>
-        </p>
-      </ion-item>
-    </ion-card>
-  </ion-list>  
+  </div> 
 
   <ion-list *ngIf="isLoading" class="user">
     <ion-item-divider color="light">Recent chats</ion-item-divider>
-    <ion-card  *ngFor="let user of [1,2,3]">
+    <ion-card *ngFor="let user of [1,2,3]">
       <ion-item>
         <ion-avatar item-start>
           <skeleton-item class="avatar" height="50px" width="50px"></skeleton-item>
@@ -62,15 +41,15 @@
     </ion-card>
   </ion-list> 
 
-  <ion-list *ngIf="!isLoading" class="user" [@listAnimation]="chats.length">
+  <ion-list *ngIf="!isLoading" class="user" [@listAnimation]="users.length">
     <ion-item-divider color="light">Recent chats</ion-item-divider>
-    <ion-card  *ngFor="let user of chats">
+    <ion-card *ngFor="let user of users">
       <ion-item (tap)="viewUserProfile(user)">
         <ion-avatar item-start>
-          <img [src]="user.pic">
+          <img [src]="getProfilePicture(user)">
         </ion-avatar>
         <h2 class="name">
-          {{user?.nickname}} 
+          {{capitalizeFirstLetter(user?.nickname)}} 
         </h2> 
         <p item-end>
           <i class="fa fa-chevron-right"></i>
@@ -78,7 +57,7 @@
       </ion-item>
     </ion-card>
 
-    <ion-card *ngIf="chats.length < 1">
+    <ion-card *ngIf="users.length < 1">
       <ion-item>
         <p>You do not have recent chats</p>      
       </ion-item>

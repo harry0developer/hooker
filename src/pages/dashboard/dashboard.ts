@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { AuthProvider } from '../../providers/auth/auth';
 import { DataProvider } from '../../providers/data/data';
-import { COLLECTION, STORAGE_KEY } from '../../utils/consts';
+import { COLLECTION, STORAGE_KEY, USER_TYPE } from '../../utils/consts';
 import { ChatPage } from '../chat/chat';
 import { bounceIn } from '../../utils/animations';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
@@ -23,42 +23,60 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 })
 export class DashboardPage {
   profile: User = null;
-  isLoading: boolean = true;
+  isLoading: boolean;
 
   messages: any[] = [];
-  chats: any[] = [];
+  users: any[] = [];
 
+  chatRef = firebase.database().ref(COLLECTION.chats);
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private feedbackProvider: FeedbackProvider,
-    private modalCtrl: ModalController,
     public authProvider: AuthProvider,
     public dataProvider: DataProvider,
     public firebaseApiProvider: FirebaseApiProvider,
-    public mediaProvider: MediaProvider
+    public mediaProvider: MediaProvider,
+    public zone: NgZone
   ) { }
 
-  ionViewWillEnter() {
+  ionViewDidLoad() {
     this.profile = this.firebaseApiProvider.getLoggedInUser();
-    console.log(this.profile);
+    this.isLoading = true;
+    this.chatRef.child(this.profile.uid).on('value', snap => {
+      this.zone.run(() => {
+        let user;
+        snap.forEach(s => {
+          user = Object.entries(s.val())[0][1];
+          this.getUserById(user.from);
+        });
+      });
+    });
   }
 
-  ionViewDidLoad() {
-    // this.profile = this.authProvider.getStoredUser();
-    this.chats = [
-      { nickname: 'Charle', pic: 'assets/imgs/users/user1.jpg' },
-      { nickname: 'Mark', pic: 'assets/imgs/users/user2.jpg' },
-      { nickname: 'Thabo', pic: 'assets/imgs/users/user3.jpg' }
-    ];
-    this.isLoading = false;
+  getUserById(id) {
+    this.firebaseApiProvider.getItem(COLLECTION.users, id).then(user => {
+      this.zone.run(() => {
+        firebase.database().ref(COLLECTION.users).child(id).once('value', snap => {
+          this.users.push(snap.val());
+          this.isLoading = false;
+        });
+      });
+    }).catch(err => {
+      this.isLoading = false;
+      console.log(err);
+    });
   }
 
   viewUserProfile(user) {
     this.navCtrl.push(ChatPage, { user });
   }
 
-  getProfilePicture(): string {
-    return !!this.profile.profilePic ? this.profile.profilePic : `assets/imgs/users/${this.profile.gender}.svg`;
+  getProfilePicture(user): string {
+    return !!user.profilePic ? user.profilePic : `assets/imgs/users/${user.gender}.svg`;
   }
+
+  capitalizeFirstLetter(str: string): string {
+    return this.dataProvider.capitalizeFirstLetter(str);
+  }
+
 }

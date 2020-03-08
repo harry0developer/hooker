@@ -198,9 +198,6 @@ export class SellersPage {
     });
   }
 
-  // viewUserProfile(user) {
-  //   this.navCtrl.push(SellerDetailsPage, { user, locationAccess: this.locationAccess });
-  // }
 
   getUserProfile(user: User): string {
     return user && user.profilePic ? user.profilePic : `assets/imgs/users/${user.gender}.svg`;

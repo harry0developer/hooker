@@ -1,11 +1,14 @@
 page-chat {
-
     ion-avatar{
         margin: 0 0 10px 0  !important; 
         width: 40px;
         height: 40px;
     }
- 
+
+    .list-md, .list-ios {
+        margin: 0;
+    }
+
     .item-block:last-child {
         border-bottom: none !important;
     }
@@ -17,7 +20,6 @@ page-chat {
     .label-md, .label-ios{
         margin: 0;
     }
-
 
     .toolbar-md {
         min-height: 60px;
@@ -41,7 +43,6 @@ page-chat {
             padding-left: 0 !important;
         }
         .item-inner {
-            border: 1px solid $dark-grey !important;
             border-radius: 10px;
             margin: 0 5px;
         }

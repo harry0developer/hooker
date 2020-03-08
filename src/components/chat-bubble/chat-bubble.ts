@@ -7,15 +7,14 @@ import { Component, Input } from '@angular/core';
 export class ChatBubbleComponent {
 
   @Input() text: string;
-  @Input() pic?: string;
   @Input() timestamp: string;
-  @Input() position: 'start' | 'end' = 'start';
+  @Input() from: 'me' | 'other' = 'me';
 
   constructor() {
   }
 
-  isPostionStart(): boolean {
-    return this.position.toLocaleLowerCase() === 'start';
+  fromMe(): boolean {
+    return this.from.toLocaleLowerCase() === 'me';
   }
 
 }
