@@ -21,8 +21,10 @@ export class ChatPage {
   chatRef = firebase.database().ref(COLLECTION.chats);
   messageList: Message[] = [];
 
-  @ViewChild(Content) content: Content;
+  isLoading: boolean;
   inputMessage: string = '';
+
+  @ViewChild(Content) content: Content;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -31,15 +33,21 @@ export class ChatPage {
     public dataProvider: DataProvider) { }
 
   ionViewDidLoad() {
+    this.isLoading = true;
     this.profile = this.firebaseApiProvider.getLoggedInUser();
     this.person = this.navParams.get('user');
     if (this.person.uid) {
       this.chatRef.child(this.profile.uid).child(this.person.uid).on('child_added', snap => {
         let msg: Message = snap.val();
         this.messageList.push(msg);
-      })
+        this.isLoading = false;
+        this.scrollToEnd();
+      });
     }
-    this.scrollToEnd();
+
+    if (this.messageList.length < 1) {
+      this.isLoading = false;
+    }
   }
 
   sendMessage() {
@@ -50,11 +58,11 @@ export class ChatPage {
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         from: this.profile.uid,
         id: msgId
-      }
+      };
       this.chatRef.child(this.profile.uid).child(this.person.uid).child(msgId).set(msg);
       this.chatRef.child(this.person.uid).child(this.profile.uid).child(msgId).set(msg);
       this.inputMessage = '';
-      this.scrollToEnd()
+      this.scrollToEnd();
     }
   }
 
@@ -79,6 +87,7 @@ export class ChatPage {
     setTimeout(() => {
       if (typeof this.content.scrollToBottom !== 'undefined') {
         this.content.scrollToBottom();
+        console.log('Scroll to bottom');
       }
     }, 100);
   }

@@ -1,10 +1,13 @@
 page-chat {
+    .content {
+        background-image: url('../../assets/bg-1.png');
+    }
     .toolbar-ios-dark .bar-button-default-ios,
     .toolbar-md-dark .bar-button-default-md  {
         color: #222;
-    }
-    .header-md::after {
-        display: none;
+    } 
+    ion-header {
+        background-color: $white;
     }
 
     .sub-header {
@@ -56,9 +59,29 @@ page-chat {
             display: inline;
             width: 40px;
             height: 40px;
+            border: 2px solid #db4056;
+            border-radius: 50%;
         }
     }
 
+    skeleton-item.right  {
+        div{
+            border-radius: 40px;
+            float: right;
+            margin: 10px;
+        }
+    }
+    skeleton-item.left  {
+        div{
+            border-radius: 40px;
+            float: left;
+            margin: 10px;
+        }
+    }
+    skeleton-item {
+        margin: 20px;
+    }
+    
     .message-control {
         border-top: 2px solid $dark-grey;
     }
@@ -78,7 +101,7 @@ page-chat {
     }
 
     ion-footer {
-        margin-bottom: 4px !important;
+        border-top: 2px solid $light-grey;
         ion-item {
             padding-left: 0 !important;
         }
@@ -87,11 +110,25 @@ page-chat {
             margin: 0 5px;
         }
         ion-input {
-            padding-left: 6px !important;
             font-size: 14px
         }
         button {
             font-weight: bold;
+        }
+        .text-input {
+            color: $black;
+        }
+    }
+
+    .no-chats {
+        text-align: center;
+        i {
+            font-size: $large;
+            margin-top: 50%;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: $small;
         }
     }
 }

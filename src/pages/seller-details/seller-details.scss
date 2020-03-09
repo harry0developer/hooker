@@ -1,8 +1,19 @@
  page-seller-details {  
 
-  .bar-button-clear-md {
+  .bar-button-ios[icon-only]{
+    padding: 0;
     color: $white;
+    width: 1.6em ;
+    font-size: 1.6em ;
   }
+
+  .bar-button-md[icon-only]{
+    padding: 0;
+    color: $white;
+    width: 1.6em;
+    font-size: 1.2em;
+  }
+
   .scroll-content {
       margin-top: 0 !important;
   } 

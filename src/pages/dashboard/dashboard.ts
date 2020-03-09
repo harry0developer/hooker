@@ -24,10 +24,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class DashboardPage {
   profile: User = null;
   isLoading: boolean;
-
   messages: any[] = [];
   users: any[] = [];
-
   chatRef = firebase.database().ref(COLLECTION.chats);
   constructor(
     public navCtrl: NavController,
@@ -56,6 +54,7 @@ export class DashboardPage {
   getUserById(id) {
     this.firebaseApiProvider.getItem(COLLECTION.users, id).then(user => {
       this.zone.run(() => {
+        this.users = [];
         firebase.database().ref(COLLECTION.users).child(id).once('value', snap => {
           this.users.push(snap.val());
           this.isLoading = false;
