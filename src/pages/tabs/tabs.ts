@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { HomePage } from '../home/home';
-import { ChatsPage } from '../chats/chats';
 import { ProfilePage } from '../profile/profile';
 import { SettingsPage } from '../settings/settings';
 import { NavParams } from 'ionic-angular';
@@ -8,6 +6,7 @@ import { USER_TYPE } from '../../utils/consts';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SellersPage } from '../sellers/sellers';
 import { User } from '../../models/user';
+import { ChatsPage } from '../chats/chats';
 
 @Component({
   templateUrl: 'tabs.html',

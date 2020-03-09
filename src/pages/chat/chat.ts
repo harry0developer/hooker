@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, ViewController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { DataProvider } from '../../providers/data/data';
@@ -6,10 +6,8 @@ import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
 import * as firebase from 'firebase';
 import { COLLECTION } from '../../utils/consts';
 import { Message } from '../../models/message';
+import { FeedbackProvider } from '../../providers/feedback/feedback';
 
-
-//NEyFMVd0bBZEYHaYEnUB3wfCZUJ3
-// yHqULYzK0tZaSdP2ZmgzL38hHlM2
 @IonicPage()
 @Component({
   selector: 'page-chat',
@@ -25,28 +23,32 @@ export class ChatPage {
   inputMessage: string = '';
 
   @ViewChild(Content) content: Content;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public firebaseApiProvider: FirebaseApiProvider,
+    public feedbackProvider: FeedbackProvider,
+    public zone: NgZone,
     public dataProvider: DataProvider) { }
 
   ionViewDidLoad() {
     this.isLoading = true;
+    this.feedbackProvider.presentLoading();
     this.profile = this.firebaseApiProvider.getLoggedInUser();
     this.person = this.navParams.get('user');
     if (this.person.uid) {
+      this.messageList = [];
       this.chatRef.child(this.profile.uid).child(this.person.uid).on('child_added', snap => {
-        let msg: Message = snap.val();
-        this.messageList.push(msg);
-        this.isLoading = false;
-        this.scrollToEnd();
+        this.zone.run(() => {
+          let msg: Message = snap.val();
+          this.messageList.push(msg);
+          this.isLoading = false;
+          this.scrollToEnd();
+        });
       });
-    }
-
-    if (this.messageList.length < 1) {
-      this.isLoading = false;
+      this.feedbackProvider.dismissLoading();
     }
   }
 

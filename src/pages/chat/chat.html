@@ -22,24 +22,11 @@
     </chat-bubble> 
   </ion-list>
 
-  <div class="no-chats" *ngIf="!isLoading && ( !messageList || messageList.length < 1)">
+  <div class="no-chats" *ngIf="!messageList || messageList.length < 1">
     <i class="fa fa-comment"></i>
     <p>You do not have any chats yet.</p>
-  </div>
-
-  <ion-list *ngIf="isLoading">
-    <skeleton-item class="left" height="20px" width="160px"></skeleton-item>
-    <br>
-    <skeleton-item class="right" height="20px" width="160px"></skeleton-item>
-    <br>
-    <skeleton-item class="left" height="20px" width="160px"></skeleton-item>
-    <br>
-    <skeleton-item class="right" height="20px" width="160px"></skeleton-item>
-    <br>
-  </ion-list>
-
+  </div> 
 </ion-content>
-
 
 <ion-footer>
   <ion-item no-lines> 

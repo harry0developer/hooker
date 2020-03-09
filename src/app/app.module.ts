@@ -37,7 +37,6 @@ import { SellersPage } from '../pages/sellers/sellers';
 import { SellerDetailsPage } from '../pages/seller-details/seller-details';
 import { ViewedPage } from '../pages/viewed/viewed';
 import { RatedPage } from '../pages/rated/rated';
-import { ChatsPage } from '../pages/chats/chats';
 import { IntroPage } from '../pages/intro/intro';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -58,6 +57,7 @@ import { PreviewPage } from '../pages/preview/preview';
 import { NetworkErrorPage } from '../pages/network-error/network-error';
 import { ChangePasswordPage } from '../pages/change-password/change-password';
 import { ReportBugPage } from '../pages/report-bug/report-bug';
+import { ChatsPage } from '../pages/chats/chats';
 
 @NgModule({
   declarations: [
@@ -69,13 +69,13 @@ import { ReportBugPage } from '../pages/report-bug/report-bug';
     ProfilePage,
     ChatPage,
     ImagePage,
+    ChatsPage,
     NationalityPage,
     DashboardPage,
     SellersPage,
     SellerDetailsPage,
     ViewedPage,
     RatedPage,
-    ChatsPage,
     IntroPage,
     HomePage,
     TermsPage,
@@ -113,13 +113,13 @@ import { ReportBugPage } from '../pages/report-bug/report-bug';
     ProfilePage,
     ChatPage,
     ImagePage,
+    ChatsPage,
     NationalityPage,
     DashboardPage,
     SellersPage,
     SellerDetailsPage,
     ViewedPage,
     RatedPage,
-    ChatsPage,
     IntroPage,
     HomePage,
     TermsPage,
