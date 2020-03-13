@@ -3,7 +3,7 @@
     <ion-avatar item-left>
       <img [src]="getProfilePic(person)">
     </ion-avatar>
-    <h2 class="sub-header__title">Chats</h2>
+    <h2 class="sub-header__title">{{capitalizeFirstLetter(person?.nickname)}}</h2>
     <ion-buttons end> 
       <button ion-button icon-only clear (click)="dismiss()">
         <ion-icon name="close"></ion-icon>

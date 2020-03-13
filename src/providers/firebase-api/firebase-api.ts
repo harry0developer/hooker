@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 
 import { AngularFireAuth } from '@angular/fire/auth';
-import { STORAGE_KEY } from '../../utils/consts';
+import { STORAGE_KEY, COLLECTION } from '../../utils/consts';
 import { User } from '../../models/user';
 import moment from 'moment';
 
@@ -10,7 +10,12 @@ import moment from 'moment';
 @Injectable()
 export class FirebaseApiProvider {
   firebaseRef = firebase.database();
+  chatRef = firebase.database().ref(COLLECTION.chats);
+  profile: User;
+  users: User[] = [];
   constructor(public afAuth: AngularFireAuth) {
+    this.profile = this.getLoggedInUser();
+    this.getData();
   }
 
   getLoggedInUser(): User {
@@ -93,8 +98,36 @@ export class FirebaseApiProvider {
     return returnArr;
   }
 
-
   getDateTimeMoment(dateTime): string {
     return moment(dateTime).fromNow();
+  }
+
+  getData() {
+    this.chatRef.child(this.profile.uid).on('value', snap => {
+      let user;
+      snap.forEach(s => {
+        user = Object.entries(s.val())[0][1];
+        this.getUserById(user.from);
+      });
+    });
+  }
+
+  getUserById(id) {
+    this.getItem(COLLECTION.users, id).then(user => {
+      this.users = [];
+      firebase.database().ref(COLLECTION.users).child(id).once('value', snap => {
+        this.users.push(snap.val());
+      });
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+  filterItems(searchTerm) {
+    console.log(searchTerm);
+
+    return this.users.filter(user => {
+      return user.nickname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+    });
   }
 }

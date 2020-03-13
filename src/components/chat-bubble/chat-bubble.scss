@@ -24,7 +24,7 @@ chat-bubble {
     
     .yours .message {
         margin-right: 25%;
-        background-color: #eee;
+        background-color: #d2d2d2;
         position: relative;
     }
     
@@ -36,7 +36,7 @@ chat-bubble {
         left: -7px;
         height: 20px;
         width: 20px;
-        background: #eee;
+        background: #d2d2d2;
         border-bottom-right-radius: 15px;
     }
     .yours .message.last:after {
@@ -47,7 +47,7 @@ chat-bubble {
         left: -10px;
         width: 10px;
         height: 20px;
-        background: white;
+        background: $light-grey;
         border-bottom-right-radius: 10px;
     }
     
@@ -84,51 +84,12 @@ chat-bubble {
         right: -10px;
         width: 10px;
         height: 20px;
-        background: white;
+        background: $light-grey;
         border-bottom-left-radius: 10px;
     }
 
     .timestamp {
-        font-size: 10px;
-        color: #ecadb7;
+        font-size: 12px;
+        color: $primary;
     }
-      
-    // .bubble {
-    //     font-size: 12px;
-    //     display: block;
-    //     width: fit-content;
-    //     &__start {
-    //         background-color: #ec9ea9;
-    //         color: $white;
-    //         padding: 10px;
-    //         max-width: 70%;
-    //         border-radius: 10px;
-    //         float: left;
-    //         line-height: 1.2;
-    //         margin-left: 4px;
-    //         .timestamp {
-    //             font-size: 10px;
-    //             color: $primary;
-    //             padding-top: 4px;
-    //             text-align: right;
-    //         }
-    //     }
-    //     &__end {
-    //         background-color: $light-grey;
-    //         color: #1f1f20;
-    //         padding: 10px;
-    //         max-width: 70%;
-    //         border-radius: 10px;
-    //         float: right;
-    //         line-height: 1.2;
-    //          .timestamp {
-    //             font-size: 10px;
-    //             color: $primary;
-    //             padding-top: 4px;
-    //             text-align: left;
-    //         }
-    //     }
-    // }
-    
-   
 }

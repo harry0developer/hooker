@@ -1,17 +1,14 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user';
-import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { AuthProvider } from '../../providers/auth/auth';
 import { DataProvider } from '../../providers/data/data';
-import { COLLECTION, STORAGE_KEY, USER_TYPE } from '../../utils/consts';
+import { COLLECTION } from '../../utils/consts';
 import { ChatPage } from '../chat/chat';
 import { bounceIn } from '../../utils/animations';
 import { FirebaseApiProvider } from '../../providers/firebase-api/firebase-api';
-import { Photo } from '../../models/photo';
 import { MediaProvider } from '../../providers/media/media';
 import firebase from 'firebase';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @IonicPage()

@@ -6,7 +6,9 @@
 //     top: 15% !important;
 // 	border-radius: 20px;
 // }
-
+* {
+	font-family: 'Baloo Paaji 2', cursive;
+}
 
 .toolbar {
 	min-height: 65px;
@@ -25,66 +27,7 @@ ion-modal {
 		overflow: hidden;
     }
 }
-.user-profile {
-  background-color: $primary !important;
-	color: $white !important;
-	border-top: 0 !important;
-	border-bottom: 0 !important;
-
-	.button-inner i {
-		margin: 10px;
-	}
-
-
-	ion-item {
-		border-top: 0 !important;
-		border-bottom: 0 !important;
-		margin: 0 !important;
-	}
-    ion-icon.light {
-		color: $white !important;
-	}
-  .profile{
-		margin: 16% 0;
-		text-align: center;
-		
-		.profile-picture {
-			border: 2px solid $white;
-			padding: 2px;
-			border-radius: 100%;
-			width: 100px;
-			height: 100px;
-		}
-		h2{
-			font-size: 1.4em;
-			color: $white;
-			margin-bottom: 0;
-		}
-		p{
-			color: $white;
-			margin: 5px 0;
-		}
-	}
-
-  .menu {
-		ion-item {
-			background-color: $primary !important;
-			color: $white !important;
-		}
-
-		.item-inner{
-			border-bottom: none !important;
-		}
-	}
-
-}
-
-
-ion-footer {
-	.button-clear-ios {
-		color: white !important;
-	}
-}
+ 
 
 .ion-ios-logo, .ion-md-logo {
 	content: url('../../assets/icon.svg');
