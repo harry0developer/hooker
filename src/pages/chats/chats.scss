@@ -1,6 +1,7 @@
 page-chats { 
     .content {
         // background-image: url('../../assets/bg-1.png');
+        background-color: $light-grey;
     }
 
 	.user { 
@@ -8,8 +9,8 @@ page-chats {
             height: 65px;
         }
         ion-avatar img{
-            width: 50px;
-			height: 50px;
+            width: 40px;
+			height: 40px;
 			border: 2px solid $primary !important;
 		} 
 		

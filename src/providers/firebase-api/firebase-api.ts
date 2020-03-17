@@ -15,7 +15,7 @@ export class FirebaseApiProvider {
   users: User[] = [];
   constructor(public afAuth: AngularFireAuth) {
     this.profile = this.getLoggedInUser();
-    this.getData();
+    this.getUserChat();
   }
 
   getLoggedInUser(): User {
@@ -80,16 +80,12 @@ export class FirebaseApiProvider {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
-
   convertObjectToArray(obj): any[] {
     return Object.keys(obj).map(i => obj[i])
   }
 
-
   snapshotToArray(snapshot: any[]): any[] {
     let returnArr = [];
-    console.log(snapshot);
-
     snapshot.forEach(childSnapshot => {
       let item = childSnapshot.val();
       item.key = childSnapshot.key;
@@ -102,30 +98,38 @@ export class FirebaseApiProvider {
     return moment(dateTime).fromNow();
   }
 
-  getData() {
-    this.chatRef.child(this.profile.uid).on('value', snap => {
-      let user;
-      snap.forEach(s => {
-        user = Object.entries(s.val())[0][1];
-        this.getUserById(user.from);
-      });
-    });
-  }
+  // getData() {
+  //   this.chatRef.child(this.profile.uid).on('value', snap => {
+  //     let user;
+  //     snap.forEach(s => {
+  //       user = Object.entries(s.val())[0][1];
+  //       this.getUserById(user.from);
+  //     });
+  //   });
+  // }
 
-  getUserById(id) {
-    this.getItem(COLLECTION.users, id).then(user => {
-      this.users = [];
-      firebase.database().ref(COLLECTION.users).child(id).once('value', snap => {
-        this.users.push(snap.val());
+  // getUserById(id) {
+  //   this.getItem(COLLECTION.users, id).then(user => {
+  //     this.users = [];
+  //     firebase.database().ref(COLLECTION.users).child(id).once('value', snap => {
+  //       this.users.push(snap.val());
+  //     });
+  //   }).catch(err => {
+  //     console.log(err);
+  //   });
+  // }
+
+  getUserChat() {
+    firebase.database().ref(COLLECTION.chats).child(this.profile.uid).on('value', snap => {
+      snap.forEach(u => {
+        firebase.database().ref(COLLECTION.users).child(u.key).once('value', uSnap => {
+          this.users.push(uSnap.val());
+        });
       });
-    }).catch(err => {
-      console.log(err);
     });
   }
 
   filterItems(searchTerm) {
-    console.log(searchTerm);
-
     return this.users.filter(user => {
       return user.nickname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });

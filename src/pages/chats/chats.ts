@@ -24,6 +24,7 @@ export class ChatsPage {
   isLoading: boolean;
   users: User[] = [];
   chatRef = firebase.database().ref(COLLECTION.chats);
+  userRef = firebase.database().ref(COLLECTION.users);
 
   searchTerm: string = '';
   searchControl: FormControl;
